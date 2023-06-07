@@ -67,3 +67,13 @@ ul {
         width: 90%;
     }
 }
+
+.bgc-gradient {
+    background: rgb(0, 149, 246);
+    background: linear-gradient(
+        90deg,
+        rgba(0, 149, 246, 1) 0%,
+        rgba(222, 57, 247, 1) 61%,
+        rgba(249, 249, 249, 1) 100%
+    );
+}
