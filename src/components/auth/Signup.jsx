@@ -3,7 +3,7 @@ import React, { useState } from "react";
 //packages
 import * as yup from "yup";
 import { FileUploader } from "react-drag-drop-files";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //components
 import { Input } from "../fields/Input";
@@ -26,6 +26,8 @@ const Signup = () => {
     });
     const [imageName, setImageName] = useState("");
     const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate();
 
     //storing data
     const handleDataChange = (e) => {
@@ -65,7 +67,10 @@ const Signup = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log(response);
+            const { StatusCode } = response.data;
+            if (StatusCode === 6000) {
+                navigate("/auth/login");
+            }
         } catch (error) {
             console.log(error);
             const validationErrors = {};

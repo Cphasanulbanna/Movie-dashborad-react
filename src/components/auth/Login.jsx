@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 //packages
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //components
 import { Input } from "../fields/Input";
@@ -23,6 +23,8 @@ const Login = () => {
         password: "",
     });
     const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate();
 
     //storing data
     const handleDataChange = (e) => {
@@ -52,7 +54,10 @@ const Login = () => {
             await formSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosConfig.post("/auth/login", formData);
-            console.log(response);
+            const { StatusCode } = response.data;
+            if (StatusCode === 6000) {
+                navigate("/");
+            }
         } catch (error) {
             console.log(error);
             const validationErrors = {};

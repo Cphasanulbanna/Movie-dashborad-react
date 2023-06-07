@@ -21,6 +21,7 @@ export default {
         colors: {},
         extend: {
             colors: {
+                "light-green": "#7bc1b3",
                 "sky-blue": "rgb(0, 149, 246)",
                 "sky-blue-2": "#0095f6",
                 "blue-text": "#385185",
