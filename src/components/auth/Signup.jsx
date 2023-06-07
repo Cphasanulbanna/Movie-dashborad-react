@@ -7,14 +7,17 @@ import { FileUploader } from "react-drag-drop-files";
 import facebook from "../../assets/icons/facebook.png";
 import twitter from "../../assets/icons/twitter.png";
 import google from "../../assets/icons/google.png";
+import axiosConfig from "../../../axiosConfig";
 
 const Signup = () => {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
-        avatar: "",
+        profile: "",
     });
     const [errors, setErrors] = useState({});
+
+    console.log(formData);
 
     const handleDataChange = (e) => {
         const { name, value } = e.target;
@@ -23,7 +26,7 @@ const Signup = () => {
     };
 
     const handleChange = (file) => {
-        setFormData((prev) => ({ ...prev, ["avatar"]: file }));
+        setFormData((prev) => ({ ...prev, ["profile"]: file }));
     };
 
     const formSchema = yup.object().shape({
@@ -41,22 +44,25 @@ const Signup = () => {
 
     const signup = async (e) => {
         e.preventDefault();
-        await formSchema
-            .validate(formData, { abortEarly: false })
-            .then(() => {
-                console.log("success");
-            })
-            .catch((error) => {
-                console.log(error);
-                const validationErrors = {};
-                error.inner.forEach((error) => {
-                    validationErrors[error.path] = error.message;
-                });
-                setErrors(validationErrors);
+        try {
+            await formSchema.validate(formData, { abortEarly: false });
+
+            const response = await axiosConfig.post("/auth/signup", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            const validationErrors = {};
+            error.inner.forEach((error) => {
+                validationErrors[error.path] = error.message;
+            });
+            setErrors(validationErrors);
+        }
     };
 
-    console.log(formData);
     return (
         <div
             style={{
@@ -88,7 +94,7 @@ const Signup = () => {
                 />
                 <FileUploader
                     handleChange={handleChange}
-                    name="avatar"
+                    name="profile"
                     label="upload profile pic"
                     required={false}
                     classes={"dropzone"}

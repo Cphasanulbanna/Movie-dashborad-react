@@ -88,6 +88,9 @@ ul {
     border-radius: 0px !important;
     outline: none !important;
 }
+.dropzone:hover {
+    opacity: 0.7;
+}
 
 .dropzone svg {
     width: 25px;
