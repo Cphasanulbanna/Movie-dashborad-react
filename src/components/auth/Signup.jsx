@@ -1,34 +1,45 @@
 import React, { useState } from "react";
-import { Input } from "../fields/Input";
-import { Button } from "../general/Button";
+
+//packages
 import * as yup from "yup";
 import { FileUploader } from "react-drag-drop-files";
 
+//components
+import { Input } from "../fields/Input";
+import { Button } from "../general/Button";
+
+//images
 import facebook from "../../assets/icons/facebook.png";
 import twitter from "../../assets/icons/twitter.png";
 import google from "../../assets/icons/google.png";
+
+//axios
 import axiosConfig from "../../../axiosConfig";
 
 const Signup = () => {
+    //form state
     const [formData, setFormData] = useState({
         username: "",
         password: "",
         profile: "",
     });
+    const [imageName, setImageName] = useState("");
     const [errors, setErrors] = useState({});
 
-    console.log(formData);
-
+    //storing data
     const handleDataChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
+    //storing profile image
     const handleChange = (file) => {
         setFormData((prev) => ({ ...prev, ["profile"]: file }));
+        setImageName(file.name);
     };
 
+    //form  fields validation
     const formSchema = yup.object().shape({
         username: yup.string().required("This field is required"),
         password: yup
@@ -42,6 +53,7 @@ const Signup = () => {
             .required("This field is required"),
     });
 
+    //signup api connection
     const signup = async (e) => {
         e.preventDefault();
         try {
