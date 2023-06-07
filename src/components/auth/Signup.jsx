@@ -3,6 +3,7 @@ import React, { useState } from "react";
 //packages
 import * as yup from "yup";
 import { FileUploader } from "react-drag-drop-files";
+import { Link } from "react-router-dom";
 
 //components
 import { Input } from "../fields/Input";
@@ -139,9 +140,12 @@ const Signup = () => {
                     </div>
                 </div>
             </div>
-            <h5 className="text-[16px] text-center text-[#8d8b8b] cursor-pointer absolute z-20 bottom-[20px] left-[50%] translate-x-[-50%] hover:opacity-[0.7]">
+            <Link
+                to={"/auth/login"}
+                className="text-[16px] text-center text-[#8d8b8b] cursor-pointer absolute z-20 bottom-[20px] left-[50%] translate-x-[-50%] hover:opacity-[0.7]"
+            >
                 LOGIN
-            </h5>
+            </Link>
         </div>
     );
 };
