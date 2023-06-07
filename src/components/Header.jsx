@@ -2,10 +2,12 @@ import React from "react";
 
 //icons
 import search from "../assets/icons/search.png";
+import notification from "../assets/icons/notification.png";
+import profile from "../assets/icons/profile.png";
 
 const Header = () => {
     return (
-        <header className="fixed top-0 left-[200px] w-[100%] p-[30px] flex justify-between items-center">
+        <header className="fixed top-0 left-[200px] w-[fill] py-[30px] px-[40px] flex justify-between items-center">
             <div className="relative border-[1px] border-solid border-light-green rounded-[25px] overflow-hidden px-[15px] h-[40px] max-w-[300px] w-[100%]">
                 <div className="w-[20px] h-[20px] absolute z-[10] top-[50%] translate-y-[-50%]">
                     <img
@@ -18,6 +20,20 @@ const Header = () => {
                     type="text"
                     placeholder="search here"
                 />
+            </div>
+            <div className="flex items-center gap-[25px]">
+                <div className="w-[25px] h-[25px] cursor-pointer hover:opacity-[0.8]">
+                    <img
+                        src={notification}
+                        alt="notification"
+                    />
+                </div>
+                <div className="w-[40px] h-[40px] cursor-pointer hover:opacity-[0.8]">
+                    <img
+                        src={profile}
+                        alt="profile"
+                    />
+                </div>
             </div>
         </header>
     );
