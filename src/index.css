@@ -74,6 +74,30 @@ ul {
         90deg,
         rgba(0, 149, 246, 1) 0%,
         rgba(222, 57, 247, 1) 61%,
-        rgba(249, 249, 249, 1) 100%
+        rgb(241, 211, 211) 100%
     );
+}
+.bgc-button {
+    background: linear-gradient(90deg, rgba(0, 149, 246, 1) 0%, rgba(222, 57, 247, 1) 61%);
+}
+
+/* //dropzone styles */
+.dropzone {
+    height: 42px !important;
+    border: 1px solid #dbdbdb !important;
+    border-radius: 0px !important;
+    outline: none !important;
+}
+
+.dropzone svg {
+    width: 25px;
+    height: 25px;
+}
+.dropzone div {
+    justify-content: right;
+}
+.dropzone div span {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
 }

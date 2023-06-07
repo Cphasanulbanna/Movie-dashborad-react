@@ -6,9 +6,9 @@ export const Input = ({ formData, handleDataChange, type, name, errors }) => {
     const _name = name.toLowerCase();
 
     return (
-        <div className={`${greyBorder} p-[7px] relative`}>
+        <div className={`${greyBorder} p-[7px] relative h-[42px]`}>
             <input
-                className={`text-[13px] text-black`}
+                className={`text-[14px] text-black`}
                 id={_name}
                 name={_name}
                 value={formData?._name}
@@ -16,7 +16,7 @@ export const Input = ({ formData, handleDataChange, type, name, errors }) => {
                 onChange={handleDataChange}
                 placeholder={_name.split(/(?=[A-Z])/).join(" ")}
             />
-            <span className="absolute left-0 bottom-[-20px] text-[10px] text-[red]">{errors}</span>
+            <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">{errors}</span>
         </div>
     );
 };

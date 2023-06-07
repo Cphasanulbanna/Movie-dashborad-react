@@ -1,6 +1,6 @@
 import React from "react";
-import AuthWrapper from "./components/auth/AuthWrapper";
+import AuthRouter from "./components/routes/routers/AuthRouter";
 
 export const App = () => {
-    return <AuthWrapper />;
+    return <AuthRouter />;
 };
