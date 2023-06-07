@@ -10,7 +10,7 @@ const AppRouter = () => {
     return (
         <Routes>
             <Route
-                path="/"
+                path="/*"
                 element={<LandingPage />}
             />
             <Route

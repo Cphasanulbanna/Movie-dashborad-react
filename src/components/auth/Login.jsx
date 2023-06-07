@@ -56,7 +56,7 @@ const Login = () => {
             const response = await axiosConfig.post("/auth/login", formData);
             const { StatusCode } = response.data;
             if (StatusCode === 6000) {
-                navigate("/");
+                // navigate("/");
             }
         } catch (error) {
             console.log(error);

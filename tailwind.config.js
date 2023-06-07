@@ -22,6 +22,11 @@ export default {
         extend: {
             colors: {
                 "light-green": "#7bc1b3",
+                violet: "rgba(222, 57, 247, 1)",
+                "dark-violet": "rgb(28, 5, 31)",
+                "light-violet": " rgb(50, 0, 60)",
+                "dark-blue": "rgb(1, 29, 48)",
+                "dark-blue-2": "rgb(4, 40, 64)",
                 "sky-blue": "rgb(0, 149, 246)",
                 "sky-blue-2": "#0095f6",
                 "blue-text": "#385185",

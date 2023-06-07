@@ -9,6 +9,7 @@
     border: 0;
     outline: none;
     box-sizing: border-box;
+    color: #fff !important;
 }
 
 *::-webkit-scrollbar {
@@ -69,7 +70,6 @@ ul {
 }
 
 .bgc-gradient {
-    background: rgb(0, 149, 246);
     background: linear-gradient(
         90deg,
         rgba(0, 149, 246, 1) 0%,
@@ -79,6 +79,18 @@ ul {
 }
 .bgc-button {
     background: linear-gradient(90deg, rgba(0, 149, 246, 1) 0%, rgba(222, 57, 247, 1) 61%);
+}
+
+.border {
+    border: 1px solid;
+}
+
+.boxshadow {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.one {
+    background-color: rgb(1, 23, 36);
 }
 
 /* //dropzone styles */
