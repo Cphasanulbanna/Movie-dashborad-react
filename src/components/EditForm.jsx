@@ -268,6 +268,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                     handleClick={() => selectGenres(genre?._id)}
                                     genre={genre}
                                     formData={formData}
+                                    currentGenres={movie.genre}
                                 />
                             ))}
                         </div>

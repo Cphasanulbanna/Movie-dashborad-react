@@ -3,8 +3,12 @@ import React from "react";
 import greenCheck from "../../assets/icons/checkmark-green.png";
 import greyCheck from "../../assets/icons/checkmark-grey.png";
 
-const CheckBox = ({ genre, handleClick, formData }) => {
-    const isSelected = formData.genre?.some((currentGenre) => currentGenre === genre._id);
+const CheckBox = ({ genre, handleClick, formData, currentGenres }) => {
+    const isSelected =
+        formData.genre?.some((item) => item === genre._id) ||
+        currentGenres?.some((item) => item._id === genre._id);
+
+    console.log(currentGenres);
 
     return (
         <div
