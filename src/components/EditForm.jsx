@@ -265,7 +265,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                         <div className="flex items-center flex-wrap gap-[15px]">
                             {genres?.map((genre) => (
                                 <CheckBox
-                                    selectGenres={() => selectGenres(genre?._id)}
+                                    handleClick={() => selectGenres(genre?._id)}
                                     genre={genre}
                                     formData={formData}
                                 />
