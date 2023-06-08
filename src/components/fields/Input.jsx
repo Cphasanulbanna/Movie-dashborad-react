@@ -1,14 +1,17 @@
 import React from "react";
 
-export const Input = ({ formData, handleDataChange, type, name, errors }) => {
+export const Input = ({ formData, handleDataChange, type, name, errors, css }) => {
     const greyBorder = "border-[1px] border-solid border-light-grey";
 
     const _name = name.toLowerCase();
 
     return (
-        <div className={`${greyBorder} p-[7px] relative h-[42px]`}>
+        <div
+            style={css}
+            className={`${greyBorder} p-[7px] relative h-[42px]`}
+        >
             <input
-                className={`text-[14px] text-black`}
+                className={`text-[14px] bg-[inherit] text-[inherit]`}
                 id={_name}
                 name={_name}
                 value={formData?._name}

@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import StarRatings from "react-star-ratings";
 
-const StarRating = () => {
-    const [rating, setRating] = useState(0);
+const StarRating = ({ dimension, handleRating, rating }) => {
+    // const [rating, setRating] = useState(0);
 
-    const handleRating = (rate) => {
-        setRating(rate);
+    // const handleRating = (rate) => {
+    //     setRating(rate);
 
-        // other logic
-    };
+    //     // other logic
+    // };
     return (
         <StarRatings
-            rating={4}
+            rating={rating ? rating : 4}
             starRatedColor="blue"
-            // changeRating={handleRating}
+            changeRating={handleRating}
             numberOfStars={5}
             name="rating"
-            starDimension="25px"
+            starDimension={dimension ? dimension : "25px"}
         />
     );
 };

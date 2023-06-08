@@ -28,6 +28,7 @@ export default {
                 "light-violet": " rgb(50, 0, 60)",
                 "dark-blue": "rgb(1, 29, 48)",
                 "dark-blue-2": "rgb(4, 40, 64)",
+                "light-black": "#001220",
                 "sky-blue": "rgb(0, 149, 246)",
                 "sky-blue-2": "#0095f6",
                 "blue-text": "#385185",
