@@ -11,7 +11,7 @@ export const Input = ({ formData, handleDataChange, type, name, errors, placehol
             className={`${greyBorder} p-[7px] relative h-[42px]`}
         >
             <input
-                className={`text-[14px] bg-[inherit] text-[inherit]`}
+                className={`text-[14px] bg-[inherit] w-[100%] text-[inherit]`}
                 id={_name}
                 name={_name}
                 value={formData?._name}

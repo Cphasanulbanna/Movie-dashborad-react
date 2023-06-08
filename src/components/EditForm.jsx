@@ -107,6 +107,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
 
     console.log(formData);
 
+    const closeModal = () => {
+        setShowEditModal(false);
+    };
+
     const inputStyle = {
         background: "#082335",
         borderRadius: "5px",
@@ -117,7 +121,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         <>
             <ModalWrapper
                 state={showEditModal}
-                setState={setShowEditModal}
+                closeModal={closeModal}
                 style={{ width: "75%" }}
             >
                 <div className="flex flex-col gap-[35px]">
@@ -190,7 +194,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                         />
                                         <div className="absolute z-20 inset-0 bg-[green] cursor-pointer opacity-[0.7]">
                                             <img
-                                                src={movie.poster}
+                                                src={posterPreview ? posterPreview : movie?.poster}
                                                 alt="poster"
                                                 className="object-cover"
                                             />

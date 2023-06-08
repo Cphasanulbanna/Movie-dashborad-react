@@ -1,10 +1,10 @@
 import React from "react";
 
-const ModalWrapper = ({ children, setState, state, style }) => {
+const ModalWrapper = ({ children, closeModal, state, style }) => {
     return (
         <section
             className={`overlay ${state ? "visible" : "hidden"}`}
-            onClick={() => setState(false)}
+            onClick={closeModal}
         >
             <div
                 style={style}

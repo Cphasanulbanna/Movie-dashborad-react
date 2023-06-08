@@ -38,48 +38,52 @@ export const MovieCard = ({ movie }) => {
                     />
                 </div>
                 <div className="w-[60%] p-[20px] flex flex-col gap-[15px] one">
-                    <h1>
-                        {movie.name} ({movie.year})
-                    </h1>
+                    <div className="flex  flex-col gap-[10px]">
+                        <h1 className="font-bold">
+                            {movie.name} ({movie.year})
+                        </h1>
 
-                    <div className="flex gap-[12px] items-center overflow-x-scroll">
-                        {movie.genre?.map((item) => (
-                            <p className="py-[8px] px-[24px] rounded-[25px] border border-[#fff] w-max">
-                                {item.title}
-                            </p>
-                        ))}
+                        <div className="flex gap-[12px] items-center flex-wrap">
+                            {movie.genre?.map((item) => (
+                                <p className="py-[6px] px-[15px] rounded-[25px] border border-[#fff] w-max">
+                                    {item.title}
+                                </p>
+                            ))}
+                        </div>
                     </div>
 
-                    <p>{movie?.description}</p>
-                    <StarRating rating={movie?.rating} />
-                    <div className="flex items-center gap-[12px]">
-                        <div
-                            onClick={() => opneEditForm(movie._id)}
-                            className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
-                        >
-                            <img
-                                src={edit}
-                                alt="edit"
-                            />
-                        </div>
-                        <div className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]">
-                            <img
-                                src={deleteIcon}
-                                alt="delete"
-                            />
-                        </div>
-                        <Link
-                            to={`/${movie._id}`}
-                            className="flex items-center gap-[8px] cursor-pointer hover:opacity-[0.7]"
-                        >
-                            <span className="text-light-white">view more</span>
-                            <div className=" w-[20px] h-[20px]">
+                    <div className="flex flex-col gap-[10px]">
+                        <p>{movie?.description}</p>
+                        <StarRating rating={movie?.rating} />
+                        <div className="flex items-center gap-[12px]">
+                            <div
+                                onClick={() => opneEditForm(movie._id)}
+                                className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
+                            >
                                 <img
-                                    src={next}
-                                    alt="next"
+                                    src={edit}
+                                    alt="edit"
                                 />
                             </div>
-                        </Link>
+                            <div className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]">
+                                <img
+                                    src={deleteIcon}
+                                    alt="delete"
+                                />
+                            </div>
+                            <Link
+                                to={`/${movie._id}`}
+                                className="flex items-center gap-[8px] cursor-pointer hover:opacity-[0.7]"
+                            >
+                                <span className="text-light-white">view more</span>
+                                <div className=" w-[20px] h-[20px]">
+                                    <img
+                                        src={next}
+                                        alt="next"
+                                    />
+                                </div>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
