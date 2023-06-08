@@ -9,7 +9,7 @@ import next from "../../assets/icons/next-arrow.png";
 
 export const MovieCard = ({ movie }) => {
     return (
-        <div className="w-[31%] rounded-[10px] overflow-hidden cursor-pointer flex justify-between max-h-[300px] boxshadow">
+        <div className="w-[31%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
             <div className="w-[40%] h-[300px]">
                 <img
                     src={movie?.poster}

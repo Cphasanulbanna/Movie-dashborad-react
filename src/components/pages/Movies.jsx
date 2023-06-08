@@ -24,7 +24,7 @@ export const Movies = () => {
         fetchAllMovies();
     }, []);
     return (
-        <section>
+        <section className="w-[100%]">
             <div className="flex justify-center items-center flex-wrap gap-[20px]">
                 {movies?.map((movie) => (
                     <MovieCard movie={movie} />
