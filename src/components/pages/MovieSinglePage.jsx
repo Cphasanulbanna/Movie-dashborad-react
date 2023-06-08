@@ -43,7 +43,7 @@ export const MovieSinglePage = () => {
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, recusandae.
                 </p>
-                <h2>Hero: Actor {movie?.leadActor}</h2>
+                <h2>Hero: Actor {movie?.leadactor}</h2>
                 <div className="flex items-center gap-[10px] flex-wrap">
                     {movie?.genre?.map((item) => (
                         <div className="py-[7px] px-[22px] rounded-[25px] overflow-hidden border border-light-white">
@@ -51,7 +51,7 @@ export const MovieSinglePage = () => {
                         </div>
                     ))}
                 </div>
-                <StarRating />
+                <StarRating rating={movie?.rating} />
             </div>
         </div>
     );

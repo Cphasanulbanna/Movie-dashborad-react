@@ -11,7 +11,7 @@ import rightArrow from "../assets/icons/right-arrow.png";
 
 export const Sidebar = () => {
     return (
-        <div className="bg-dark-blue h-full fixed z-50 w-[200px] overflow-hidden p-[25px]  flex flex-col gap-[40px]">
+        <div className="bg-dark-blue h-full fixed w-[200px] overflow-hidden p-[25px]  flex flex-col gap-[40px]">
             <div className="font-bold text-[20px] cursor-pointer text-light-green">logo</div>
             <div className="flex flex-col gap-[30px] text-light-green">
                 <Link

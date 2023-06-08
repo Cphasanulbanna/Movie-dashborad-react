@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import StarRating from "../general/StarRating";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 //icons
 import edit from "../../assets/icons/edit-movie.png";
@@ -10,16 +10,24 @@ import { EditForm } from "../EditForm";
 
 export const MovieCard = ({ movie }) => {
     const [showEditModal, setShowEditModal] = useState(false);
+    const [movieId, setMovieId] = useState("");
 
-    const opneEditForm = () => {
+    const opneEditForm = (id) => {
+        setMovieId(id);
         setShowEditModal(true);
     };
+
     return (
         <>
-            <EditForm
-                setShowEditModal={setShowEditModal}
-                showEditModal={showEditModal}
-            />
+            {/* {movieId && ( */}
+            {showEditModal && movieId && (
+                <EditForm
+                    setShowEditModal={setShowEditModal}
+                    showEditModal={showEditModal}
+                    id={movieId}
+                />
+            )}
+            {/* )} */}
 
             <div className="w-[31%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">
@@ -42,14 +50,11 @@ export const MovieCard = ({ movie }) => {
                         ))}
                     </div>
 
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusamus,
-                        officiis.
-                    </p>
-                    <StarRating />
+                    <p>{movie?.description}</p>
+                    <StarRating rating={movie?.rating} />
                     <div className="flex items-center gap-[12px]">
                         <div
-                            onClick={opneEditForm}
+                            onClick={() => opneEditForm(movie._id)}
                             className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
                         >
                             <img

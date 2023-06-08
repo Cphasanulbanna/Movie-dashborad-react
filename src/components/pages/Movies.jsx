@@ -13,7 +13,7 @@ export const Movies = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(resposne);
+            // console.log(resposne);
             setMovies(resposne.data?.moviesList);
         } catch (error) {
             console.log(error);

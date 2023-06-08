@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Input = ({ formData, handleDataChange, type, name, errors, css }) => {
+export const Input = ({ formData, handleDataChange, type, name, errors, placeholder, css }) => {
     const greyBorder = "border-[1px] border-solid border-light-grey";
 
     const _name = name.toLowerCase();
@@ -17,7 +17,7 @@ export const Input = ({ formData, handleDataChange, type, name, errors, css }) =
                 value={formData?._name}
                 type={type}
                 onChange={handleDataChange}
-                placeholder={_name.split(/(?=[A-Z])/).join(" ")}
+                placeholder={placeholder || _name.split(/(?=[A-Z])/).join(" ")}
             />
             <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">{errors}</span>
         </div>
