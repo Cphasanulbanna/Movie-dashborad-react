@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import Header from "./Header";
 import Movies from "./pages/movies";
+import { MovieSinglePage } from "./pages/MovieSinglePage";
 
 const LandingPage = () => {
     return (
@@ -18,6 +19,10 @@ const LandingPage = () => {
                     <Route
                         path="/"
                         element={<Movies />}
+                    />
+                    <Route
+                        path="/:id"
+                        element={<MovieSinglePage />}
                     />
                 </Routes>
             </section>

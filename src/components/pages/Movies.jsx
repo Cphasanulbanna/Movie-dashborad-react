@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosConfig from "../../../axiosConfig";
-import { Movie } from "../movie/Movie";
+import { MovieCard } from "../movie/MovieCard";
 
 export const Movies = () => {
     const [movies, setMovies] = useState([]);
@@ -27,7 +27,7 @@ export const Movies = () => {
         <section>
             <div className="flex justify-center items-center flex-wrap gap-[20px]">
                 {movies?.map((movie) => (
-                    <Movie movie={movie} />
+                    <MovieCard movie={movie} />
                 ))}
             </div>
         </section>
