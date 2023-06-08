@@ -11,9 +11,9 @@ const StarRating = () => {
     };
     return (
         <StarRatings
-            rating={rating}
+            rating={4}
             starRatedColor="blue"
-            changeRating={handleRating}
+            // changeRating={handleRating}
             numberOfStars={5}
             name="rating"
             starDimension="25px"
