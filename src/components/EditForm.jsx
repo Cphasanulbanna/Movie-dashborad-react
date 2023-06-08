@@ -88,7 +88,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     return (
         <>
             <ModalWrapper
-                showEditModal={showEditModal}
+                state={showEditModal}
                 setState={setShowEditModal}
             >
                 <div className="flex gap-[15px]">
