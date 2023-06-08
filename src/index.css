@@ -115,6 +115,18 @@ ul {
     filter: none;
 } */
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+button,
+p {
+    color: #f1f1f1;
+}
+
 .overlay {
     display: flex;
     align-items: center;
@@ -135,6 +147,9 @@ ul {
     border-radius: 12px;
     overflow: hidden;
     z-index: 1500;
+    /* width: 75%;
+    height: 75%; */
+    border: 2px solid #284747;
 }
 
 .boxshadow {

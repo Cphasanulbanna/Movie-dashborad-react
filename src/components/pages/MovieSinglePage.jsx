@@ -7,7 +7,6 @@ import StarRating from "../general/StarRating";
 export const MovieSinglePage = () => {
     const { id } = useParams();
     const [movie, setMovie] = useState({});
-    console.log(movie);
 
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
@@ -19,10 +18,9 @@ export const MovieSinglePage = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(resposne);
             setMovie(resposne.data?.movie);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 

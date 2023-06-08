@@ -59,7 +59,7 @@ const Login = () => {
                 // navigate("/");
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             const validationErrors = {};
             error.inner.forEach((error) => {
                 validationErrors[error.path] = error.message;
