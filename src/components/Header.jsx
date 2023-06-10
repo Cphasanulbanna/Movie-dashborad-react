@@ -15,7 +15,6 @@ const Header = () => {
         updateQuery(value);
     };
 
-    console.log(query, "--------query");
     return (
         <header className="bg-dark-blue fixed top-0 left-[200px] w-[fill] py-[30px] px-[40px] flex justify-between items-center">
             <div className="relative border border-[#f1f1f1] rounded-[25px] overflow-hidden px-[15px] h-[40px] max-w-[300px] w-[100%]">

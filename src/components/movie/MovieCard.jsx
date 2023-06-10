@@ -45,7 +45,10 @@ export const MovieCard = ({ movie }) => {
 
                         <div className="flex gap-[12px] items-center flex-wrap">
                             {movie.genre?.map((item) => (
-                                <p className="py-[6px] px-[15px] rounded-[25px] border border-[#fff] w-max">
+                                <p
+                                    key={item?._id}
+                                    className="py-[6px] px-[15px] rounded-[25px] border border-[#fff] w-max"
+                                >
                                     {item.title}
                                 </p>
                             ))}

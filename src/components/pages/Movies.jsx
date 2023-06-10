@@ -1,32 +1,47 @@
 import React, { useEffect, useState } from "react";
 import axiosConfig from "../../../axiosConfig";
 import { MovieCard } from "../movie/MovieCard";
+import { useQueryStore } from "../zustand/store";
 
 export const Movies = () => {
     const [movies, setMovies] = useState([]);
+    const { query } = useQueryStore();
+
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
     const fetchAllMovies = async () => {
         try {
-            const resposne = await axiosConfig.get("/movies", {
+            let url = "/movies";
+            const params = {};
+            if (query) {
+                params.q = query;
+            }
+
+            const response = await axiosConfig.get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                params: params,
             });
-            setMovies(resposne.data?.moviesList);
+
+            setMovies(response.data?.moviesList);
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     };
 
     useEffect(() => {
         fetchAllMovies();
-    }, []);
+    }, [query]);
+
     return (
         <section className="w-[100%]">
             <div className="flex justify-center items-center flex-wrap gap-[20px]">
                 {movies?.map((movie) => (
-                    <MovieCard movie={movie} />
+                    <MovieCard
+                        key={movie?._id}
+                        movie={movie}
+                    />
                 ))}
             </div>
         </section>
