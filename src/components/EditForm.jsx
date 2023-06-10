@@ -90,6 +90,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
+                onUploadProgress,
             });
         } catch (error) {
             console.log(error);
@@ -105,10 +106,17 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         });
     };
 
-    console.log(formData);
+    // console.log(formData);
 
     const closeModal = () => {
         setShowEditModal(false);
+    };
+
+    const onUploadProgress = (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+
+        console.log(`${loaded} bytes of ${total} bytes. ${percent}%`);
     };
 
     const inputStyle = {
@@ -269,6 +277,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                         <div className="flex items-center flex-wrap gap-[15px]">
                             {genres?.map((genre) => (
                                 <CheckBox
+                                    key={genre?._id}
                                     handleClick={() => selectGenres(genre?._id)}
                                     genre={genre}
                                     formData={formData}

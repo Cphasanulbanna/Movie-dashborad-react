@@ -8,7 +8,7 @@ const CheckBox = ({ genre, handleClick, formData, currentGenres }) => {
         formData.genre?.some((item) => item === genre._id) ||
         currentGenres?.some((item) => item._id === genre._id);
 
-    console.log(currentGenres);
+    // console.log(currentGenres);
 
     return (
         <div

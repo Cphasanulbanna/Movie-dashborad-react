@@ -11,6 +11,7 @@ export const Movies = () => {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
     const fetchAllMovies = async () => {
         try {
+            const controller = new AbortController();
             let url = "/movies";
             const params = {};
             if (query) {
@@ -21,10 +22,12 @@ export const Movies = () => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                signal: controller.signal,
                 params: params,
             });
 
             setMovies(response.data?.moviesList);
+            controller.abort();
         } catch (error) {
             console.log(error);
         }
