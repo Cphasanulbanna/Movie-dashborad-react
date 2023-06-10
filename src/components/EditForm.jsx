@@ -76,9 +76,11 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const [errors, setErrors] = useState({});
     const [posterPreview, setPosterPreview] = useState(null);
 
+    console.log(formData, "formdata");
+
     const handleDataChange = (e) => {
         const { name, value } = e.target;
-        if (name === genre) {
+        if (name === "genre") {
         }
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -136,8 +138,9 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
-        setUploadProgress(percent);
-        console.log(`${loaded} bytes of ${total} bytes. ${percent}%`);
+        if (formData?.poster) {
+            setUploadProgress(percent);
+        }
     };
 
     const inputStyle = {
@@ -229,25 +232,24 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">
-                                        {uploadProgress > 1 && (
-                                            <>
-                                                <div
-                                                    style={
-                                                        uploadProgress > 0
-                                                            ? { width: `${uploadProgress}%` }
-                                                            : { width: "0" }
-                                                    }
-                                                    className="h-[30px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
-                                                >
-                                                    uploading {formData?.poster.name}...{" "}
-                                                    <span className="text-[#111]">
-                                                        {uploadProgress}%
-                                                    </span>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
+
+                                    {uploadProgress > 1 && (
+                                        <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">
+                                            <div
+                                                style={
+                                                    uploadProgress > 0
+                                                        ? { width: `${uploadProgress}%` }
+                                                        : { width: "0" }
+                                                }
+                                                className="h-[30px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
+                                            >
+                                                uploading {formData?.poster.name}...{" "}
+                                                <span className="text-[#111]">
+                                                    {uploadProgress}%
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
