@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 //icons
 import genre from "../assets/icons/genre.png";
-import edit from "../assets/icons/edit.png";
-import movie from "../assets/icons/movie.png";
+import create from "../assets/icons/create.png";
+import film from "../assets/icons/film.png";
 import rightArrow from "../assets/icons/right-arrow.png";
 
 export const Sidebar = () => {
@@ -20,7 +20,7 @@ export const Sidebar = () => {
                 >
                     <div className="w-[25px] h-[25px]">
                         <img
-                            src={movie}
+                            src={film}
                             alt="movie"
                         />
                     </div>
@@ -38,7 +38,7 @@ export const Sidebar = () => {
                 >
                     <div className="w-[25px] h-[25px]">
                         <img
-                            src={edit}
+                            src={create}
                             alt="edit"
                         />
                     </div>
@@ -56,11 +56,11 @@ export const Sidebar = () => {
                 >
                     <div className="w-[25px] h-[25px]">
                         <img
-                            src={genre}
-                            alt="genre"
+                            src={create}
+                            alt="create"
                         />
                     </div>
-                    <span>Edit genre</span>
+                    <span>Add Movie</span>
                     <div className="w-[15px] h-[15px] ml-auto">
                         <img
                             src={rightArrow}
