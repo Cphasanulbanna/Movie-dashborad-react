@@ -105,6 +105,10 @@ ul {
     transition: all 0.4s ease-in-out;
 }
 
+.icon:hover {
+    opacity: 0.7;
+}
+
 h1,
 h2,
 h3,
