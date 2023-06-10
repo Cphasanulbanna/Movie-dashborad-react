@@ -3,6 +3,9 @@ import ModalWrapper from "./general/ModalWrapper";
 import { Input } from "./fields/Input";
 import StarRating from "./general/StarRating";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 //icons
 import editImage from "../assets/icons/edit-image.png";
 import axiosConfig from "../../axiosConfig";
@@ -11,6 +14,8 @@ import CheckBox from "./fields/CheckBox";
 export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const [movie, setMovie] = useState({});
     const [genres, setGenres] = useState([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [postername, setPostername] = useState("");
     const [formData, setFormData] = useState({
         name: "",
         year: "",
@@ -20,6 +25,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         poster: "",
         genre: [],
     });
+
+    console.log(formData.poster);
 
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
@@ -84,6 +91,15 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         setPosterPreview(URL.createObjectURL(selectedFile));
     };
 
+    const notify = () =>
+        toast.success("Movie updated !", {
+            hideProgressBar: true,
+            autoClose: 1500,
+            pauseOnHover: false,
+            theme: "colored",
+            position: "bottom-center",
+        });
+
     const updateMovieData = async () => {
         try {
             const response = await axiosConfig.put(`/movies/${id}`, formData, {
@@ -92,11 +108,14 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 },
                 onUploadProgress,
             });
+            setUploadProgress(0);
+            notify();
         } catch (error) {
             console.log(error);
         }
     };
 
+    console.log(uploadProgress, "p");
     const selectGenres = (genreId) => {
         setFormData((prev) => {
             if (!prev?.genre.includes(genreId)) {
@@ -106,8 +125,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         });
     };
 
-    // console.log(formData);
-
     const closeModal = () => {
         setShowEditModal(false);
     };
@@ -115,7 +132,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
-
+        setUploadProgress(percent);
         console.log(`${loaded} bytes of ${total} bytes. ${percent}%`);
     };
 
@@ -208,6 +225,25 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                             />
                                         </div>
                                     </div>
+                                    <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">
+                                        {uploadProgress > 1 && (
+                                            <>
+                                                <div
+                                                    style={
+                                                        uploadProgress > 0
+                                                            ? { width: `${uploadProgress}%` }
+                                                            : { width: "0" }
+                                                    }
+                                                    className="h-[30px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
+                                                >
+                                                    uploading {formData?.poster.name}...{" "}
+                                                    <span className="text-[#111]">
+                                                        {uploadProgress}%
+                                                    </span>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -271,7 +307,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                         </div>
                         {/* rightbox ending  */}
                     </div>
-                    <button onClick={updateMovieData}>Update</button>
                     <div>
                         <h3> Genres</h3>
                         <div className="flex items-center flex-wrap gap-[15px]">
@@ -286,8 +321,15 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                             ))}
                         </div>
                     </div>
+                    <button
+                        className="btn border-blue"
+                        onClick={updateMovieData}
+                    >
+                        Update
+                    </button>
                 </div>
             </ModalWrapper>
+            <ToastContainer />
         </>
     );
 };
