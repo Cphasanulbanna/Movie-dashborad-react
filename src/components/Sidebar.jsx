@@ -42,7 +42,7 @@ export const Sidebar = () => {
                             alt="edit"
                         />
                     </div>
-                    <span>Edit movie</span>
+                    <span>Add Genres</span>
                     <div className="w-[15px] h-[15px] ml-auto">
                         <img
                             src={rightArrow}

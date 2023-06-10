@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import editImage from "../assets/icons/edit-image.png";
 import axiosConfig from "../../axiosConfig";
 import CheckBox from "./fields/CheckBox";
+import { useUpdateMovies } from "./zustand/store";
 
 export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const [movie, setMovie] = useState({});
@@ -70,6 +71,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         fileInputRef.current.click(); // Trigger the file input click event
     };
 
+    const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
+
     const [errors, setErrors] = useState({});
     const [posterPreview, setPosterPreview] = useState(null);
 
@@ -108,6 +111,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 },
                 onUploadProgress,
             });
+            updateMoviesList();
             setUploadProgress(0);
             notify();
         } catch (error) {

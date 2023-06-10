@@ -8,6 +8,7 @@ import { Sidebar } from "./Sidebar";
 import Header from "./Header";
 import Movies from "./pages/movies";
 import { MovieSinglePage } from "./pages/MovieSinglePage";
+import Genres from "./pages/Genres";
 
 const LandingPage = () => {
     return (
@@ -23,6 +24,10 @@ const LandingPage = () => {
                     <Route
                         path="/:id"
                         element={<MovieSinglePage />}
+                    />
+                    <Route
+                        path="/genres"
+                        element={<Genres />}
                     />
                 </Routes>
             </section>

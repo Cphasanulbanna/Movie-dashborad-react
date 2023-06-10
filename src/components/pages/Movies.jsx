@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axiosConfig from "../../../axiosConfig";
 import { MovieCard } from "../movie/MovieCard";
-import { useQueryStore } from "../zustand/store";
+import { useQueryStore, useUpdateMovies } from "../zustand/store";
 
 export const Movies = () => {
     const [movies, setMovies] = useState([]);
     const { query } = useQueryStore();
+    const { updatemovies } = useUpdateMovies();
+
+    console.log(updatemovies, "bool");
 
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
@@ -35,7 +38,7 @@ export const Movies = () => {
 
     useEffect(() => {
         fetchAllMovies();
-    }, [query]);
+    }, [query, updatemovies]);
 
     return (
         <section className="w-[100%]">
