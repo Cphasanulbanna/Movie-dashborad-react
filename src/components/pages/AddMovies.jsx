@@ -7,6 +7,7 @@ import axiosConfig from "../../../axiosConfig";
 import { useEffect } from "react";
 import { useRef } from "react";
 import editImage from "../../assets/icons/edit-image.png";
+import * as yup from "yup";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +21,13 @@ export const AddMovies = () => {
         description: "",
         poster: "",
         genre: [],
+    });
+
+    //form  fields validation
+    const formSchema = yup.object().shape({
+        name: yup.string().required("Movie name is required"),
+        year: yup.string().required("Year is required"),
+        poster: yup.string().required("Movie poster is required"),
     });
     const [genres, setGenres] = useState([]);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -66,7 +74,7 @@ export const AddMovies = () => {
     const handlePosterChange = (e) => {
         const selectedFile = e.target.files[0];
         setFormData((prev) => ({ ...prev, ["poster"]: selectedFile }));
-        setPosterPreview(URL.createObjectURL(selectedFile));
+        setErrors((prev) => ({ ...prev, ["poster"]: "" }));
     };
 
     const notify = () =>
@@ -102,24 +110,36 @@ export const AddMovies = () => {
         color: "#418cb3",
     };
 
-    const AddMovie = async () => {
+    const AddMovie = async (e) => {
         try {
-            const response = await axiosConfig.put(`/movies/${id}`, formData, {
+            e.preventDefault();
+            await formSchema.validate(formData, { abortEarly: false });
+
+            const response = await axiosConfig.post(`/movies/`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
+
                 onUploadProgress,
             });
             updateMoviesList();
             setUploadProgress(0);
             notify();
         } catch (error) {
+            const validationErrors = {};
+            error.inner.forEach((error) => {
+                validationErrors[error.path] = error.message;
+            });
+            setErrors(validationErrors);
             console.log(error);
         }
     };
+
+    console.log(errors, "error");
     return (
         <section className="p-[30px]">
             <form
+                onSubmit={AddMovie}
                 action=""
                 className="flex justify-between gap-[25px]"
             >
@@ -212,7 +232,7 @@ export const AddMovies = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[5px]">
+                    <div className="flex flex-col gap-[5px] relative">
                         <label
                             htmlFor="name"
                             className="text-light-white"
@@ -253,6 +273,12 @@ export const AddMovies = () => {
                                 {formData?.poster ? "Change image" : " click here to upload image"}
                             </div>
                         </div>
+                        <p
+                            onMouseOver={(e) => e.stopPropagation()}
+                            className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
+                        >
+                            {errors.poster}
+                        </p>
 
                         {uploadProgress > 1 && (
                             <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">

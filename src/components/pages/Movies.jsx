@@ -42,7 +42,7 @@ export const Movies = () => {
 
     return (
         <section className="w-[100%]">
-            <div className="flex justify-center items-center flex-wrap gap-[20px]">
+            <div className="flex justify-between items-center flex-wrap gap-[20px]">
                 {movies?.map((movie) => (
                     <MovieCard
                         key={movie?._id}
