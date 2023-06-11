@@ -53,8 +53,8 @@ export const Movies = () => {
     }, [query, updatemovies]);
 
     return (
-        <section className="w-[100%]">
-            <div className="flex justify-between items-center flex-wrap gap-[20px]">
+        <section className="w-[100%] ">
+            <div className="flex justify-between items-center flex-wrap gap-[20px] ">
                 {isLoading ? (
                     <Skelton type={"feed"} />
                 ) : (

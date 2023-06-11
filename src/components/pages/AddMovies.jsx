@@ -87,6 +87,8 @@ export const AddMovies = () => {
         setErrors((prev) => ({ ...prev, ["poster"]: "" }));
     };
 
+    console.log(formData);
+
     //success message
     const notify = () =>
         toast.success("Movie updated !", {
@@ -133,18 +135,31 @@ export const AddMovies = () => {
             updateMoviesList();
             setUploadProgress(0);
             notify();
-            setFormData({});
         } catch (error) {
             const validationErrors = {};
-            error.inner.forEach((error) => {
+            error?.inner?.forEach((error) => {
                 validationErrors[error.path] = error.message;
             });
             setErrors(validationErrors);
         } finally {
             setLoading(false);
             setUploadProgress(0);
-            setFormData({});
+            resetForm();
         }
+    };
+
+    // Function to reset the form fields
+    const resetForm = () => {
+        setFormData({
+            name: "",
+            year: "",
+            rating: "",
+            leadactor: "",
+            description: "",
+            poster: "",
+            genre: [],
+        });
+        setErrors({});
     };
 
     const inputStyle = {
@@ -252,62 +267,64 @@ export const AddMovies = () => {
                         >
                             Movie poster
                         </label>
-                        <div
-                            style={inputStyle}
-                            onClick={openFileInput}
-                            className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
-                        >
-                            {formData?.poster ? (
-                                <h1>{formData?.poster?.name}</h1>
-                            ) : (
-                                <>
-                                    {" "}
-                                    <div
-                                        style={{ border: "1px dashed #336a8c" }}
-                                        className="absolute inset-[5px]"
-                                    ></div>
-                                    <div className="w-[20px] h-[20px] z-[100] ">
-                                        <img
-                                            src={editImage}
-                                            alt="edit-image"
-                                        />
-                                    </div>
-                                </>
-                            )}
-
-                            <input
-                                name="poster"
-                                type="file"
-                                onChange={handlePosterChange}
-                                className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
-                                ref={fileInputRef}
-                            />
-                            <div className="absolute z-20  right-[15px]">
-                                {formData?.poster ? "Change image" : " click here to upload image"}
-                            </div>
-                        </div>
-                        <p
-                            onMouseOver={(e) => e.stopPropagation()}
-                            className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
-                        >
-                            {errors.poster}
-                        </p>
-
-                        {uploadProgress > 0 && (
-                            <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">
+                        {uploadProgress && uploadProgress > 0 ? (
+                            <div className="w-[100%] rounded-[4px] overflow-hidden h-[60px] border-blue flex items-center">
                                 <div
                                     style={
                                         uploadProgress > 0
                                             ? { width: `${uploadProgress}%` }
                                             : { width: "0" }
                                     }
-                                    className="h-[30px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
+                                    className="h-[60px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
                                 >
                                     uploading {formData?.poster.name}...{" "}
                                     <span className="text-[#111]">{uploadProgress}%</span>
                                 </div>
                             </div>
+                        ) : (
+                            <div
+                                style={inputStyle}
+                                onClick={openFileInput}
+                                className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
+                            >
+                                {formData?.poster ? (
+                                    <h1>{formData?.poster?.name}</h1>
+                                ) : (
+                                    <>
+                                        {" "}
+                                        <div
+                                            style={{ border: "1px dashed #336a8c" }}
+                                            className="absolute inset-[5px]"
+                                        ></div>
+                                        <div className="w-[20px] h-[20px] z-[100] ">
+                                            <img
+                                                src={editImage}
+                                                alt="edit-image"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+
+                                <input
+                                    name="poster"
+                                    type="file"
+                                    onChange={handlePosterChange}
+                                    className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
+                                    ref={fileInputRef}
+                                />
+                                <div className="absolute z-20  right-[15px]">
+                                    {formData?.poster
+                                        ? "Change image"
+                                        : " click here to upload image"}
+                                </div>
+                            </div>
                         )}
+                        <p
+                            onMouseOver={(e) => e.stopPropagation()}
+                            className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
+                        >
+                            {errors.poster}
+                        </p>
                     </div>
                     <div className="flex flex-col gap-[5px]">
                         <label

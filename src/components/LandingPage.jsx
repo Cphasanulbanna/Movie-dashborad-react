@@ -17,7 +17,7 @@ const LandingPage = () => {
         <section>
             <Header />
             <Sidebar />
-            <section className="fixed top-[100px] left-[200px] w-[fill] h-[fill] bg-dark-blue-2 p-[20px]">
+            <section className="fixed top-[100px] overflow-y-scroll left-[200px] w-[fill] h-[fill] bg-dark-blue-2 p-[20px]">
                 <Routes>
                     <Route
                         path="/"

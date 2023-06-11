@@ -14,7 +14,7 @@ export const Input = ({ formData, handleDataChange, type, name, errors, placehol
                 className={`text-[14px] bg-[inherit] w-[100%] text-[inherit]`}
                 id={_name}
                 name={_name}
-                value={formData?._name}
+                value={formData[_name]}
                 type={type}
                 onChange={handleDataChange}
                 placeholder={placeholder || _name.split(/(?=[A-Z])/).join(" ")}

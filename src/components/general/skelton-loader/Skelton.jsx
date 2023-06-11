@@ -32,7 +32,7 @@ const Skelton = ({ type, count }) => {
         );
     };
     if (type === "feed") {
-        return Array(3).fill(<FeedSkelton />);
+        return Array(6).fill(<FeedSkelton />);
     }
 
     if (type === "rectangle") {
