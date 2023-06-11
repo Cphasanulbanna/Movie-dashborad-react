@@ -9,6 +9,7 @@ import Header from "./Header";
 import Movies from "./pages/movies";
 import { MovieSinglePage } from "./pages/MovieSinglePage";
 import Genres from "./pages/Genres";
+import { AddMovies } from "./pages/AddMovies";
 
 const LandingPage = () => {
     return (
@@ -28,6 +29,10 @@ const LandingPage = () => {
                     <Route
                         path="/genres"
                         element={<Genres />}
+                    />
+                    <Route
+                        path="/add-movie"
+                        element={<AddMovies />}
                     />
                 </Routes>
             </section>

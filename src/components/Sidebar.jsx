@@ -51,7 +51,7 @@ export const Sidebar = () => {
                     </div>
                 </Link>
                 <Link
-                    to={"/"}
+                    to={"/add-movie"}
                     className="flex items-center gap-[6px]"
                 >
                     <div className="w-[25px] h-[25px]">
