@@ -38,9 +38,12 @@ export const MovieCard = ({ movie }) => {
 
     console.log(showDeleteModal, "modal");
 
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
+    };
+
     return (
         <>
-            {/* {movieId && ( */}
             {showEditModal && movieId && (
                 <EditForm
                     setShowEditModal={setShowEditModal}
@@ -48,9 +51,14 @@ export const MovieCard = ({ movie }) => {
                     id={movieId}
                 />
             )}
-            {/* )} */}
 
-            {showDeleteModal && <ConfirmDelete deleteItem={deleteMovie} />}
+            {showDeleteModal && (
+                <ConfirmDelete
+                    deleteItem={deleteMovie}
+                    closeModal={closeDeleteModal}
+                    state={showDeleteModal}
+                />
+            )}
 
             <div className="w-[31%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">

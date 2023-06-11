@@ -4,11 +4,13 @@ import axiosConfig from "../../../axiosConfig";
 import edit from "../../assets/icons/edit-movie.png";
 import remove from "../../assets/icons/delete.png";
 import add from "../../assets/icons/add.png";
+import ConfirmDelete from "../modals/ConfirmDelete";
 
 const Genres = () => {
     const [genres, setGenres] = useState([]);
     const [genreTitle, setGenreTitle] = useState("");
     const [showAddInput, setShowAddInput] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [genreId, setGerneId] = useState("");
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
@@ -43,6 +45,8 @@ const Genres = () => {
                 });
                 console.log(resposne.data);
                 setGenres(resposne.data?.genres);
+                setGenreTitle("");
+                setShowAddInput(false);
             }
         } catch (error) {
             console.log(error);
@@ -62,14 +66,16 @@ const Genres = () => {
         setGerneId(id);
     };
 
-    const deleteGenre = async (id) => {
+    const deleteGenre = async () => {
         try {
             const response = await axiosConfig.delete("/genres", {
                 data: {
-                    _id: id,
+                    _id: genreIdToDelete,
                 },
             });
-            setGenres((prev) => prev.filter((genre) => genre._id !== id));
+            setGenres((prev) => prev.filter((genre) => genre._id !== genreIdToDelete));
+            setShowDeleteModal(false);
+            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -108,7 +114,13 @@ const Genres = () => {
         background: "#082335",
         border: "2px solid #336a8c",
         color: "#418cb3",
-        height: "57px",
+        height: "60px",
+    };
+
+    const [genreIdToDelete, setGerneIdToDelete] = useState("");
+
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
     };
 
     // const animation = showAddInput
@@ -116,6 +128,13 @@ const Genres = () => {
     //     : { transition: "all 0.4s ease-in-out", height: "48px" };
     return (
         <section className="h-[fill] w-[fill]">
+            {showDeleteModal && (
+                <ConfirmDelete
+                    deleteItem={deleteGenre}
+                    state={showDeleteModal}
+                    closeModal={closeDeleteModal}
+                />
+            )}
             <section className="mx-[auto] w-[85%] ">
                 <div className="flex items-center justify-center relative mb-[30px]">
                     <h1 className="font-bold text-center text-[32px]">Manage Genres</h1>
@@ -154,8 +173,8 @@ const Genres = () => {
                 )}
 
                 <ul
-                    style={{ height: showAddInput && "430px" }}
-                    className="flex flex-wrap items-center justify-center h-[500px] w-[100%] gap-[15px] overflow-y-scroll"
+                    style={{ maxHeight: showAddInput && "430px" }}
+                    className="flex flex-wrap justify-center max-h-[500px] w-[100%] gap-[15px] overflow-y-scroll"
                 >
                     {genres?.map((genre, index) => {
                         if (genre._id === genreId) {
@@ -206,7 +225,7 @@ const Genres = () => {
                                             ? { backgroundColor: "rgb(1, 29, 48)" }
                                             : { backgroundColor: "#001220" }
                                     }
-                                    className="bg-dark-blue w-[100%] py-[15px] px-[20px]  flex justify-between items-center"
+                                    className="bg-dark-blue w-[100%] py-[15px] px-[20px] h-[60px] flex justify-between items-center"
                                     key={genre?._id}
                                 >
                                     <h2 className="text-[18px] font-bold"> {genre?.title}</h2>
@@ -221,7 +240,10 @@ const Genres = () => {
                                             />
                                         </div>
                                         <div
-                                            onClick={() => deleteGenre(genre?._id)}
+                                            onClick={() => {
+                                                setShowDeleteModal(true);
+                                                setGerneIdToDelete(genre?._id);
+                                            }}
                                             className="w-[25px] h-[25px] cursor-pointer icon"
                                         >
                                             <img

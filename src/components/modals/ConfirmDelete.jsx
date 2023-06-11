@@ -5,17 +5,17 @@ import close from "../../assets/icons/close.png";
 import ModalWrapper from "../general/ModalWrapper";
 import { useShowDeletemodal } from "../zustand/store";
 
-const ConfirmDelete = ({ deleteItem }) => {
-    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
+const ConfirmDelete = ({ deleteItem, closeModal, state }) => {
+    // const { showDeleteModal } = useShowDeletemodal();
 
-    const closeDeleteModal = () => {
-        setShowDeleteModal(false);
-    };
+    // const closeDeleteModal = () => {
+    //     setShowDeleteModal(false);
+    // };
 
     return (
         <ModalWrapper
-            state={showDeleteModal}
-            closeModal={closeDeleteModal}
+            state={state}
+            closeModal={closeModal}
             style={{ width: "30%", background: "#fff" }}
         >
             <div className="flex flex-col justify-center items-center gap-[20px] relative">
@@ -30,7 +30,7 @@ const ConfirmDelete = ({ deleteItem }) => {
                 </h1>
                 <div className="flex gap-[15px] justify-center items-center">
                     <div
-                        onClick={closeDeleteModal}
+                        onClick={closeModal}
                         className="btn bg-[#bbbbbb] text-light-white"
                     >
                         Cancel
@@ -43,7 +43,7 @@ const ConfirmDelete = ({ deleteItem }) => {
                     </div>
                 </div>
                 <div
-                    onClick={closeDeleteModal}
+                    onClick={closeModal}
                     className="w-[30px] h-[30px] bg-light-grey-2 cursor-pointer rounded-[50%] absolute overflow-hidden p-[7px] right-[-40px] top-[-40px] hover:opacity-[0.8]  border-[2px] border-solid border-light-grey
                     "
                 >
