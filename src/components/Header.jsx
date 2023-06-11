@@ -1,7 +1,10 @@
 import React from "react";
 
+//package
+import { useNavigate } from "react-router-dom";
+
 //zustand
-import { useQueryStore } from "./zustand/store";
+import { useQueryStore, useUserDataStore } from "./zustand/store";
 
 //icons
 import search from "../assets/icons/search.png";
@@ -10,6 +13,8 @@ import profile from "../assets/icons/profile.png";
 
 const Header = () => {
     const { query, updateQuery } = useQueryStore();
+    const { userdata } = useUserDataStore();
+    const navigate = useNavigate();
 
     //setting searchquery
     const handleQueryChange = (e) => {
@@ -17,9 +22,20 @@ const Header = () => {
         updateQuery(value);
     };
 
+    const inputStyle = {
+        background: "#082335",
+        border: "2px solid #336a8c",
+        color: "#418cb3",
+        height: "45px",
+    };
+
     return (
         <header className="bg-dark-blue fixed top-0 left-[200px] w-[fill] py-[30px] px-[40px] flex justify-between items-center">
-            <div className="relative border border-[#f1f1f1] rounded-[25px] overflow-hidden px-[15px] h-[40px] max-w-[300px] w-[100%]">
+            <div
+                style={inputStyle}
+                onClick={() => navigate("/")}
+                className="relative  rounded-[25px] overflow-hidden px-[15px] h-[40px] max-w-[300px] w-[100%]"
+            >
                 <div className="w-[20px] h-[20px] absolute z-[10] top-[50%] translate-y-[-50%]">
                     <img
                         src={search}
@@ -41,10 +57,11 @@ const Header = () => {
                         alt="notification"
                     />
                 </div>
-                <div className="w-[40px] h-[40px] cursor-pointer hover:opacity-[0.8]">
+                <div className="w-[50px] h-[50px] overflow-hidden rounded-full cursor-pointer hover:opacity-[0.8]">
                     <img
-                        src={profile}
+                        src={userdata?.profile_pic || profile}
                         alt="profile"
+                        className="object-cover"
                     />
                 </div>
             </div>

@@ -7,7 +7,7 @@ import axiosConfig from "../../../axiosConfig";
 import { MovieCard } from "../movie/MovieCard";
 
 //zustand store
-import { useQueryStore, useUpdateMovies } from "../zustand/store";
+import { useQueryStore, useUpdateMovies, useUserDataStore } from "../zustand/store";
 
 export const Movies = () => {
     //All movies
@@ -17,8 +17,8 @@ export const Movies = () => {
     const { query } = useQueryStore();
     const { updatemovies } = useUpdateMovies();
 
-    const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
+    const { userdata } = useUserDataStore();
+    const access_token = userdata?.access_token;
 
     //fetch all movies
     const fetchAllMovies = async () => {
@@ -32,7 +32,7 @@ export const Movies = () => {
 
             const response = await axiosConfig.get(url, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${access_token}`,
                 },
                 signal: controller.signal,
                 params: params,

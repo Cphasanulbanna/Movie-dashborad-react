@@ -8,21 +8,22 @@ import axiosConfig from "../../../axiosConfig";
 
 //components
 import StarRating from "../general/StarRating";
+import { useUserDataStore } from "../zustand/store";
 
 export const MovieSinglePage = () => {
     //id of each movie
     const { id } = useParams();
     const [movie, setMovie] = useState({});
 
-    const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
+    const { userdata } = useUserDataStore();
+    const access_token = userdata?.access_token;
 
     //fetch single movie details
     const fetchMovie = async () => {
         try {
             const resposne = await axiosConfig.get(`/movies/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${access_token}`,
                 },
             });
             setMovie(resposne.data?.movie);

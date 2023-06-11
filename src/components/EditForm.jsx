@@ -13,7 +13,7 @@ import StarRating from "./general/StarRating";
 import editImage from "../assets/icons/edit-image.png";
 import axiosConfig from "../../axiosConfig";
 import CheckBox from "./fields/CheckBox";
-import { useUpdateMovies } from "./zustand/store";
+import { useUpdateMovies, useUserDataStore } from "./zustand/store";
 
 export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const [movie, setMovie] = useState({});
@@ -34,8 +34,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
     const fileInputRef = useRef(null);
 
-    const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
+    const { userdata } = useUserDataStore();
+    const access_token = userdata?.access_token;
 
     //fetch movie
     const fetchMovie = async () => {
@@ -44,7 +44,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             if (id) {
                 const resposne = await axiosConfig.get(`/movies/${id}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${access_token}`,
                     },
                 });
                 setMovie(resposne.data?.movie);
@@ -57,7 +57,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         try {
             const response = await axiosConfig.get("/genres", {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${access_token}`,
                 },
             });
             setGenres(response.data.genres);

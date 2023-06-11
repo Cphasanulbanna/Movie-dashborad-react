@@ -15,6 +15,7 @@ import editImage from "../../assets/icons/edit-image.png";
 
 //axios
 import axiosConfig from "../../../axiosConfig";
+import { useUserDataStore } from "../zustand/store";
 
 export const AddMovies = () => {
     const [formData, setFormData] = useState({
@@ -38,16 +39,16 @@ export const AddMovies = () => {
         poster: yup.string().required("Movie poster is required"),
     });
 
+    const { userdata } = useUserDataStore();
+    const access_token = userdata?.access_token;
     const fileInputRef = useRef(null);
-    const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
 
     //fetch all genres
     const fetchGenres = async () => {
         try {
             const response = await axiosConfig.get("/genres", {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${access_token}`,
                 },
             });
             setGenres(response.data.genres);

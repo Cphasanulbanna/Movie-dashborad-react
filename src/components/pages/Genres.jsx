@@ -10,6 +10,7 @@ import ConfirmDelete from "../modals/ConfirmDelete";
 import edit from "../../assets/icons/edit-movie.png";
 import remove from "../../assets/icons/delete.png";
 import add from "../../assets/icons/add.png";
+import { useUserDataStore } from "../zustand/store";
 
 const Genres = () => {
     //all genres
@@ -30,8 +31,8 @@ const Genres = () => {
     const [showAddInput, setShowAddInput] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
+    const { userdata } = useUserDataStore();
+    const access_token = userdata?.access_token;
 
     //fetch all genres
     const fetchGenres = async () => {
@@ -39,7 +40,7 @@ const Genres = () => {
             const controller = new AbortController();
             const response = await axiosConfig.get("/genres", {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${access_token}`,
                 },
                 signal: controller.signal,
             });

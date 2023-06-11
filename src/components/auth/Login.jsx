@@ -15,6 +15,7 @@ import google from "../../assets/icons/google.png";
 
 //axios
 import axiosConfig from "../../../axiosConfig";
+import { useUserDataStore } from "../zustand/store";
 
 const Login = () => {
     //form state
@@ -54,8 +55,13 @@ const Login = () => {
             await formSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosConfig.post("/auth/login", formData);
-            const { StatusCode } = response.data;
+            const { StatusCode, username, access_token, profile_pic } = response.data;
             if (StatusCode === 6000) {
+                updateUserData({
+                    username: username,
+                    access_token: access_token,
+                    profile_pic: profile_pic,
+                });
                 navigate("/");
             }
         } catch (error) {
@@ -66,6 +72,8 @@ const Login = () => {
             setErrors(validationErrors);
         }
     };
+
+    const { updateUserData } = useUserDataStore();
 
     return (
         <div
