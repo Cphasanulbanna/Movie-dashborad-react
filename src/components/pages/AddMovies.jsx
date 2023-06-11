@@ -220,28 +220,37 @@ export const AddMovies = () => {
                             Movie poster
                         </label>
                         <div
+                            style={inputStyle}
                             onClick={handleButtonClick}
-                            className="relative w-[230px] h-[150px] rounded-[5px] overflow-hidden flex justify-center items-center"
+                            className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
                         >
-                            <div className="w-[35px] h-[35px] cursor-pointer z-[100] hover:opacity-[0.8]">
-                                <img
-                                    src={editImage}
-                                    alt="edit-image"
-                                />
-                            </div>
+                            {formData?.poster ? (
+                                <h1>{formData?.poster?.name}</h1>
+                            ) : (
+                                <>
+                                    {" "}
+                                    <div
+                                        style={{ border: "1px dashed #336a8c" }}
+                                        className="absolute inset-[5px]"
+                                    ></div>
+                                    <div className="w-[20px] h-[20px] z-[100] ">
+                                        <img
+                                            src={editImage}
+                                            alt="edit-image"
+                                        />
+                                    </div>
+                                </>
+                            )}
+
                             <input
                                 name="poster"
                                 type="file"
                                 onChange={handlePosterChange}
-                                className="absolute z-[-1] bg-[red] h-[100%] w-[100%] opacity-0"
+                                className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
                                 ref={fileInputRef}
                             />
-                            <div className="absolute z-20 inset-0 bg-[green] cursor-pointer opacity-[0.7]">
-                                <img
-                                    src={posterPreview}
-                                    alt="poster"
-                                    className="object-cover"
-                                />
+                            <div className="absolute z-20  right-[15px]">
+                                {formData?.poster ? "Change image" : " click here to upload image"}
                             </div>
                         </div>
 
@@ -275,6 +284,12 @@ export const AddMovies = () => {
                             rating={formData?.rating}
                         />
                     </div>
+                    <button
+                        className="btn border-blue"
+                        onClick={AddMovie}
+                    >
+                        Add Movie
+                    </button>
                 </div>
             </form>
             <ToastContainer />
