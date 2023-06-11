@@ -1,0 +1,23 @@
+.loader {
+    pointer-events: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3.5px solid;
+    border-color: rgb(234, 234, 234);
+    border-top-color: rgb(181, 181, 181);
+    animation: buttonLoader 1s linear infinite;
+}
+
+@keyframes buttonLoader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

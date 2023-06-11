@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CheckBox from "../fields/CheckBox";
 import StarRating from "../general/StarRating";
 import { Input } from "../fields/Input";
+import ButtonLoader from "../general/Button-loader/ButtonLoader";
 
 //icons
 import editImage from "../../assets/icons/edit-image.png";
@@ -33,6 +34,7 @@ export const AddMovies = () => {
     const [genres, setGenres] = useState([]);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [errors, setErrors] = useState({});
+    const [isLoading, setLoading] = useState(false);
 
     //form  fields validation
     const formSchema = yup.object().shape({
@@ -117,6 +119,7 @@ export const AddMovies = () => {
     //adding new movie function
     const AddMovie = async (e) => {
         try {
+            setLoading(true);
             e.preventDefault();
             await formSchema.validate(formData, { abortEarly: false });
 
@@ -130,12 +133,17 @@ export const AddMovies = () => {
             updateMoviesList();
             setUploadProgress(0);
             notify();
+            setFormData({});
         } catch (error) {
             const validationErrors = {};
             error.inner.forEach((error) => {
                 validationErrors[error.path] = error.message;
             });
             setErrors(validationErrors);
+        } finally {
+            setLoading(false);
+            setUploadProgress(0);
+            setFormData({});
         }
     };
 
@@ -167,7 +175,6 @@ export const AddMovies = () => {
                             type="text"
                             handleDataChange={handleDataChange}
                             errors={errors?.name}
-                            // placeholder={movie?.name}
                             css={inputStyle}
                         />
                     </div>
@@ -185,7 +192,6 @@ export const AddMovies = () => {
                             type="text"
                             handleDataChange={handleDataChange}
                             errors={errors?.year}
-                            // placeholder={movie?.year}
                             css={inputStyle}
                         />
                     </div>
@@ -204,7 +210,6 @@ export const AddMovies = () => {
                             handleDataChange={handleDataChange}
                             errors={errors?.leadactor}
                             css={inputStyle}
-                            // placeholder={movie?.leadactor}
                         />
                     </div>
 
@@ -217,7 +222,6 @@ export const AddMovies = () => {
                         </label>
                         <textarea
                             name="description"
-                            // placeholder={movie?.description}
                             onChange={handleDataChange}
                             style={inputStyle}
                             className="p-[10px] min-h-[120px] max-h-[120px]"
@@ -237,7 +241,6 @@ export const AddMovies = () => {
                                     handleClick={() => selectGenres(genre?._id)}
                                     genre={genre}
                                     formData={formData}
-                                    // currentGenres={movie.genre}
                                 />
                             ))}
                         </div>
@@ -290,7 +293,7 @@ export const AddMovies = () => {
                             {errors.poster}
                         </p>
 
-                        {uploadProgress > 1 && (
+                        {uploadProgress > 0 && (
                             <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">
                                 <div
                                     style={
@@ -321,10 +324,11 @@ export const AddMovies = () => {
                         />
                     </div>
                     <button
-                        className="btn border-blue"
+                        style={{ background: "rgb(12, 63, 102)" }}
+                        className="btn min-w-[130px]"
                         onClick={AddMovie}
                     >
-                        Add Movie
+                        {isLoading ? <ButtonLoader /> : "Add Movie"}
                     </button>
                 </div>
             </form>

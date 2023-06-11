@@ -17,8 +17,26 @@ const Skelton = ({ type, count }) => {
             </div>
         );
     };
+
+    const RectangleSkelton = () => {
+        return (
+            <div className="skelton-rectangle">
+                <div className="content">
+                    <div className="title"></div>
+                    <div className="buttons">
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
     if (type === "feed") {
         return Array(3).fill(<FeedSkelton />);
+    }
+
+    if (type === "rectangle") {
+        return Array(6).fill(<RectangleSkelton />);
     }
 };
 

@@ -56,10 +56,7 @@ export const Movies = () => {
         <section className="w-[100%]">
             <div className="flex justify-between items-center flex-wrap gap-[20px]">
                 {isLoading ? (
-                    <Skelton
-                        type={"feed"}
-                        count={movies.length}
-                    />
+                    <Skelton type={"feed"} />
                 ) : (
                     movies?.map((movie) => (
                         <MovieCard
