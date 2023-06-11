@@ -1,12 +1,13 @@
 import React from "react";
 
 //packages
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+
+//components
 import AuthRouter from "./routers/AuthRouter";
 import LandingPage from "../LandingPage";
 
 const AppRouter = () => {
-    const auth = true;
     return (
         <Routes>
             <Route

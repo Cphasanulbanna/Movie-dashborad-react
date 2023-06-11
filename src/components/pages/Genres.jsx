@@ -1,19 +1,39 @@
 import React, { useEffect, useState } from "react";
+
+//axios
 import axiosConfig from "../../../axiosConfig";
 
+//components
+import ConfirmDelete from "../modals/ConfirmDelete";
+
+//icons
 import edit from "../../assets/icons/edit-movie.png";
 import remove from "../../assets/icons/delete.png";
 import add from "../../assets/icons/add.png";
-import ConfirmDelete from "../modals/ConfirmDelete";
 
 const Genres = () => {
+    //all genres
     const [genres, setGenres] = useState([]);
+
+    //new genre name
     const [genreTitle, setGenreTitle] = useState("");
+
+    //if of genre to edit
+    const [genreId, setGerneId] = useState("");
+
+    //id of geren to delete
+    const [genreIdToDelete, setGerneIdToDelete] = useState("");
+
+    //genre name to update
+    const [editedGenre, setEditedGenre] = useState("");
+
     const [showAddInput, setShowAddInput] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [genreId, setGerneId] = useState("");
+
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
+
+    //fetch all genres
     const fetchGenres = async () => {
         try {
             const controller = new AbortController();
@@ -26,46 +46,44 @@ const Genres = () => {
 
             setGenres(response.data?.genres);
             controller.abort();
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
-
-    console.log(genres);
 
     useEffect(() => {
         fetchGenres();
     }, []);
 
+    //adding new genres
     const addGenre = async () => {
         try {
             if (genreTitle) {
                 const resposne = await axiosConfig.post("/genres", {
                     title: genreTitle,
                 });
-                console.log(resposne.data);
                 setGenres(resposne.data?.genres);
                 setGenreTitle("");
                 setShowAddInput(false);
             }
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
+    //opening input field to add new genre
     const handleAddInput = () => {
         setShowAddInput((prev) => !prev);
     };
 
+    //setting new genre
     const handleGenreChange = (e) => {
         const value = e.target.value.toLowerCase();
         setGenreTitle(value);
     };
 
+    //setting if of genre to edit
     const handleGenreEdit = (id) => {
         setGerneId(id);
     };
 
+    //delete genre
     const deleteGenre = async () => {
         try {
             const response = await axiosConfig.delete("/genres", {
@@ -75,12 +93,10 @@ const Genres = () => {
             });
             setGenres((prev) => prev.filter((genre) => genre._id !== genreIdToDelete));
             setShowDeleteModal(false);
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
+    //updating genre
     const updateGenre = async (id) => {
         try {
             if (!editedGenre) {
@@ -90,24 +106,27 @@ const Genres = () => {
                     _id: id,
                     title: editedGenre,
                 });
-                console.log(resposne.data);
                 setGenres(resposne.data?.genres);
                 setGerneId(null);
                 setEditedGenre("");
             }
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
-    const [editedGenre, setEditedGenre] = useState("");
+    //setting updated genre name
     const handleEditedGenreChange = (e) => {
         const value = e.target.value.toLowerCase();
         setEditedGenre(value);
     };
 
+    //closing edit field
     const cancelEdit = () => {
         setGerneId(null);
+    };
+
+    //closing deletemodal
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
     };
 
     const inputStyle = {
@@ -117,15 +136,6 @@ const Genres = () => {
         height: "60px",
     };
 
-    const [genreIdToDelete, setGerneIdToDelete] = useState("");
-
-    const closeDeleteModal = () => {
-        setShowDeleteModal(false);
-    };
-
-    // const animation = showAddInput
-    //     ? { transition: "all 0.4s ease-in-out", height: "0", overflow: "hidden" }
-    //     : { transition: "all 0.4s ease-in-out", height: "48px" };
     return (
         <section className="h-[fill] w-[fill]">
             {showDeleteModal && (
@@ -150,10 +160,7 @@ const Genres = () => {
                 </div>
 
                 {showAddInput && (
-                    <div
-                        // style={animation}
-                        className="mb-[20px] flex justify-between items-center h-[48px] bg-[#f1f1f1] pr-[2px]"
-                    >
+                    <div className="mb-[20px] flex justify-between items-center h-[48px] bg-[#f1f1f1] pr-[2px]">
                         <input
                             className="w-[fill] p-[7px] text-[16px] h-[100%]"
                             type="text"

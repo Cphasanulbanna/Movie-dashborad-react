@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from "react";
+
+//axios
 import axiosConfig from "../../../axiosConfig";
+
+//components
 import { MovieCard } from "../movie/MovieCard";
+
+//zustand store
 import { useQueryStore, useUpdateMovies } from "../zustand/store";
 
 export const Movies = () => {
+    //All movies
     const [movies, setMovies] = useState([]);
+
+    //search keyword
     const { query } = useQueryStore();
     const { updatemovies } = useUpdateMovies();
 
-    console.log(updatemovies, "bool");
-
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
+
+    //fetch all movies
     const fetchAllMovies = async () => {
         try {
             const controller = new AbortController();
@@ -31,9 +40,7 @@ export const Movies = () => {
 
             setMovies(response.data?.moviesList);
             controller.abort();
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {

@@ -10,6 +10,8 @@ import profile from "../assets/icons/profile.png";
 
 const Header = () => {
     const { query, updateQuery } = useQueryStore();
+
+    //setting searchquery
     const handleQueryChange = (e) => {
         const value = e.target.value.toLowerCase();
         updateQuery(value);

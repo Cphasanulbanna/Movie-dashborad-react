@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+//packages
+import * as yup from "yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+//components
 import CheckBox from "../fields/CheckBox";
 import StarRating from "../general/StarRating";
 import { Input } from "../fields/Input";
-import { useState } from "react";
-import axiosConfig from "../../../axiosConfig";
-import { useEffect } from "react";
-import { useRef } from "react";
-import editImage from "../../assets/icons/edit-image.png";
-import * as yup from "yup";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+//icons
+import editImage from "../../assets/icons/edit-image.png";
+
+//axios
+import axiosConfig from "../../../axiosConfig";
 
 export const AddMovies = () => {
     const [formData, setFormData] = useState({
@@ -23,20 +27,22 @@ export const AddMovies = () => {
         genre: [],
     });
 
+    const [genres, setGenres] = useState([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [errors, setErrors] = useState({});
+
     //form  fields validation
     const formSchema = yup.object().shape({
         name: yup.string().required("Movie name is required"),
         year: yup.string().required("Year is required"),
         poster: yup.string().required("Movie poster is required"),
     });
-    const [genres, setGenres] = useState([]);
-    const [uploadProgress, setUploadProgress] = useState(0);
-    const [errors, setErrors] = useState({});
-    const [posterPreview, setPosterPreview] = useState(null);
 
+    const fileInputRef = useRef(null);
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
 
+    //fetch all genres
     const fetchGenres = async () => {
         try {
             const response = await axiosConfig.get("/genres", {
@@ -45,38 +51,38 @@ export const AddMovies = () => {
                 },
             });
             setGenres(response.data.genres);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {
         fetchGenres();
     }, []);
 
-    const fileInputRef = useRef(null);
-    const handleButtonClick = () => {
-        fileInputRef.current.click(); // Trigger the file input click event
+    //opening file input to upload image
+    const openFileInput = () => {
+        fileInputRef.current.click();
     };
 
+    //setting formdata
     const handleDataChange = (e) => {
         const { name, value } = e.target;
-        if (name === "genre") {
-        }
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
+    //setting rating
     const handleRating = (rate) => {
         setFormData((prev) => ({ ...prev, ["rating"]: rate }));
     };
 
+    //setting movie poster
     const handlePosterChange = (e) => {
         const selectedFile = e.target.files[0];
         setFormData((prev) => ({ ...prev, ["poster"]: selectedFile }));
         setErrors((prev) => ({ ...prev, ["poster"]: "" }));
     };
 
+    //success message
     const notify = () =>
         toast.success("Movie updated !", {
             hideProgressBar: true,
@@ -86,6 +92,7 @@ export const AddMovies = () => {
             position: "bottom-center",
         });
 
+    //image upload progress
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
@@ -94,6 +101,7 @@ export const AddMovies = () => {
         }
     };
 
+    //selecting/unselecting gernes
     const selectGenres = (genreId) => {
         setFormData((prev) => {
             if (!prev?.genre.includes(genreId)) {
@@ -103,13 +111,7 @@ export const AddMovies = () => {
         });
     };
 
-    const inputStyle = {
-        background: "#082335",
-        borderRadius: "5px",
-        border: "2px solid #336a8c",
-        color: "#418cb3",
-    };
-
+    //adding new movie function
     const AddMovie = async (e) => {
         try {
             e.preventDefault();
@@ -131,11 +133,16 @@ export const AddMovies = () => {
                 validationErrors[error.path] = error.message;
             });
             setErrors(validationErrors);
-            console.log(error);
         }
     };
 
-    console.log(errors, "error");
+    const inputStyle = {
+        background: "#082335",
+        borderRadius: "5px",
+        border: "2px solid #336a8c",
+        color: "#418cb3",
+    };
+
     return (
         <section className="p-[30px]">
             <form
@@ -241,7 +248,7 @@ export const AddMovies = () => {
                         </label>
                         <div
                             style={inputStyle}
-                            onClick={handleButtonClick}
+                            onClick={openFileInput}
                             className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
                         >
                             {formData?.poster ? (

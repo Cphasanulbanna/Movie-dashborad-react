@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+
+//packages
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+//components
 import ModalWrapper from "./general/ModalWrapper";
 import { Input } from "./fields/Input";
 import StarRating from "./general/StarRating";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 //icons
 import editImage from "../assets/icons/edit-image.png";
@@ -16,7 +19,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const [movie, setMovie] = useState({});
     const [genres, setGenres] = useState([]);
     const [uploadProgress, setUploadProgress] = useState(0);
-    const [postername, setPostername] = useState("");
+    const [errors, setErrors] = useState({});
+    const [posterPreview, setPosterPreview] = useState(null);
     const [formData, setFormData] = useState({
         name: "",
         year: "",
@@ -27,11 +31,13 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         genre: [],
     });
 
-    console.log(formData.poster);
+    const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
+    const fileInputRef = useRef(null);
 
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
 
+    //fetch movie
     const fetchMovie = async () => {
         try {
             await id;
@@ -43,11 +49,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 });
                 setMovie(resposne.data?.movie);
             }
-        } catch (error) {
-            // console.log(error);
-        }
+        } catch (error) {}
     };
 
+    //fetchGenres
     const fetchGenres = async () => {
         try {
             const response = await axiosConfig.get("/genres", {
@@ -56,9 +61,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 },
             });
             setGenres(response.data.genres);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {
@@ -66,36 +69,31 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         fetchGenres();
     }, []);
 
-    const fileInputRef = useRef(null);
-    const handleButtonClick = () => {
-        fileInputRef.current.click(); // Trigger the file input click event
+    //opening file input to upload image
+    const openFileInput = () => {
+        fileInputRef.current.click();
     };
 
-    const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
-
-    const [errors, setErrors] = useState({});
-    const [posterPreview, setPosterPreview] = useState(null);
-
-    console.log(formData, "formdata");
-
+    //setting data
     const handleDataChange = (e) => {
         const { name, value } = e.target;
-        if (name === "genre") {
-        }
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
+    //setting rating
     const handleRating = (rate) => {
         setFormData((prev) => ({ ...prev, ["rating"]: rate }));
     };
 
+    //setting movie poster
     const handlePosterChange = (e) => {
         const selectedFile = e.target.files[0];
         setFormData((prev) => ({ ...prev, ["poster"]: selectedFile }));
         setPosterPreview(URL.createObjectURL(selectedFile));
     };
 
+    //success message
     const notify = () =>
         toast.success("Movie updated !", {
             hideProgressBar: true,
@@ -105,6 +103,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             position: "bottom-center",
         });
 
+    //updating movie
     const updateMovieData = async () => {
         try {
             const response = await axiosConfig.put(`/movies/${id}`, formData, {
@@ -116,12 +115,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             updateMoviesList();
             setUploadProgress(0);
             notify();
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
-    console.log(uploadProgress, "p");
+    //selecting / unselecting genres
     const selectGenres = (genreId) => {
         setFormData((prev) => {
             if (!prev?.genre.includes(genreId)) {
@@ -131,10 +128,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         });
     };
 
+    //closing edit form
     const closeModal = () => {
         setShowEditModal(false);
     };
 
+    //image upload progress
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
@@ -208,7 +207,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                         Movie poster
                                     </label>
                                     <div
-                                        onClick={handleButtonClick}
+                                        onClick={openFileInput}
                                         className="relative w-[230px] h-[150px] rounded-[5px] overflow-hidden flex justify-center items-center"
                                     >
                                         <div className="w-[35px] h-[35px] cursor-pointer z-[100] hover:opacity-[0.8]">
@@ -221,10 +220,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                             name="poster"
                                             type="file"
                                             onChange={handlePosterChange}
-                                            className="absolute z-[-1] bg-[red] h-[100%] w-[100%] opacity-0"
+                                            className="absolute z-[-1] h-[100%] w-[100%] opacity-0"
                                             ref={fileInputRef}
                                         />
-                                        <div className="absolute z-20 inset-0 bg-[green] cursor-pointer opacity-[0.7]">
+                                        <div className="absolute z-20 inset-0  cursor-pointer opacity-[0.7]">
                                             <img
                                                 src={posterPreview ? posterPreview : movie?.poster}
                                                 alt="poster"

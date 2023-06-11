@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
+
+//packages
 import { useParams } from "react-router-dom";
+
+//axios
 import axiosConfig from "../../../axiosConfig";
-import { Rating } from "react-simple-star-rating";
+
+//components
 import StarRating from "../general/StarRating";
 
 export const MovieSinglePage = () => {
+    //id of each movie
     const { id } = useParams();
     const [movie, setMovie] = useState({});
 
     const token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdmZWIyZDg4NjM2MDdhOWJmYzU0NTciLCJpYXQiOjE2ODYxNDIyNDF9._s-rFH4k8juDUIFFhMFCO8fat3Wx9UbhiGUODd-KdgQ";
 
+    //fetch single movie details
     const fetchMovie = async () => {
         try {
             const resposne = await axiosConfig.get(`/movies/${id}`, {
@@ -19,9 +26,7 @@ export const MovieSinglePage = () => {
                 },
             });
             setMovie(resposne.data?.movie);
-        } catch (error) {
-            // console.log(error);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {

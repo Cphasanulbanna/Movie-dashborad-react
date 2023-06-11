@@ -141,18 +141,12 @@ p {
     border-radius: 12px;
     overflow: hidden;
     z-index: 1500;
-    /* width: 75%;
-    height: 75%; */
     border: 2px solid #284747;
 }
 
 .boxshadow {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-
-/* .one {
-    background-color: rgb(1, 23, 36);
-} */
 
 /* //dropzone styles */
 .dropzone {

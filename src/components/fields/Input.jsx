@@ -1,10 +1,10 @@
 import React from "react";
 
 export const Input = ({ formData, handleDataChange, type, name, errors, placeholder, css }) => {
+    //border style
     const greyBorder = "border-[1px] border-solid border-light-grey";
 
     const _name = name.toLowerCase();
-
     return (
         <div
             style={css}

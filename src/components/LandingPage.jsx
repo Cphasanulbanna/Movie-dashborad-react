@@ -4,11 +4,12 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 //components
-import { Sidebar } from "./Sidebar";
+
 import Header from "./Header";
 import Movies from "./pages/movies";
-import { MovieSinglePage } from "./pages/MovieSinglePage";
 import Genres from "./pages/Genres";
+import { MovieSinglePage } from "./pages/MovieSinglePage";
+import { Sidebar } from "./Sidebar";
 import { AddMovies } from "./pages/AddMovies";
 
 const LandingPage = () => {

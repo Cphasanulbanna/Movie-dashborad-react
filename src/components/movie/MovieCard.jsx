@@ -1,26 +1,44 @@
 import React, { useState } from "react";
+
+//packages
 import StarRating from "../general/StarRating";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //icons
 import edit from "../../assets/icons/edit-movie.png";
 import deleteIcon from "../../assets/icons/delete.png";
 import next from "../../assets/icons/next-arrow.png";
+
+//components
 import { EditForm } from "../EditForm";
-import { useShowDeletemodal, useUpdateMovies } from "../zustand/store";
 import ConfirmDelete from "../modals/ConfirmDelete";
+
+//zustand store
+import { useShowDeletemodal, useUpdateMovies } from "../zustand/store";
+
+//axios
 import axiosConfig from "../../../axiosConfig";
 
 export const MovieCard = ({ movie }) => {
+    //movie edit modal state
     const [showEditModal, setShowEditModal] = useState(false);
+
+    //id of movie to edit
     const [movieId, setMovieId] = useState("");
 
+    //movie delete modal state
+    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
+
+    //to update homepage when a movie is edited
+    const { updateMoviesList } = useUpdateMovies();
+
+    //open edit form function
     const opneEditForm = (id) => {
         setMovieId(id);
         setShowEditModal(true);
     };
-    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
-    const { updateMoviesList } = useUpdateMovies();
+
+    //delete movie function
     const deleteMovie = async () => {
         try {
             setShowDeleteModal(false);
@@ -30,14 +48,10 @@ export const MovieCard = ({ movie }) => {
                 },
             });
             updateMoviesList();
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
-    console.log(showDeleteModal, "modal");
-
+    //close deletemodal function
     const closeDeleteModal = () => {
         setShowDeleteModal(false);
     };

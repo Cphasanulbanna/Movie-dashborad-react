@@ -113,7 +113,7 @@ const Signup = () => {
                 <FileUploader
                     handleChange={handleChange}
                     name="profile"
-                    label="upload profile pic"
+                    label={formData.profile ? formData.profile.filename : "upload profile pic"}
                     required={false}
                     classes={"dropzone"}
                 />

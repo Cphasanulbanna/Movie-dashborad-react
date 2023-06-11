@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+
+//package
 import StarRatings from "react-star-ratings";
 
 const StarRating = ({ dimension, handleRating, rating }) => {
-    // const [rating, setRating] = useState(0);
-
-    // const handleRating = (rate) => {
-    //     setRating(rate);
-
-    //     // other logic
-    // };
     return (
         <StarRatings
             rating={rating ? rating : 4}

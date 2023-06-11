@@ -1,17 +1,13 @@
 import React from "react";
 
+//icons
 import remove from "../../assets/icons/confirm-delete.png";
 import close from "../../assets/icons/close.png";
+
+//components
 import ModalWrapper from "../general/ModalWrapper";
-import { useShowDeletemodal } from "../zustand/store";
 
 const ConfirmDelete = ({ deleteItem, closeModal, state }) => {
-    // const { showDeleteModal } = useShowDeletemodal();
-
-    // const closeDeleteModal = () => {
-    //     setShowDeleteModal(false);
-    // };
-
     return (
         <ModalWrapper
             state={state}

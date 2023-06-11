@@ -4,15 +4,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 //icons
-import genre from "../assets/icons/genre.png";
 import create from "../assets/icons/create.png";
 import film from "../assets/icons/film.png";
 import rightArrow from "../assets/icons/right-arrow.png";
+import logo from "../assets/icons/logo.png";
 
 export const Sidebar = () => {
     return (
         <div className="bg-dark-blue h-full fixed w-[200px] overflow-hidden p-[25px]  flex flex-col gap-[40px]">
-            <div className="font-bold text-[20px] cursor-pointer text-light-green">logo</div>
+            <Link
+                to="/"
+                className="cursor-pointe w-[45px] cursor-pointer"
+            >
+                <img
+                    src={logo}
+                    alt="logo"
+                />
+            </Link>
             <div className="flex flex-col gap-[30px] text-light-green">
                 <Link
                     to={"/"}
