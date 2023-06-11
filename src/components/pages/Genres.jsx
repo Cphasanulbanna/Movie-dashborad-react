@@ -62,12 +62,14 @@ const Genres = () => {
         setGerneId(id);
     };
 
-    const deleteGenre = async () => {
+    const deleteGenre = async (id) => {
         try {
-            const response = await axiosConfig("/genres");
-
-            console.log(response.data?.gernes);
-            setGenres(response.data?.genres);
+            const response = await axiosConfig.delete("/genres", {
+                data: {
+                    _id: id,
+                },
+            });
+            setGenres((prev) => prev.filter((genre) => genre._id !== id));
         } catch (error) {
             console.log(error);
         }
@@ -218,7 +220,10 @@ const Genres = () => {
                                                 alt="edit"
                                             />
                                         </div>
-                                        <div className="w-[25px] h-[25px] cursor-pointer icon">
+                                        <div
+                                            onClick={() => deleteGenre(genre?._id)}
+                                            className="w-[25px] h-[25px] cursor-pointer icon"
+                                        >
                                             <img
                                                 src={remove}
                                                 alt="delete"
