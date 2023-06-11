@@ -7,6 +7,8 @@ import edit from "../../assets/icons/edit-movie.png";
 import deleteIcon from "../../assets/icons/delete.png";
 import next from "../../assets/icons/next-arrow.png";
 import { EditForm } from "../EditForm";
+import { useShowDeletemodal } from "../zustand/store";
+import ConfirmDelete from "../modals/ConfirmDelete";
 
 export const MovieCard = ({ movie }) => {
     const [showEditModal, setShowEditModal] = useState(false);
@@ -16,6 +18,12 @@ export const MovieCard = ({ movie }) => {
         setMovieId(id);
         setShowEditModal(true);
     };
+    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
+    const deleteMovie = () => {
+        setShowDeleteModal(true);
+    };
+
+    console.log(showDeleteModal, "modal");
 
     return (
         <>
@@ -28,6 +36,8 @@ export const MovieCard = ({ movie }) => {
                 />
             )}
             {/* )} */}
+
+            {showDeleteModal && <ConfirmDelete />}
 
             <div className="w-[31%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">
@@ -68,7 +78,10 @@ export const MovieCard = ({ movie }) => {
                                     alt="edit"
                                 />
                             </div>
-                            <div className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]">
+                            <div
+                                onClick={deleteMovie}
+                                className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
+                            >
                                 <img
                                     src={deleteIcon}
                                     alt="delete"

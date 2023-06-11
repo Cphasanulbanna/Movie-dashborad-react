@@ -9,3 +9,8 @@ export const useUpdateMovies = create((set) => ({
     updatemovies: false,
     updateMoviesList: () => set((state) => ({ updatemovies: !state.updatemovies })),
 }));
+
+export const useShowDeletemodal = create((set) => ({
+    showDeleteModal: false,
+    setShowDeleteModal: (value) => set({ showDeleteModal: value }),
+}));
