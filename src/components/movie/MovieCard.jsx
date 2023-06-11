@@ -18,6 +18,7 @@ import { useShowDeletemodal, useUpdateMovies } from "../zustand/store";
 
 //axios
 import axiosConfig from "../../../axiosConfig";
+import Skelton from "../general/skelton-loader/Skelton";
 
 export const MovieCard = ({ movie }) => {
     //movie edit modal state
