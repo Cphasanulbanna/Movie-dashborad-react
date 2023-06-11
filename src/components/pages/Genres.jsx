@@ -10,6 +10,8 @@ import ConfirmDelete from "../modals/ConfirmDelete";
 import edit from "../../assets/icons/edit-movie.png";
 import remove from "../../assets/icons/delete.png";
 import add from "../../assets/icons/add.png";
+
+//store
 import { useUserDataStore } from "../zustand/store";
 
 const Genres = () => {

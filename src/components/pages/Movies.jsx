@@ -6,7 +6,7 @@ import axiosConfig from "../../../axiosConfig";
 //components
 import { MovieCard } from "../movie/MovieCard";
 
-//zustand store
+//store
 import { useQueryStore, useUpdateMovies, useUserDataStore } from "../zustand/store";
 
 export const Movies = () => {

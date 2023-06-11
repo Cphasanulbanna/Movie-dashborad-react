@@ -3,6 +3,7 @@ import React, { useState } from "react";
 //packages
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 //components
 import { Input } from "../fields/Input";
@@ -13,9 +14,14 @@ import facebook from "../../assets/icons/facebook.png";
 import twitter from "../../assets/icons/twitter.png";
 import google from "../../assets/icons/google.png";
 
+//store
+import { useUserDataStore } from "../zustand/store";
+
 //axios
 import axiosConfig from "../../../axiosConfig";
-import { useUserDataStore } from "../zustand/store";
+
+//functions
+import ErrorNotification from "../../assets/general/utils/errorNotification";
 
 const Login = () => {
     //form state
@@ -24,7 +30,7 @@ const Login = () => {
         password: "",
     });
     const [errors, setErrors] = useState({});
-
+    const { updateUserData } = useUserDataStore();
     const navigate = useNavigate();
 
     //storing data
@@ -55,6 +61,7 @@ const Login = () => {
             await formSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosConfig.post("/auth/login", formData);
+
             const { StatusCode, username, access_token, profile_pic } = response.data;
             if (StatusCode === 6000) {
                 updateUserData({
@@ -66,14 +73,15 @@ const Login = () => {
             }
         } catch (error) {
             const validationErrors = {};
-            error.inner.forEach((error) => {
+            error?.inner?.forEach((error) => {
                 validationErrors[error.path] = error.message;
             });
+            ErrorNotification(error?.response?.data?.message);
             setErrors(validationErrors);
         }
     };
 
-    const { updateUserData } = useUserDataStore();
+    console.log(errors);
 
     return (
         <div
@@ -138,6 +146,7 @@ const Login = () => {
             >
                 SIGNUP
             </Link>
+            <ToastContainer />
         </div>
     );
 };

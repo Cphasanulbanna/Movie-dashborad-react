@@ -8,6 +8,8 @@ import axiosConfig from "../../../axiosConfig";
 
 //components
 import StarRating from "../general/StarRating";
+
+//store
 import { useUserDataStore } from "../zustand/store";
 
 export const MovieSinglePage = () => {

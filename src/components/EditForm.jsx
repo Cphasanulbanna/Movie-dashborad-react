@@ -13,6 +13,8 @@ import StarRating from "./general/StarRating";
 import editImage from "../assets/icons/edit-image.png";
 import axiosConfig from "../../axiosConfig";
 import CheckBox from "./fields/CheckBox";
+
+//store
 import { useUpdateMovies, useUserDataStore } from "./zustand/store";
 
 export const EditForm = ({ showEditModal, setShowEditModal, id }) => {

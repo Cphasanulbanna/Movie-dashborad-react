@@ -3,7 +3,7 @@ import React from "react";
 //package
 import { useNavigate } from "react-router-dom";
 
-//zustand
+//store
 import { useQueryStore, useUserDataStore } from "./zustand/store";
 
 //icons
