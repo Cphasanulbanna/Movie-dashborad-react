@@ -7,8 +7,9 @@ import edit from "../../assets/icons/edit-movie.png";
 import deleteIcon from "../../assets/icons/delete.png";
 import next from "../../assets/icons/next-arrow.png";
 import { EditForm } from "../EditForm";
-import { useShowDeletemodal } from "../zustand/store";
+import { useShowDeletemodal, useUpdateMovies } from "../zustand/store";
 import ConfirmDelete from "../modals/ConfirmDelete";
+import axiosConfig from "../../../axiosConfig";
 
 export const MovieCard = ({ movie }) => {
     const [showEditModal, setShowEditModal] = useState(false);
@@ -19,8 +20,20 @@ export const MovieCard = ({ movie }) => {
         setShowEditModal(true);
     };
     const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
-    const deleteMovie = () => {
-        setShowDeleteModal(true);
+    const { updateMoviesList } = useUpdateMovies();
+    const deleteMovie = async () => {
+        try {
+            setShowDeleteModal(false);
+            const response = await axiosConfig.delete("/movies", {
+                data: {
+                    movieIds: [movie?._id],
+                },
+            });
+            updateMoviesList();
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     console.log(showDeleteModal, "modal");
@@ -37,7 +50,7 @@ export const MovieCard = ({ movie }) => {
             )}
             {/* )} */}
 
-            {showDeleteModal && <ConfirmDelete />}
+            {showDeleteModal && <ConfirmDelete deleteItem={deleteMovie} />}
 
             <div className="w-[31%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">
@@ -79,7 +92,7 @@ export const MovieCard = ({ movie }) => {
                                 />
                             </div>
                             <div
-                                onClick={deleteMovie}
+                                onClick={() => setShowDeleteModal(true)}
                                 className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
                             >
                                 <img

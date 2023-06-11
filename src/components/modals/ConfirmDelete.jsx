@@ -5,7 +5,7 @@ import close from "../../assets/icons/close.png";
 import ModalWrapper from "../general/ModalWrapper";
 import { useShowDeletemodal } from "../zustand/store";
 
-const ConfirmDelete = () => {
+const ConfirmDelete = ({ deleteItem }) => {
     const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
 
     const closeDeleteModal = () => {
@@ -35,7 +35,12 @@ const ConfirmDelete = () => {
                     >
                         Cancel
                     </div>
-                    <div className="btn bg-[#f7215a] text-light-white">Delete</div>
+                    <div
+                        onClick={deleteItem}
+                        className="btn bg-[#f7215a] text-light-white"
+                    >
+                        Delete
+                    </div>
                 </div>
                 <div
                     onClick={closeDeleteModal}
