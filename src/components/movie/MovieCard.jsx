@@ -11,50 +11,18 @@ import next from "../../assets/icons/next-arrow.png";
 
 //components
 import { EditForm } from "../EditForm";
-import ConfirmDelete from "../modals/ConfirmDelete";
 
-//zustand store
-import { useShowDeletemodal, useUpdateMovies } from "../zustand/store";
-
-//axios
-import axiosConfig from "../../../axiosConfig";
-import Skelton from "../general/skelton-loader/Skelton";
-
-export const MovieCard = ({ movie }) => {
+export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
     //movie edit modal state
     const [showEditModal, setShowEditModal] = useState(false);
 
     //id of movie to edit
     const [movieId, setMovieId] = useState("");
 
-    //movie delete modal state
-    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
-
-    //to update homepage when a movie is edited
-    const { updateMoviesList } = useUpdateMovies();
-
     //open edit form function
     const opneEditForm = (id) => {
         setMovieId(id);
         setShowEditModal(true);
-    };
-
-    //delete movie function
-    const deleteMovie = async () => {
-        try {
-            setShowDeleteModal(false);
-            const response = await axiosConfig.delete("/movies", {
-                data: {
-                    movieIds: [movie?._id],
-                },
-            });
-            updateMoviesList();
-        } catch (error) {}
-    };
-
-    //close deletemodal function
-    const closeDeleteModal = () => {
-        setShowDeleteModal(false);
     };
 
     return (
@@ -64,14 +32,6 @@ export const MovieCard = ({ movie }) => {
                     setShowEditModal={setShowEditModal}
                     showEditModal={showEditModal}
                     id={movieId}
-                />
-            )}
-
-            {showDeleteModal && (
-                <ConfirmDelete
-                    deleteItem={deleteMovie}
-                    closeModal={closeDeleteModal}
-                    state={showDeleteModal}
                 />
             )}
 
@@ -115,7 +75,10 @@ export const MovieCard = ({ movie }) => {
                                 />
                             </div>
                             <div
-                                onClick={() => setShowDeleteModal(true)}
+                                onClick={() => {
+                                    setMovieIdToDelete(movie?._id);
+                                    setShowDeleteModal(true);
+                                }}
                                 className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
                             >
                                 <img

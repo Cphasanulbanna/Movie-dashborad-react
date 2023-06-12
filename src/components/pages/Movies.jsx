@@ -5,21 +5,33 @@ import axiosConfig from "../../../axiosConfig";
 
 //components
 import { MovieCard } from "../movie/MovieCard";
+import ConfirmDelete from "../modals/ConfirmDelete";
+import Skelton from "../general/skelton-loader/Skelton";
 
 //store
-import { useQueryStore, useUpdateMovies, useUserDataStore } from "../zustand/store";
-import Skelton from "../general/skelton-loader/Skelton";
+import {
+    useQueryStore,
+    useShowDeletemodal,
+    useUpdateMovies,
+    useUserDataStore,
+} from "../zustand/store";
 
 export const Movies = () => {
     //All movies
     const [movies, setMovies] = useState([]);
+    const [movieIdToDelete, setMovieIdToDelete] = useState("");
 
     const [isLoading, setLoading] = useState(true);
-    console.log(isLoading, "load");
 
     //search keyword
     const { query } = useQueryStore();
     const { updatemovies } = useUpdateMovies();
+
+    //movie delete modal state
+    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
+
+    //to update homepage when a movie is edited
+    const { updateMoviesList } = useUpdateMovies();
 
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
@@ -52,21 +64,51 @@ export const Movies = () => {
         fetchAllMovies();
     }, [query, updatemovies]);
 
+    //close deletemodal function
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
+    };
+
+    //delete movie function
+    const deleteMovie = async () => {
+        try {
+            setShowDeleteModal(false);
+            const response = await axiosConfig.delete("/movies", {
+                data: {
+                    movieIds: [movieIdToDelete],
+                },
+            });
+            updateMoviesList();
+        } catch (error) {}
+    };
+
     return (
-        <section className="w-[100%] ">
-            <div className="flex justify-between items-center flex-wrap gap-[20px] ">
-                {isLoading ? (
-                    <Skelton type={"feed"} />
-                ) : (
-                    movies?.map((movie) => (
-                        <MovieCard
-                            key={movie?._id}
-                            movie={movie}
-                        />
-                    ))
-                )}
-            </div>
-        </section>
+        <>
+            {showDeleteModal && (
+                <ConfirmDelete
+                    deleteItem={deleteMovie}
+                    closeModal={closeDeleteModal}
+                    state={showDeleteModal}
+                />
+            )}
+
+            <section className="w-[100%] ">
+                <div className="flex justify-between items-center flex-wrap gap-[20px] ">
+                    {isLoading ? (
+                        <Skelton type={"feed"} />
+                    ) : (
+                        movies?.map((movie) => (
+                            <MovieCard
+                                key={movie?._id}
+                                movie={movie}
+                                setMovieIdToDelete={setMovieIdToDelete}
+                                setShowDeleteModal={setShowDeleteModal}
+                            />
+                        ))
+                    )}
+                </div>
+            </section>
+        </>
     );
 };
 
