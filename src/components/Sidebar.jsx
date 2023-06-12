@@ -27,7 +27,7 @@ export const Sidebar = () => {
                 <NavLink
                     style={({ isActive, isPending }) => {
                         return {
-                            backgroundColor: isActive ? "red" : "",
+                            backgroundColor: isActive ? " rgb(31, 121, 131)" : "",
                             color: isPending ? "red" : "black",
                         };
                     }}
@@ -51,7 +51,7 @@ export const Sidebar = () => {
                 <NavLink
                     style={({ isActive, isPending }) => {
                         return {
-                            backgroundColor: isActive ? "red" : "",
+                            backgroundColor: isActive ? " rgb(31, 121, 131)" : "",
                             color: isPending ? "red" : "black",
                         };
                     }}
@@ -75,7 +75,7 @@ export const Sidebar = () => {
                 <NavLink
                     style={({ isActive, isPending }) => {
                         return {
-                            backgroundColor: isActive ? "red" : "",
+                            backgroundColor: isActive ? " rgb(31, 121, 131)" : "",
                             color: isPending ? "red" : "black",
                         };
                     }}
