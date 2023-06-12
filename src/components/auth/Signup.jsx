@@ -18,7 +18,7 @@ import google from "../../assets/icons/google.png";
 import axiosConfig from "../../../axiosConfig";
 
 //functions
-import ErrorNotification from "../../assets/general/utils/errorNotification";
+import Notification from "../../assets/general/utils/Notification";
 
 const Signup = () => {
     //form state
@@ -80,7 +80,7 @@ const Signup = () => {
             error.inner.forEach((error) => {
                 validationErrors[error.path] = error.message;
             });
-            ErrorNotification(error?.response?.data?.message);
+            Notification(error?.response?.data?.message, "error");
             setErrors(validationErrors);
         }
     };

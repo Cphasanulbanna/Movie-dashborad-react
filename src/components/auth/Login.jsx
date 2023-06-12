@@ -21,7 +21,7 @@ import { useUserDataStore } from "../zustand/store";
 import axiosConfig from "../../../axiosConfig";
 
 //functions
-import ErrorNotification from "../../assets/general/utils/errorNotification";
+import Notification from "../../assets/general/utils/Notification";
 
 const Login = () => {
     //form state
@@ -80,8 +80,6 @@ const Login = () => {
             setErrors(validationErrors);
         }
     };
-
-    console.log(errors);
 
     return (
         <div

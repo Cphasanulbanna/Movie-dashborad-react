@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 //axios
 import axiosConfig from "../../../axiosConfig";
 
+//package
+import { ToastContainer } from "react-toastify";
+
 //components
 import ConfirmDelete from "../modals/ConfirmDelete";
 import Skelton from "../general/skelton-loader/Skelton";
@@ -14,6 +17,7 @@ import add from "../../assets/icons/add.png";
 
 //store
 import { useUserDataStore } from "../zustand/store";
+import Notification from "../../assets/general/utils/Notification";
 
 const Genres = () => {
     //all genres
@@ -71,8 +75,11 @@ const Genres = () => {
                 setGenres(resposne.data?.genres);
                 setGenreTitle("");
                 setShowAddInput(false);
+                Notification("Genre added", "success");
             }
-        } catch (error) {}
+        } catch (error) {
+            Notification(error?.response?.data?.message, "error");
+        }
     };
 
     //opening input field to add new genre
@@ -101,7 +108,10 @@ const Genres = () => {
             });
             setGenres((prev) => prev.filter((genre) => genre._id !== genreIdToDelete));
             setShowDeleteModal(false);
-        } catch (error) {}
+            Notification("Genre deleted", "success");
+        } catch (error) {
+            Notification(error?.response?.data?.message, "error");
+        }
     };
 
     //updating genre
@@ -117,8 +127,11 @@ const Genres = () => {
                 setGenres(resposne.data?.genres);
                 setGerneId(null);
                 setEditedGenre("");
+                Notification("Genre updated", "success");
             }
-        } catch (error) {}
+        } catch (error) {
+            Notification(error?.response?.data?.message, "error");
+        }
     };
 
     //setting updated genre name
@@ -146,6 +159,7 @@ const Genres = () => {
 
     return (
         <section className="h-[fill] w-[fill]">
+            <ToastContainer />
             {showDeleteModal && (
                 <ConfirmDelete
                     deleteItem={deleteGenre}

@@ -15,6 +15,8 @@ import {
     useUpdateMovies,
     useUserDataStore,
 } from "../zustand/store";
+import Notification from "../../assets/general/utils/Notification";
+import { ToastContainer } from "react-toastify";
 
 export const Movies = () => {
     //All movies
@@ -79,7 +81,10 @@ export const Movies = () => {
                 },
             });
             updateMoviesList();
-        } catch (error) {}
+            Notification("Movie deleted", "success");
+        } catch (error) {
+            Notification(error?.response?.data?.message, "error");
+        }
     };
 
     return (
@@ -91,6 +96,7 @@ export const Movies = () => {
                     state={showDeleteModal}
                 />
             )}
+            <ToastContainer />
 
             <section className="w-[100%] ">
                 <div className="flex justify-between items-center flex-wrap gap-[20px] ">

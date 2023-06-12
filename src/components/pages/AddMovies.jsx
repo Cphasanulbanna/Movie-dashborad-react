@@ -10,6 +10,7 @@ import CheckBox from "../fields/CheckBox";
 import StarRating from "../general/StarRating";
 import { Input } from "../fields/Input";
 import ButtonLoader from "../general/Button-loader/ButtonLoader";
+import Notification from "../../assets/general/utils/Notification";
 
 //icons
 import editImage from "../../assets/icons/edit-image.png";
@@ -87,8 +88,6 @@ export const AddMovies = () => {
         setErrors((prev) => ({ ...prev, ["poster"]: "" }));
     };
 
-    console.log(formData);
-
     //success message
     const notify = () =>
         toast.success("Movie updated !", {
@@ -141,6 +140,7 @@ export const AddMovies = () => {
                 validationErrors[error.path] = error.message;
             });
             setErrors(validationErrors);
+            Notification(error?.response?.data?.message, "error");
         } finally {
             setLoading(false);
             setUploadProgress(0);

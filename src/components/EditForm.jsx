@@ -16,6 +16,7 @@ import CheckBox from "./fields/CheckBox";
 
 //store
 import { useUpdateMovies, useUserDataStore } from "./zustand/store";
+import Notification from "../assets/general/utils/Notification";
 
 export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const [movie, setMovie] = useState({});
@@ -95,16 +96,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         setPosterPreview(URL.createObjectURL(selectedFile));
     };
 
-    //success message
-    const notify = () =>
-        toast.success("Movie updated !", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            pauseOnHover: false,
-            theme: "colored",
-            position: "bottom-center",
-        });
-
     //updating movie
     const updateMovieData = async () => {
         try {
@@ -116,8 +107,19 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             });
             updateMoviesList();
             setUploadProgress(0);
-            notify();
-        } catch (error) {}
+            setFormData({
+                name: "",
+                year: "",
+                rating: "",
+                leadactor: "",
+                description: "",
+                poster: "",
+                genre: [],
+            });
+            Notification("Movie updated", "success");
+        } catch (error) {
+            Notification(error?.response?.data?.message, "error");
+        }
     };
 
     //selecting / unselecting genres
@@ -152,6 +154,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     };
     return (
         <>
+            <ToastContainer />
             <ModalWrapper
                 state={showEditModal}
                 closeModal={closeModal}
