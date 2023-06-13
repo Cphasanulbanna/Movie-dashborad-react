@@ -130,3 +130,15 @@
     border-radius: 4px;
     background-color: #4a4a4a;
 }
+
+.singlepage {
+    background-color: #3e3e3e;
+    animation: skelton 1s ease infinite alternate;
+}
+.singlepage .left {
+    background-color: #4a4a4a;
+}
+
+.singlepage .right .box {
+    background-color: #4a4a4a;
+}

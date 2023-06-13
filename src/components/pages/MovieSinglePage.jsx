@@ -11,11 +11,13 @@ import StarRating from "../general/StarRating";
 
 //store
 import { useUserDataStore } from "../zustand/store";
+import Skelton from "../general/skelton-loader/Skelton";
 
 export const MovieSinglePage = () => {
     //id of each movie
     const { id } = useParams();
     const [movie, setMovie] = useState({});
+    const [isLoading, setloading] = useState(true);
 
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
@@ -31,6 +33,7 @@ export const MovieSinglePage = () => {
                 signal: controller.signal,
             });
             setMovie(resposne.data?.movie);
+            setloading(false);
             controller.abort();
         } catch (error) {}
     };
@@ -40,28 +43,35 @@ export const MovieSinglePage = () => {
     }, []);
     return (
         <div className=" flex gap-[30px] h-[100%] overflow-y-scroll">
-            <div className="w-[40%]">
-                <img
-                    src={movie?.poster}
-                    alt="poster"
-                />
-            </div>
-            <div className="w-[60%] flex flex-col gap-[10px]">
-                <h1 className="text-[35px] font-bold">{movie?.name}</h1>
-                <h2>Release year: {movie?.year}</h2>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, recusandae.
-                </p>
-                <h2>Hero: Actor {movie?.leadactor}</h2>
-                <div className="flex items-center gap-[10px] flex-wrap">
-                    {movie?.genre?.map((item) => (
-                        <div className="py-[7px] px-[22px] rounded-[25px] overflow-hidden border border-light-white">
-                            {item.title}
+            {isLoading ? (
+                <Skelton type="movie-singlepage" />
+            ) : (
+                <>
+                    <div className="w-[40%]">
+                        <img
+                            src={movie?.poster}
+                            alt="poster"
+                        />
+                    </div>
+                    <div className="w-[60%] flex flex-col gap-[10px]">
+                        <h1 className="text-[35px] font-bold">{movie?.name}</h1>
+                        <h2>Release year: {movie?.year}</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate,
+                            recusandae.
+                        </p>
+                        <h2>Hero: Actor {movie?.leadactor}</h2>
+                        <div className="flex items-center gap-[10px] flex-wrap">
+                            {movie?.genre?.map((item) => (
+                                <div className="py-[7px] px-[22px] rounded-[25px] overflow-hidden border border-light-white">
+                                    {item.title}
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-                <StarRating rating={movie?.rating} />
-            </div>
+                        <StarRating rating={movie?.rating} />
+                    </div>
+                </>
+            )}
         </div>
     );
 };

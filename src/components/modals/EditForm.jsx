@@ -79,7 +79,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 signal: controller.signal,
             });
             setGenres(response.data?.genres);
-            setLoading(false);
             controller.abort();
         } catch (error) {}
     };
@@ -309,7 +308,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                         </label>
                                         <div
                                             onClick={openFileInput}
-                                            className="relative w-[230px] h-[150px] rounded-[5px] overflow-hidden flex justify-center items-center"
+                                            className="relative w-[160px] h-[150px] rounded-[5px] overflow-hidden flex justify-center items-center"
                                         >
                                             <div className="w-[35px] h-[35px] cursor-pointer z-[100] hover:opacity-[0.8]">
                                                 <img

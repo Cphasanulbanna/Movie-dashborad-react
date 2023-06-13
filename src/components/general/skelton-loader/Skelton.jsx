@@ -50,6 +50,24 @@ const Skelton = ({ type, count }) => {
             </div>
         );
     };
+
+    const MovieSinglePageSkelton = () => {
+        return (
+            <div className="flex justify-between singlepage p-[30px] gap-[30px] w-[100%] h-[100%]">
+                <div className="left w-[38%] h-[100%]"></div>
+                <div className="right w-[58%] h-[100%] flex flex-col gap-[20px]">
+                    <div className="box h-[50px]"></div>
+                    <div className="box h-[50px]"></div>
+                    <div className="box h-[70px]"></div>
+                    <div className="box h-[35px]"></div>
+                    <div className="box h-[35px]"></div>
+                    <div className="box h-[35px]"></div>
+                    <div className="box h-[35px]"></div>
+                    <div className="box h-[35px]"></div>
+                </div>
+            </div>
+        );
+    };
     if (type === "feed") {
         return Array(6)
             .fill()
@@ -64,6 +82,10 @@ const Skelton = ({ type, count }) => {
 
     if (type === "edit-form") {
         return <EditFormSkelton />;
+    }
+
+    if (type === "movie-singlepage") {
+        return <MovieSinglePageSkelton />;
     }
 };
 
