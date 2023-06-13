@@ -43,14 +43,17 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     //fetch movie
     const fetchMovie = async () => {
         try {
+            const controller = new AbortController();
             await id;
             if (id) {
                 const resposne = await axiosConfig.get(`/movies/${id}`, {
                     headers: {
                         Authorization: `Bearer ${access_token}`,
                     },
+                    signal: controller.signal,
                 });
                 setMovie(resposne.data?.movie);
+                controller.abort();
             }
         } catch (error) {}
     };
@@ -58,12 +61,15 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     //fetchGenres
     const fetchGenres = async () => {
         try {
+            const controller = new AbortController();
             const response = await axiosConfig.get("/genres", {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
+                signal: controller.signal,
             });
             setGenres(response.data.genres);
+            controller.abort();
         } catch (error) {}
     };
 

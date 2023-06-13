@@ -51,12 +51,15 @@ export const AddMovies = () => {
     //fetch all genres
     const fetchGenres = async () => {
         try {
+            const controller = new AbortController();
             const response = await axiosConfig.get("/genres", {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
+                signal: controller.signal,
             });
             setGenres(response.data.genres);
+            controller.abort();
         } catch (error) {}
     };
 
