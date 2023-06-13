@@ -51,11 +51,15 @@ const Skelton = ({ type, count }) => {
         );
     };
     if (type === "feed") {
-        return Array(6).fill(<FeedSkelton />);
+        return Array(6)
+            .fill()
+            .map((_, index) => <FeedSkelton key={index} />);
     }
 
     if (type === "rectangle") {
-        return Array(6).fill(<RectangleSkelton />);
+        return Array(6)
+            .fill()
+            .map((_, index) => <RectangleSkelton key={index} />);
     }
 
     if (type === "edit-form") {

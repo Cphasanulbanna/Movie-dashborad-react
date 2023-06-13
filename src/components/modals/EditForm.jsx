@@ -1,26 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 
 //packages
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //components
 import ModalWrapper from "../general/ModalWrapper";
 import { Input } from "../fields/Input";
 import StarRating from "../general/StarRating";
+import Skelton from "../general/skelton-loader/Skelton";
 
 //icons
 import editImage from "../../assets/icons/edit-image.png";
 import axiosConfig from "../../../axiosConfig";
 import CheckBox from "../../components/fields/CheckBox";
-import movieThumbnail from "../../assets/icons/movie-thumbnail.png";
 
 //store
 import { useUpdateMovies, useUserDataStore } from "../zustand/store";
+
+//functions
 import Notification from "../../assets/general/utils/Notification";
-import Skelton from "../general/skelton-loader/Skelton";
 
 export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
+    //states
     const [movie, setMovie] = useState({});
     const [genres, setGenres] = useState([]);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -38,10 +40,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     });
 
     const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
-    const fileInputRef = useRef(null);
-
     const { userdata } = useUserDataStore();
+
     const access_token = userdata?.access_token;
+    const fileInputRef = useRef(null);
 
     //fetch movie
     const fetchMovie = async () => {
@@ -56,6 +58,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                     signal: controller.signal,
                 });
                 setMovie(resposne.data?.movie);
+                setFormData((prev) => ({
+                    ...prev,
+                    ["genre"]: resposne.data?.movie?.genre?.map((item) => item._id),
+                }));
                 setLoading(false);
                 controller.abort();
             }
@@ -72,7 +78,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 },
                 signal: controller.signal,
             });
-            setGenres(response.data.genres);
+            setGenres(response.data?.genres);
             setLoading(false);
             controller.abort();
         } catch (error) {}
@@ -139,6 +145,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             if (!prev?.genre.includes(genreId)) {
                 return { ...prev, genre: [...prev?.genre, genreId] };
             }
+
             return { ...prev, genre: prev.genre.filter((id) => id !== genreId) };
         });
     };
@@ -223,6 +230,81 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                             htmlFor="name"
                                             className="text-light-white"
                                         >
+                                            Lead Actor
+                                        </label>
+                                        <Input
+                                            formData={formData}
+                                            name="leadactor"
+                                            type="text"
+                                            handleDataChange={handleDataChange}
+                                            errors={errors?.leadactor}
+                                            css={inputStyle}
+                                            placeholder={movie?.leadactor}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-[8px] ">
+                                    <div className="flex flex-col gap-[5px] relative">
+                                        <label
+                                            htmlFor="name"
+                                            className="text-light-white"
+                                        >
+                                            Details
+                                        </label>
+                                        <textarea
+                                            name="description"
+                                            placeholder={movie?.description}
+                                            onChange={handleDataChange}
+                                            style={inputStyle}
+                                            className="p-[10px] min-h-[120px] max-h-[120px]"
+                                        />
+                                        <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
+                                            {errors?.description}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* leftbox edning  */}
+
+                            {/* right box  */}
+
+                            <div className="flex gap-[15px] flex-col w-[48%]">
+                                <div>
+                                    <h3> Genres</h3>
+                                    <div
+                                        style={inputStyle}
+                                        className="flex items-center flex-wrap gap-[15px] p-[7px]"
+                                    >
+                                        {genres?.map((genre) => (
+                                            <CheckBox
+                                                key={genre?._id}
+                                                handleClick={() => selectGenres(genre?._id)}
+                                                genre={genre}
+                                                formData={formData}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-[5px]">
+                                    <label
+                                        htmlFor="rating"
+                                        className="text-light-white"
+                                    >
+                                        Rating
+                                    </label>
+                                    <StarRating
+                                        dimension={"40px"}
+                                        handleRating={handleRating}
+                                        name="rating"
+                                        rating={movie?.rating || formData?.rating}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-[8px] ">
+                                    <div className="flex flex-col gap-[5px]">
+                                        <label
+                                            htmlFor="name"
+                                            className="text-light-white"
+                                        >
                                             Movie poster
                                         </label>
                                         <div
@@ -275,80 +357,9 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                     </div>
                                 </div>
                             </div>
-                            {/* leftbox edning  */}
-
-                            {/* right box  */}
-                            <div className="flex gap-[15px] flex-col w-[48%]">
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px]">
-                                        <label
-                                            htmlFor="name"
-                                            className="text-light-white"
-                                        >
-                                            Lead Actor
-                                        </label>
-                                        <Input
-                                            formData={formData}
-                                            name="leadactor"
-                                            type="text"
-                                            handleDataChange={handleDataChange}
-                                            errors={errors?.leadactor}
-                                            css={inputStyle}
-                                            placeholder={movie?.leadactor}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px] relative">
-                                        <label
-                                            htmlFor="name"
-                                            className="text-light-white"
-                                        >
-                                            Details
-                                        </label>
-                                        <textarea
-                                            name="description"
-                                            placeholder={movie?.description}
-                                            onChange={handleDataChange}
-                                            style={inputStyle}
-                                            className="p-[10px] min-h-[120px] max-h-[120px]"
-                                        />
-                                        <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
-                                            {errors?.description}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-[5px]">
-                                    <label
-                                        htmlFor="rating"
-                                        className="text-light-white"
-                                    >
-                                        Rating
-                                    </label>
-                                    <StarRating
-                                        dimension={"40px"}
-                                        handleRating={handleRating}
-                                        name="rating"
-                                        rating={movie?.rating || formData?.rating}
-                                    />
-                                </div>
-                            </div>
                             {/* rightbox ending  */}
                         </div>
-                        <div>
-                            <h3> Genres</h3>
-                            <div className="flex items-center flex-wrap gap-[15px]">
-                                {genres?.map((genre) => (
-                                    <CheckBox
-                                        key={genre?._id}
-                                        handleClick={() => selectGenres(genre?._id)}
-                                        genre={genre}
-                                        formData={formData}
-                                        currentGenres={movie.genre}
-                                    />
-                                ))}
-                            </div>
-                        </div>
+
                         <button
                             className="btn border-blue"
                             onClick={updateMovieData}

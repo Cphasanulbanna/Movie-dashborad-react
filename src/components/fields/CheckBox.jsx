@@ -4,11 +4,9 @@ import React from "react";
 import greenCheck from "../../assets/icons/checkmark-green.png";
 import greyCheck from "../../assets/icons/checkmark-grey.png";
 
-const CheckBox = ({ genre, handleClick, formData, currentGenres }) => {
+const CheckBox = ({ genre, handleClick, formData }) => {
     //highlight selected items
-    const isSelected =
-        formData.genre?.some((item) => item === genre._id) ||
-        currentGenres?.some((item) => item._id === genre._id);
+    const isSelected = formData.genre?.some((item) => item === genre._id);
 
     return (
         <div
