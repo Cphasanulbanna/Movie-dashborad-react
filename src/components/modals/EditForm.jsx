@@ -252,11 +252,11 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                         </label>
                                         <textarea
                                             name="description"
-                                            placeholder={movie?.description}
+                                            placeholder={movie?.description || "Add movie details"}
                                             onChange={handleDataChange}
                                             style={inputStyle}
                                             className="p-[10px] min-h-[120px] max-h-[120px]"
-                                        />
+                                        ></textarea>
                                         <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
                                             {errors?.description}
                                         </span>
@@ -328,7 +328,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                                     src={
                                                         posterPreview
                                                             ? posterPreview
-                                                            : movie?.poster
+                                                            : movie?.poster.url
                                                     }
                                                     alt="poster"
                                                     className={"cover"}

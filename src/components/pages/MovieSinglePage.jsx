@@ -49,7 +49,7 @@ export const MovieSinglePage = () => {
                 <>
                     <div className="w-[40%]">
                         <img
-                            src={movie?.poster}
+                            src={movie?.poster.url}
                             alt="poster"
                         />
                     </div>

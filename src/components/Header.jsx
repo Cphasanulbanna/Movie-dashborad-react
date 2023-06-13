@@ -59,7 +59,7 @@ const Header = () => {
                 </div>
                 <div className="w-[50px] h-[50px] overflow-hidden rounded-full cursor-pointer hover:opacity-[0.8]">
                     <img
-                        src={userdata?.profile_pic || profile}
+                        src={userdata?.profile_pic.url || profile}
                         alt="profile"
                         className="object-cover"
                     />

@@ -38,7 +38,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
             <div className="w-[31%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">
                     <img
-                        src={movie?.poster}
+                        src={movie?.poster.url}
                         alt="poster"
                         className="object-cover"
                     />
