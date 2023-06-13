@@ -39,6 +39,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         genre: [],
     });
 
+    console.log(formData.genre, "genres");
+
     const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
     const { userdata } = useUserDataStore();
 

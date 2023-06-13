@@ -95,16 +95,6 @@ export const AddMovies = () => {
         setErrors((prev) => ({ ...prev, ["poster"]: "" }));
     };
 
-    //success message
-    const notify = () =>
-        toast.success("Movie updated !", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            pauseOnHover: false,
-            theme: "colored",
-            position: "bottom-center",
-        });
-
     //image upload progress
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
@@ -127,6 +117,7 @@ export const AddMovies = () => {
     //adding new movie function
     const AddMovie = async (e) => {
         try {
+            console.log("entered");
             setSubmitting(true);
             e.preventDefault();
             await formSchema.validate(formData, { abortEarly: false });
@@ -138,21 +129,21 @@ export const AddMovies = () => {
 
                 onUploadProgress,
             });
+            console.log(response.data, "resposne");
             updateMoviesList();
             setUploadProgress(0);
             Notification("Movie added", "success");
+            resetForm();
         } catch (error) {
             const validationErrors = {};
-            error?.inner?.forEach((error) => {
+            error.inner?.forEach((error) => {
                 validationErrors[error.path] = error.message;
             });
-            console.log(error);
-            setErrors(validationErrors);
             Notification(error?.response?.data?.message, "error");
+            setErrors(validationErrors);
         } finally {
             setSubmitting(false);
             setUploadProgress(0);
-            resetForm();
         }
     };
 
@@ -176,6 +167,8 @@ export const AddMovies = () => {
         border: "2px solid #336a8c",
         color: "#418cb3",
     };
+
+    console.log(errors, "errors");
 
     return (
         <section className="p-[30px]">

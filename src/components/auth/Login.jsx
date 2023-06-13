@@ -76,7 +76,7 @@ const Login = () => {
             error?.inner?.forEach((error) => {
                 validationErrors[error.path] = error.message;
             });
-            ErrorNotification(error?.response?.data?.message);
+            Notification(error?.response?.data?.message, "error");
             setErrors(validationErrors);
         }
     };

@@ -30,4 +30,10 @@ export const useUserDataStore = create((set) => ({
             return { userdata: updatedData };
         });
     },
+    logout: () => {
+        set(() => {
+            localStorage.clear();
+            return { userdata: userDataInitialState };
+        });
+    },
 }));

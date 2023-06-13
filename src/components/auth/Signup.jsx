@@ -25,7 +25,7 @@ const Signup = () => {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
-        profile: "",
+        profilePic: "",
     });
     const [imageName, setImageName] = useState("");
     const [errors, setErrors] = useState({});
@@ -41,7 +41,7 @@ const Signup = () => {
 
     //storing profile image
     const handleChange = (file) => {
-        setFormData((prev) => ({ ...prev, ["profile"]: file }));
+        setFormData((prev) => ({ ...prev, ["profilePic"]: file }));
         setImageName(file.name);
     };
 
@@ -75,7 +75,6 @@ const Signup = () => {
                 navigate("/auth/login");
             }
         } catch (error) {
-            // console.log(error);
             const validationErrors = {};
             error.inner.forEach((error) => {
                 validationErrors[error.path] = error.message;
