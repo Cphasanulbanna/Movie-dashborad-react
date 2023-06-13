@@ -31,12 +31,35 @@ const Skelton = ({ type, count }) => {
             </div>
         );
     };
+
+    const EditFormSkelton = () => {
+        return (
+            <div className="edit-form">
+                <div className="left">
+                    <div className="field"></div>
+                    <div className="field"></div>
+                    <div className="field"></div>
+                    <div className="detail"></div>
+                </div>
+                <div className="right">
+                    <div className="field"></div>
+                    <div className="field"></div>
+                    <div className="image"></div>
+                </div>
+                <div className="button"></div>
+            </div>
+        );
+    };
     if (type === "feed") {
         return Array(6).fill(<FeedSkelton />);
     }
 
     if (type === "rectangle") {
         return Array(6).fill(<RectangleSkelton />);
+    }
+
+    if (type === "edit-form") {
+        return <EditFormSkelton />;
     }
 };
 

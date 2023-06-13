@@ -10,7 +10,7 @@ import deleteIcon from "../../assets/icons/delete.png";
 import next from "../../assets/icons/next-arrow.png";
 
 //components
-import { EditForm } from "../EditForm";
+import { EditForm } from "../modals/EditForm";
 
 export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
     //movie edit modal state

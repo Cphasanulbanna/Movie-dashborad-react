@@ -77,3 +77,56 @@
     background-color: #4a4a4a;
     width: 4.5%;
 }
+
+.edit-form {
+    background-color: #3e3e3e;
+    animation: skelton 1s ease infinite alternate;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    min-height: 500px;
+}
+
+.edit-form .left {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 48%;
+}
+
+.edit-form .right {
+    gap: 25px;
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-form .field {
+    height: 48px;
+    background-color: #4a4a4a;
+    border-radius: 4px;
+}
+
+.edit-form .left .detail {
+    height: 120px;
+    background-color: #4a4a4a;
+    border-radius: 4px;
+}
+
+.edit-form .image {
+    height: 200px;
+    border-radius: 5px;
+    width: 250px;
+    background-color: #4a4a4a;
+}
+
+.edit-form .button {
+    width: 170px;
+    height: 48px;
+    border-radius: 4px;
+    background-color: #4a4a4a;
+}
