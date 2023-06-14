@@ -33,6 +33,7 @@ export const MovieSinglePage = () => {
                 signal: controller.signal,
             });
             setMovie(resposne.data?.movie);
+            console.log(resposne.data.movie);
             setloading(false);
             controller.abort();
         } catch (error) {}
@@ -69,6 +70,16 @@ export const MovieSinglePage = () => {
                             ))}
                         </div>
                         <StarRating rating={movie?.rating} />
+                        <div className="flex flex-wrap gap-[18px]">
+                            {movie?.gallery?.map((item) => (
+                                <div className="w-[47%]">
+                                    <img
+                                        src={item.url}
+                                        alt="gallery-image"
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </>
             )}

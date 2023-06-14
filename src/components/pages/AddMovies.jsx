@@ -43,7 +43,6 @@ export const AddMovies = () => {
     //form  fields validation
     const formSchema = yup.object().shape({
         name: yup.string().required("Movie name is required"),
-        year: yup.string().required("Year is required"),
         poster: yup.string().required("Movie poster is required"),
     });
 
