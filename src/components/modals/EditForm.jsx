@@ -151,6 +151,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         });
     };
 
+    console.log(genres, "genres");
+
     //closing edit form
     const closeModal = () => {
         setShowEditModal(false);

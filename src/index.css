@@ -198,9 +198,10 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 35px;
-    height: 35px;
+    width: 35px !important;
+    height: 35px !important;
     user-select: none;
+    cursor: pointer;
 }
 
 .previous-page-btn,
@@ -241,6 +242,8 @@ p {
 .paginate-container .disabled-page-btn {
     filter: grayscale(1);
     user-select: none;
+    width: 35px;
+    height: 35px;
 }
 .paginate-container .disabled-page-btn:hover {
     cursor: not-allowed !important;

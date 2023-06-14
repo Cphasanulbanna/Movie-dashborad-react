@@ -50,7 +50,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                         </h1>
 
                         <div className="flex gap-[12px] items-center flex-wrap">
-                            {movie.genre?.map((item) => (
+                            {movie.genre?.slice(0, 4).map((item) => (
                                 <p
                                     key={item?._id}
                                     className="py-[6px] px-[15px] rounded-[25px] border border-[#fff] w-max"
