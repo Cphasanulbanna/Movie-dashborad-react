@@ -25,7 +25,6 @@ export const Movies = () => {
     //All movies
     const [movies, setMovies] = useState([]);
     const [pageCount, setPageCount] = useState(null);
-    const [itemOffset, setItemOffset] = useState(0);
 
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
 
@@ -33,13 +32,12 @@ export const Movies = () => {
 
     //search keyword
     const { query } = useQueryStore();
-    const { updatemovies } = useUpdateMovies();
 
     //movie delete modal state
     const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
 
     //to update homepage when a movie is edited
-    const { updateMoviesList } = useUpdateMovies();
+    const { updateMoviesList, updatemovies } = useUpdateMovies();
 
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
@@ -130,12 +128,19 @@ export const Movies = () => {
                 </div>
                 <ReactPaginate
                     breakLabel="..."
-                    nextLabel="next >"
+                    nextLabel=">"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}
-                    pageCount={pageCount}
-                    previousLabel="< previous"
+                    pageCount={Math.ceil(pageCount)}
+                    previousLabel="<"
                     renderOnZeroPageCount={null}
+                    activeClassName="active-page"
+                    previousClassName="previous-page-btn"
+                    nextClassName="next-page-btn"
+                    containerClassName="paginate-container"
+                    pageClassName="middle-pages"
+                    disabledClassName="disabled-page-btn"
+                    nextLinkClassName="disabled-page-link"
                 />
             </section>
         </>
