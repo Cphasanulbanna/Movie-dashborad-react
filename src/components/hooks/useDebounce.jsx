@@ -4,7 +4,7 @@ function useDebounce(incomingFunction, dependency) {
     useEffect(() => {
         const debounceTheFunction = setTimeout(() => {
             incomingFunction();
-        }, 200);
+        }, 300);
         return () => {
             clearTimeout(debounceTheFunction);
         };

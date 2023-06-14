@@ -45,15 +45,15 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                 </div>
                 <div className="w-[60%] p-[20px] flex flex-col gap-[15px] one">
                     <div className="flex  flex-col gap-[10px]">
-                        <h1 className="font-bold">
-                            {movie.name} ({movie.year})
+                        <h1 className="font-bold capitalize">
+                            {movie.name} {movie.year && `(${movie.year})`}
                         </h1>
 
                         <div className="flex gap-[12px] items-center flex-wrap">
                             {movie.genre?.slice(0, 4).map((item) => (
                                 <p
                                     key={item?._id}
-                                    className="py-[6px] px-[15px] rounded-[25px] border border-[#fff] w-max"
+                                    className=" py-[6px] px-[15px] rounded-[25px] border border-[#fff] w-max"
                                 >
                                     {item.title}
                                 </p>
