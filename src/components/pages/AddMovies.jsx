@@ -120,9 +120,17 @@ export const AddMovies = () => {
             console.log("entered");
             setSubmitting(true);
             e.preventDefault();
+            const newFomrData = new FormData();
+            newFomrData.append("name", formData.name);
+            newFomrData.append("year", formData.year);
+            newFomrData.append("rating", formData.rating);
+            newFomrData.append("leadactor", formData.leadactor);
+            newFomrData.append("description", formData.description);
+            newFomrData.append("poster", formData.poster);
+            newFomrData.append("genre", formData.genre);
             await formSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosConfig.post(`/movies/`, formData, {
+            const response = await axiosConfig.post(`/movies/`, newFomrData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

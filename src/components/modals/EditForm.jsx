@@ -37,6 +37,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         description: "",
         poster: "",
         genre: [],
+        gallery: [],
     });
 
     const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
@@ -44,6 +45,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
 
     const access_token = userdata?.access_token;
     const fileInputRef = useRef(null);
+    const filesInputRef = useRef(null);
 
     //fetch movie
     const fetchMovie = async () => {
@@ -93,6 +95,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         fileInputRef.current.click();
     };
 
+    const openFilesInput = () => {
+        filesInputRef.current.click();
+    };
+
     //setting data
     const handleDataChange = (e) => {
         const { name, value } = e.target;
@@ -122,6 +128,9 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             newFomrData.append("description", formData.description);
             newFomrData.append("poster", formData.poster);
             newFomrData.append("genre", formData.genre);
+            Array.from(formData.gallery).forEach((file) => {
+                newFomrData.append("gallery", file);
+            });
 
             const response = await axiosConfig.put(`/movies/${id}`, newFomrData, {
                 headers: {
@@ -139,6 +148,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                 description: "",
                 poster: "",
                 genre: [],
+                gallery: [],
             });
             Notification("Movie updated", "success");
         } catch (error) {
@@ -162,7 +172,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         setShowEditModal(false);
     };
 
-    console.log(formData.genre, "genres+++++");
+    const handleGalleryChange = (e) => {
+        setFormData((prev) => ({ ...prev, ["gallery"]: e.target.files }));
+    };
+    console.log(formData.gallery, "gallery+++++");
 
     //image upload progress
     const onUploadProgress = (progressEvent) => {
@@ -364,6 +377,59 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                             </div>
                                         )}
                                     </div>
+                                </div>
+                                <div className="flex flex-col gap-[5px] relative">
+                                    <label
+                                        htmlFor="name"
+                                        className="text-light-white"
+                                    >
+                                        Movie gallery
+                                    </label>
+
+                                    <div
+                                        style={inputStyle}
+                                        onClick={openFilesInput}
+                                        className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
+                                    >
+                                        {formData?.poster ? (
+                                            <h1>{formData?.gallery?.map((item) => item.name)}</h1>
+                                        ) : (
+                                            <>
+                                                {" "}
+                                                <div
+                                                    style={{ border: "1px dashed #336a8c" }}
+                                                    className="absolute inset-[5px]"
+                                                ></div>
+                                                <div className="w-[20px] h-[20px] z-[100] ">
+                                                    <img
+                                                        src={editImage}
+                                                        alt="edit-image"
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
+
+                                        <input
+                                            name="gallery"
+                                            type="file"
+                                            multiple
+                                            onChange={handleGalleryChange}
+                                            className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
+                                            ref={filesInputRef}
+                                        />
+                                        <div className="absolute z-20  right-[15px]">
+                                            {formData?.gallery?.length
+                                                ? "Change images"
+                                                : " click here to upload images"}
+                                        </div>
+                                    </div>
+
+                                    <p
+                                        onMouseOver={(e) => e.stopPropagation()}
+                                        className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
+                                    >
+                                        {errors.poster}
+                                    </p>
                                 </div>
                             </div>
                             {/* rightbox ending  */}

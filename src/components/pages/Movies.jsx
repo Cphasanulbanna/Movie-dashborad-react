@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 //package
 import { ToastContainer } from "react-toastify";
@@ -6,6 +6,9 @@ import ReactPaginate from "react-paginate";
 
 //axios
 import axiosConfig from "../../../axiosConfig";
+
+//hook
+import useDebounce from "../hooks/useDebounce";
 
 //components
 import { MovieCard } from "../movie/MovieCard";
@@ -20,7 +23,6 @@ import {
     useUpdateMovies,
     useUserDataStore,
 } from "../zustand/store";
-import useDebounce from "../hooks/useDebounce";
 
 export const Movies = () => {
     //All movies
