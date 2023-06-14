@@ -39,8 +39,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         genre: [],
     });
 
-    console.log(formData.genre, "genres");
-
     const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
     const { userdata } = useUserDataStore();
 
@@ -117,7 +115,15 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     //updating movie
     const updateMovieData = async () => {
         try {
-            const response = await axiosConfig.put(`/movies/${id}`, formData, {
+            const newFomrData = new FormData();
+            newFomrData.append("name", formData.name);
+            newFomrData.append("year", formData.year);
+            newFomrData.append("rating", formData.rating);
+            newFomrData.append("description", formData.description);
+            newFomrData.append("poster", formData.poster);
+            newFomrData.append("genre", formData.genre);
+
+            const response = await axiosConfig.put(`/movies/${id}`, newFomrData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -151,12 +157,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         });
     };
 
-    console.log(genres, "genres");
-
     //closing edit form
     const closeModal = () => {
         setShowEditModal(false);
     };
+
+    console.log(formData.genre, "genres+++++");
 
     //image upload progress
     const onUploadProgress = (progressEvent) => {

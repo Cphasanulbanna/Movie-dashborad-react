@@ -20,6 +20,7 @@ import {
     useUpdateMovies,
     useUserDataStore,
 } from "../zustand/store";
+import useDebounce from "../hooks/useDebounce";
 
 export const Movies = () => {
     //All movies
@@ -69,9 +70,13 @@ export const Movies = () => {
         } catch (error) {}
     };
 
-    useEffect(() => {
-        fetchAllMovies();
-    }, [query, updatemovies]);
+    useDebounce(fetchAllMovies, [query, updatemovies]);
+
+    // Invoke when user click to request another page.
+    const handlePageClick = (event) => {
+        const pageNumber = event?.selected + 1;
+        fetchAllMovies(pageNumber);
+    };
 
     //close deletemodal function
     const closeDeleteModal = () => {
@@ -92,12 +97,6 @@ export const Movies = () => {
         } catch (error) {
             Notification(error?.response?.data?.message, "error");
         }
-    };
-
-    // Invoke when user click to request another page.
-    const handlePageClick = (event) => {
-        const pageNumber = event?.selected + 1;
-        fetchAllMovies(pageNumber);
     };
 
     return (
