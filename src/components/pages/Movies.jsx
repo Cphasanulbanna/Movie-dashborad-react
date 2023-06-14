@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 
+//package
+import { ToastContainer } from "react-toastify";
+import ReactPaginate from "react-paginate";
+
 //axios
 import axiosConfig from "../../../axiosConfig";
 
@@ -7,6 +11,7 @@ import axiosConfig from "../../../axiosConfig";
 import { MovieCard } from "../movie/MovieCard";
 import ConfirmDelete from "../modals/ConfirmDelete";
 import Skelton from "../general/skelton-loader/Skelton";
+import Notification from "../../assets/general/utils/Notification";
 
 //store
 import {
@@ -15,12 +20,13 @@ import {
     useUpdateMovies,
     useUserDataStore,
 } from "../zustand/store";
-import Notification from "../../assets/general/utils/Notification";
-import { ToastContainer } from "react-toastify";
 
 export const Movies = () => {
     //All movies
     const [movies, setMovies] = useState([]);
+    const [pageCount, setPageCount] = useState(null);
+    const [itemOffset, setItemOffset] = useState(0);
+
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
 
     const [isLoading, setLoading] = useState(true);
@@ -39,11 +45,13 @@ export const Movies = () => {
     const access_token = userdata?.access_token;
 
     //fetch all movies
-    const fetchAllMovies = async () => {
+    const fetchAllMovies = async (p) => {
         try {
             const controller = new AbortController();
             let url = "/movies";
-            const params = {};
+            const params = {
+                p: p,
+            };
             if (query) {
                 params.q = query;
             }
@@ -57,6 +65,7 @@ export const Movies = () => {
             });
 
             setMovies(response.data?.moviesList);
+            setPageCount(response.data?.total_pages);
             setLoading(false);
             controller.abort();
         } catch (error) {}
@@ -87,6 +96,12 @@ export const Movies = () => {
         }
     };
 
+    // Invoke when user click to request another page.
+    const handlePageClick = (event) => {
+        const pageNumber = event?.selected + 1;
+        fetchAllMovies(pageNumber);
+    };
+
     return (
         <>
             {showDeleteModal && (
@@ -113,6 +128,15 @@ export const Movies = () => {
                         ))
                     )}
                 </div>
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={pageCount}
+                    previousLabel="< previous"
+                    renderOnZeroPageCount={null}
+                />
             </section>
         </>
     );
