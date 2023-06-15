@@ -116,7 +116,6 @@ export const AddMovies = () => {
     //adding new movie function
     const AddMovie = async (e) => {
         try {
-            console.log("entered");
             setSubmitting(true);
             e.preventDefault();
             const newFomrData = new FormData();
@@ -136,7 +135,6 @@ export const AddMovies = () => {
 
                 onUploadProgress,
             });
-            console.log(response.data, "resposne");
             updateMoviesList();
             setUploadProgress(0);
             Notification("Movie added", "success");
@@ -174,8 +172,6 @@ export const AddMovies = () => {
         border: "2px solid #336a8c",
         color: "#418cb3",
     };
-
-    console.log(errors, "errors");
 
     return (
         <section className="p-[30px]">

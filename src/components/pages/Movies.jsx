@@ -91,7 +91,7 @@ export const Movies = () => {
             setShowDeleteModal(false);
             const response = await axiosConfig.delete("/movies", {
                 data: {
-                    movieIds: [movieIdToDelete],
+                    movieId: movieIdToDelete,
                 },
             });
             updateMoviesList();

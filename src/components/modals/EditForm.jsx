@@ -100,36 +100,40 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     //updating movie
     const updateMovieData = async () => {
         try {
-            const newFomrData = new FormData();
-            newFomrData.append("name", formData?.name);
-            newFomrData.append("year", formData?.year);
-            newFomrData.append("rating", formData?.rating);
-            newFomrData.append("description", formData?.description);
-            newFomrData.append("poster", formData?.poster);
-            newFomrData.append("genre", formData?.genre);
-            Array.from(formData?.gallery)?.forEach((file) => {
-                newFomrData.append("gallery", file);
-            });
+            if (!isEqual) {
+                const newFomrData = new FormData();
+                newFomrData.append("name", formData?.name);
+                newFomrData.append("year", formData?.year);
+                newFomrData.append("rating", formData?.rating);
+                newFomrData.append("description", formData?.description);
+                newFomrData.append("poster", formData?.poster);
+                newFomrData.append("genre", formData?.genre);
+                Array.from(formData?.gallery)?.forEach((file) => {
+                    newFomrData.append("gallery", file);
+                });
 
-            const response = await axiosConfig.put(`/movies/${movie?._id}`, newFomrData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-                onUploadProgress,
-            });
-            updateMoviesList();
-            setUploadProgress(0);
-            setFormData({
-                name: "",
-                year: "",
-                rating: "",
-                leadactor: "",
-                description: "",
-                poster: "",
-                genre: [],
-                gallery: [],
-            });
-            Notification("Movie updated", "success");
+                const response = await axiosConfig.put(`/movies/${movie?._id}`, newFomrData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    onUploadProgress,
+                });
+                updateMoviesList();
+                setUploadProgress(0);
+                setFormData({
+                    name: "",
+                    year: "",
+                    rating: "",
+                    leadactor: "",
+                    description: "",
+                    poster: "",
+                    genre: [],
+                    gallery: [],
+                });
+                Notification("Movie updated", "success");
+            } else {
+                Notification("Please modify data to update", "error");
+            }
         } catch (error) {
             Notification(error?.response?.data?.message, "error");
         }
@@ -170,11 +174,29 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         });
     };
 
+    const prevFormDataRef = useRef(null);
+
+    useEffect(() => {
+        prevFormDataRef.current = formData;
+    }, []);
+
+    function checkDataEquality(obj1, obj2) {
+        for (let key in obj1) {
+            if (obj1[key] !== obj2[key]) {
+                return false; // Found a mismatch, objects are not equal
+            }
+        }
+        return true; // All values are equal
+    }
+
+    // Example usage
+    const isEqual = checkDataEquality(prevFormDataRef.current, formData);
+
     //image upload progress
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
-        if (formData?.poster) {
+        if (formData?.poster !== prevFormDataRef?.current.poster) {
             setUploadProgress(percent);
         }
     };
