@@ -287,7 +287,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         onClick={openFilesInput}
                                         className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
                                     >
-                                        {formData?.gallery !== prevFormDataRef.current?.gallery ? (
+                                        {formData?.gallery.length !==
+                                        prevFormDataRef.current?.gallery.length ? (
                                             <h1 className="whitespace-nowrap text-ellipsis overflow-hidden px-[6px]">
                                                 {formData?.gallery?.map((item) => item.name + ", ")}
                                             </h1>
@@ -334,12 +335,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             return (
                                                 <div
                                                     key={index}
-                                                    className="w-[50px] relative max-h-[50px] overflow-hidden"
+                                                    className="w-[50px] relative max-h-[50px]"
                                                 >
                                                     {/* {item && (<></>)} */}
                                                     <div
                                                         onClick={() => closePreview(item, index)}
-                                                        className="w-[15px] f-[15px] cursor-pointer absolute top-0 right-0 bg-violet"
+                                                        className=" w-[15px] f-[15px] cursor-pointer top-[-8px] absolute right-[-6px] h-[15px] p-[3px] bg-[#dfdfdf] overflow-hidden rounded-full"
                                                     >
                                                         <img
                                                             src={close}
@@ -347,6 +348,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                                         />
                                                     </div>
                                                     <img
+                                                        className="h-[50px]"
                                                         src={item}
                                                         alt="preview"
                                                     />
