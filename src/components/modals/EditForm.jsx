@@ -120,17 +120,9 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                 });
                 updateMoviesList();
                 setUploadProgress(0);
-                setFormData({
-                    name: "",
-                    year: "",
-                    rating: "",
-                    leadactor: "",
-                    description: "",
-                    poster: "",
-                    genre: [],
-                    gallery: [],
-                });
+
                 Notification("Movie updated", "success");
+                setShowEditModal(false);
             } else {
                 Notification("Please modify data to update", "error");
             }
@@ -295,11 +287,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         onClick={openFilesInput}
                                         className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
                                     >
-                                        {formData?.poster ? (
-                                            <h1>{formData?.gallery?.map((item) => item.name)}</h1>
+                                        {formData?.gallery !== prevFormDataRef.current?.gallery ? (
+                                            <h1 className="whitespace-nowrap text-ellipsis overflow-hidden px-[6px]">
+                                                {formData?.gallery?.map((item) => item.name + ", ")}
+                                            </h1>
                                         ) : (
                                             <>
-                                                {" "}
                                                 <div
                                                     style={{ border: "1px dashed #336a8c" }}
                                                     className="absolute inset-[5px]"
@@ -323,7 +316,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         />
                                         <div className="absolute z-20  right-[15px]">
                                             {formData?.gallery?.length
-                                                ? "Change images"
+                                                ? ""
                                                 : " click here to upload images"}
                                         </div>
                                     </div>
