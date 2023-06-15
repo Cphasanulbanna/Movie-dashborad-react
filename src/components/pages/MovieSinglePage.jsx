@@ -33,7 +33,6 @@ export const MovieSinglePage = () => {
                 signal: controller.signal,
             });
             setMovie(resposne.data?.movie);
-            console.log(resposne.data.movie);
             setloading(false);
             controller.abort();
         } catch (error) {}
@@ -50,6 +49,7 @@ export const MovieSinglePage = () => {
                 <>
                     <div className="w-[40%]">
                         <img
+                            className="object-contain"
                             src={movie?.poster.url}
                             alt="poster"
                         />

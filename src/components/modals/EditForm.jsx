@@ -14,6 +14,7 @@ import Skelton from "../general/skelton-loader/Skelton";
 import editImage from "../../assets/icons/edit-image.png";
 import axiosConfig from "../../../axiosConfig";
 import CheckBox from "../../components/fields/CheckBox";
+import close from "../../assets/icons/close.png";
 
 //store
 import { useUpdateMovies, useUserDataStore } from "../zustand/store";
@@ -39,6 +40,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
         genre: [],
         gallery: [],
     });
+
+    const [galleryPreview, setGalleryPreview] = useState([]);
 
     const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
     const { userdata } = useUserDataStore();
@@ -173,9 +176,24 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     };
 
     const handleGalleryChange = (e) => {
-        setFormData((prev) => ({ ...prev, ["gallery"]: e.target.files }));
+        setFormData((prev) => ({
+            ...prev,
+            gallery: [...prev.gallery, ...Array.from(e.target.files)],
+        }));
+        setGalleryPreview((prev) => [
+            ...prev,
+            ...Array.from(e.target.files).map((file) => URL.createObjectURL(file)),
+        ]);
     };
-    console.log(formData.gallery, "gallery+++++");
+
+    const closePreview = (preview, index) => {
+        setGalleryPreview((prev) => [...prev.filter((item) => item !== preview)]);
+        setFormData((prev) => {
+            const newGallery = [...prev.gallery]; // Clone the existing gallery array
+            newGallery.splice(index, 1); // Remove the item at the specified index
+            return { ...prev, gallery: newGallery }; // Update the formData object with the modified gallery array
+        });
+    };
 
     //image upload progress
     const onUploadProgress = (progressEvent) => {
@@ -185,6 +203,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             setUploadProgress(percent);
         }
     };
+
+    console.log(formData.gallery, "preview");
 
     const inputStyle = {
         background: "#082335",
@@ -223,6 +243,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                             errors={errors?.name}
                                             placeholder={movie?.name}
                                             css={inputStyle}
+                                            value={movie?.name}
                                         />
                                     </div>
                                 </div>
@@ -247,25 +268,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                 </div>
 
                                 <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px]">
-                                        <label
-                                            htmlFor="name"
-                                            className="text-light-white"
-                                        >
-                                            Lead Actor
-                                        </label>
-                                        <Input
-                                            formData={formData}
-                                            name="leadactor"
-                                            type="text"
-                                            handleDataChange={handleDataChange}
-                                            errors={errors?.leadactor}
-                                            css={inputStyle}
-                                            placeholder={movie?.leadactor}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-[8px] ">
                                     <div className="flex flex-col gap-[5px] relative">
                                         <label
                                             htmlFor="name"
@@ -283,99 +285,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                         <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
                                             {errors?.description}
                                         </span>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* leftbox edning  */}
-
-                            {/* right box  */}
-
-                            <div className="flex gap-[15px] flex-col w-[48%]">
-                                <div>
-                                    <h3> Genres</h3>
-                                    <div
-                                        style={inputStyle}
-                                        className="flex items-center flex-wrap gap-[15px] p-[7px]"
-                                    >
-                                        {genres?.map((genre) => (
-                                            <CheckBox
-                                                key={genre?._id}
-                                                handleClick={() => selectGenres(genre?._id)}
-                                                genre={genre}
-                                                formData={formData}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-[5px]">
-                                    <label
-                                        htmlFor="rating"
-                                        className="text-light-white"
-                                    >
-                                        Rating
-                                    </label>
-                                    <StarRating
-                                        dimension={"40px"}
-                                        handleRating={handleRating}
-                                        name="rating"
-                                        rating={movie?.rating || formData?.rating}
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px]">
-                                        <label
-                                            htmlFor="name"
-                                            className="text-light-white"
-                                        >
-                                            Movie poster
-                                        </label>
-                                        <div
-                                            onClick={openFileInput}
-                                            className="relative w-[160px] h-[150px] rounded-[5px] overflow-hidden flex justify-center items-center"
-                                        >
-                                            <div className="w-[35px] h-[35px] cursor-pointer z-[100] hover:opacity-[0.8]">
-                                                <img
-                                                    src={editImage}
-                                                    alt="edit-image"
-                                                />
-                                            </div>
-                                            <input
-                                                name="poster"
-                                                type="file"
-                                                onChange={handlePosterChange}
-                                                className="absolute z-[-1] h-[100%] w-[100%] opacity-0"
-                                                ref={fileInputRef}
-                                            />
-                                            <div className="absolute z-20 inset-0  cursor-pointer opacity-[0.7]">
-                                                <img
-                                                    src={
-                                                        posterPreview
-                                                            ? posterPreview
-                                                            : movie?.poster.url
-                                                    }
-                                                    alt="poster"
-                                                    className={"cover"}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        {uploadProgress > 1 && (
-                                            <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">
-                                                <div
-                                                    style={
-                                                        uploadProgress > 0
-                                                            ? { width: `${uploadProgress}%` }
-                                                            : { width: "0" }
-                                                    }
-                                                    className="h-[30px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
-                                                >
-                                                    uploading {formData?.poster.name}...{" "}
-                                                    <span className="text-[#111]">
-                                                        {uploadProgress}%
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-[5px] relative">
@@ -430,6 +339,145 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                     >
                                         {errors.poster}
                                     </p>
+                                </div>
+                                <div className="flex items-center gap-[15px]">
+                                    {galleryPreview?.map((item, index) => {
+                                        if (item) {
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className="w-[50px] relative max-h-[50px] overflow-hidden"
+                                                >
+                                                    {/* {item && (<></>)} */}
+                                                    <div
+                                                        onClick={() => closePreview(item, index)}
+                                                        className="w-[15px] f-[15px] cursor-pointer absolute top-0 right-0 bg-violet"
+                                                    >
+                                                        <img
+                                                            src={close}
+                                                            alt="close"
+                                                        />
+                                                    </div>
+                                                    <img
+                                                        src={item}
+                                                        alt="preview"
+                                                    />
+                                                </div>
+                                            );
+                                        }
+                                    })}
+                                </div>
+                            </div>
+                            {/* leftbox edning  */}
+
+                            {/* right box  */}
+
+                            <div className="flex gap-[15px] flex-col w-[48%]">
+                                <div>
+                                    <h3> Genres</h3>
+                                    <div
+                                        style={inputStyle}
+                                        className="flex items-center flex-wrap gap-[15px] p-[7px]"
+                                    >
+                                        {genres?.map((genre) => (
+                                            <CheckBox
+                                                key={genre?._id}
+                                                handleClick={() => selectGenres(genre?._id)}
+                                                genre={genre}
+                                                formData={formData}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-[8px] ">
+                                    <div className="flex flex-col gap-[5px]">
+                                        <label
+                                            htmlFor="name"
+                                            className="text-light-white"
+                                        >
+                                            Lead Actor
+                                        </label>
+                                        <Input
+                                            formData={formData}
+                                            name="leadactor"
+                                            type="text"
+                                            handleDataChange={handleDataChange}
+                                            errors={errors?.leadactor}
+                                            css={inputStyle}
+                                            placeholder={movie?.leadactor}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-[5px]">
+                                    <label
+                                        htmlFor="rating"
+                                        className="text-light-white"
+                                    >
+                                        Rating
+                                    </label>
+                                    <StarRating
+                                        dimension={"40px"}
+                                        handleRating={handleRating}
+                                        name="rating"
+                                        rating={movie?.rating || formData?.rating}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-[8px] ">
+                                    <div className="flex flex-col gap-[5px]">
+                                        <label
+                                            htmlFor="name"
+                                            className="text-light-white"
+                                        >
+                                            Movie poster
+                                        </label>
+                                        <div
+                                            onClick={openFileInput}
+                                            className="relative w-[160px] h-[150px] rounded-[5px] overflow-hidden flex justify-center items-center"
+                                        >
+                                            <div className="w-[35px] h-[35px] cursor-pointer z-[100] hover:opacity-[0.8]">
+                                                <img
+                                                    src={editImage}
+                                                    alt="edit-image"
+                                                />
+                                            </div>
+                                            <input
+                                                name="poster"
+                                                type="file"
+                                                onChange={handlePosterChange}
+                                                className="absolute z-[-1] h-[100%] w-[100%] opacity-0"
+                                                ref={fileInputRef}
+                                            />
+                                            <div className="absolute z-20 inset-0  cursor-pointer opacity-[0.7]">
+                                                <img
+                                                    src={
+                                                        posterPreview
+                                                            ? posterPreview
+                                                            : movie?.poster.url
+                                                    }
+                                                    alt="poster"
+                                                    className="contain"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {uploadProgress > 1 && (
+                                            <div className="w-[100%] rounded-[4px] overflow-hidden h-[30px] border-blue flex items-center">
+                                                <div
+                                                    style={
+                                                        uploadProgress > 0
+                                                            ? { width: `${uploadProgress}%` }
+                                                            : { width: "0" }
+                                                    }
+                                                    className="h-[30px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
+                                                >
+                                                    uploading {formData?.poster.name}...{" "}
+                                                    <span className="text-[#111]">
+                                                        {uploadProgress}%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             {/* rightbox ending  */}
