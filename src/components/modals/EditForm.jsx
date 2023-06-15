@@ -22,23 +22,23 @@ import { useUpdateMovies, useUserDataStore } from "../zustand/store";
 //functions
 import Notification from "../../assets/general/utils/Notification";
 
-export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
+export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     //states
-    const [movie, setMovie] = useState({});
+    // const [movie, setMovie] = useState({});
     const [genres, setGenres] = useState([]);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [errors, setErrors] = useState({});
     const [posterPreview, setPosterPreview] = useState(null);
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
-        name: "",
-        year: "",
-        rating: "",
-        leadactor: "",
-        description: "",
-        poster: "",
-        genre: [],
-        gallery: [],
+        name: movie?.name,
+        year: movie?.year || "",
+        rating: movie?.rating || "",
+        leadactor: movie?.leadactor || "",
+        description: movie?.description || "",
+        poster: movie?.poster,
+        genre: movie?.genre?.map((item) => item?._id) || [],
+        gallery: movie?.gallery || [],
     });
 
     const [galleryPreview, setGalleryPreview] = useState([]);
@@ -49,29 +49,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const access_token = userdata?.access_token;
     const fileInputRef = useRef(null);
     const filesInputRef = useRef(null);
-
-    //fetch movie
-    const fetchMovie = async () => {
-        try {
-            const controller = new AbortController();
-            await id;
-            if (id) {
-                const resposne = await axiosConfig.get(`/movies/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${access_token}`,
-                    },
-                    signal: controller.signal,
-                });
-                setMovie(resposne.data?.movie);
-                setFormData((prev) => ({
-                    ...prev,
-                    ["genre"]: resposne.data?.movie?.genre?.map((item) => item._id),
-                }));
-                setLoading(false);
-                controller.abort();
-            }
-        } catch (error) {}
-    };
 
     //fetchGenres
     const fetchGenres = async () => {
@@ -89,7 +66,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     };
 
     useEffect(() => {
-        fetchMovie();
         fetchGenres();
     }, []);
 
@@ -125,17 +101,17 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     const updateMovieData = async () => {
         try {
             const newFomrData = new FormData();
-            newFomrData.append("name", formData.name);
-            newFomrData.append("year", formData.year);
-            newFomrData.append("rating", formData.rating);
-            newFomrData.append("description", formData.description);
-            newFomrData.append("poster", formData.poster);
-            newFomrData.append("genre", formData.genre);
-            Array.from(formData.gallery).forEach((file) => {
+            newFomrData.append("name", formData?.name);
+            newFomrData.append("year", formData?.year);
+            newFomrData.append("rating", formData?.rating);
+            newFomrData.append("description", formData?.description);
+            newFomrData.append("poster", formData?.poster);
+            newFomrData.append("genre", formData?.genre);
+            Array.from(formData?.gallery)?.forEach((file) => {
                 newFomrData.append("gallery", file);
             });
 
-            const response = await axiosConfig.put(`/movies/${id}`, newFomrData, {
+            const response = await axiosConfig.put(`/movies/${movie?._id}`, newFomrData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -162,10 +138,9 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
     //selecting / unselecting genres
     const selectGenres = (genreId) => {
         setFormData((prev) => {
-            if (!prev?.genre.includes(genreId)) {
+            if (!prev?.genre?.includes(genreId)) {
                 return { ...prev, genre: [...prev?.genre, genreId] };
             }
-
             return { ...prev, genre: prev.genre.filter((id) => id !== genreId) };
         });
     };
@@ -203,8 +178,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
             setUploadProgress(percent);
         }
     };
-
-    console.log(formData.gallery, "preview");
 
     const inputStyle = {
         background: "#082335",
@@ -452,7 +425,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, id }) => {
                                                     src={
                                                         posterPreview
                                                             ? posterPreview
-                                                            : movie?.poster.url
+                                                            : movie?.poster?.url
                                                     }
                                                     alt="poster"
                                                     className="contain"

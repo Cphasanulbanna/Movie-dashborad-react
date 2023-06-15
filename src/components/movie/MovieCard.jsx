@@ -12,7 +12,7 @@ import next from "../../assets/icons/next-arrow.png";
 //components
 import { EditForm } from "../modals/EditForm";
 
-export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
+export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
     //movie edit modal state
     const [showEditModal, setShowEditModal] = useState(false);
 
@@ -20,18 +20,17 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
     const [movieId, setMovieId] = useState("");
 
     //open edit form function
-    const opneEditForm = (id) => {
-        setMovieId(id);
+    const opneEditForm = () => {
         setShowEditModal(true);
     };
 
     return (
         <>
-            {showEditModal && movieId && (
+            {showEditModal && (
                 <EditForm
                     setShowEditModal={setShowEditModal}
                     showEditModal={showEditModal}
-                    id={movieId}
+                    movie={movie}
                 />
             )}
 
@@ -66,7 +65,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                         <StarRating rating={movie?.rating} />
                         <div className="flex items-center gap-[12px]">
                             <div
-                                onClick={() => opneEditForm(movie._id)}
+                                onClick={opneEditForm}
                                 className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
                             >
                                 <img
@@ -104,4 +103,4 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
             </div>
         </>
     );
-};
+});

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 //packages
 import * as yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //components
@@ -179,189 +179,189 @@ export const AddMovies = () => {
 
     return (
         <section className="p-[30px]">
-            {isLoading ? (
+            {/* {isLoading ? (
                 <Skelton type="edit-form" />
-            ) : (
-                <form
-                    onSubmit={AddMovie}
-                    action=""
-                    className="flex justify-between gap-[25px]"
-                >
-                    <div className="left flex flex-col gap-[20px] w-[48%]">
-                        <div className="flex flex-col gap-[5px]">
-                            <label
-                                htmlFor="name"
-                                className="text-light-white"
-                            >
-                                Movie name
-                            </label>
-                            <Input
-                                formData={formData}
-                                name="name"
-                                type="text"
-                                handleDataChange={handleDataChange}
-                                errors={errors?.name}
-                                css={inputStyle}
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-[5px]">
-                            <label
-                                htmlFor="name"
-                                className="text-light-white"
-                            >
-                                Release year
-                            </label>
-                            <Input
-                                formData={formData}
-                                name="year"
-                                type="text"
-                                handleDataChange={handleDataChange}
-                                errors={errors?.year}
-                                css={inputStyle}
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-[5px]">
-                            <label
-                                htmlFor="name"
-                                className="text-light-white"
-                            >
-                                Lead Actor
-                            </label>
-                            <Input
-                                formData={formData}
-                                name="leadactor"
-                                type="text"
-                                handleDataChange={handleDataChange}
-                                errors={errors?.leadactor}
-                                css={inputStyle}
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-[5px] relative">
-                            <label
-                                htmlFor="name"
-                                className="text-light-white"
-                            >
-                                Details
-                            </label>
-                            <textarea
-                                placeholder="Add movie details"
-                                name="description"
-                                onChange={handleDataChange}
-                                style={inputStyle}
-                                className="p-[10px] min-h-[120px] max-h-[120px]"
-                            ></textarea>
-                            <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
-                                {errors?.description}
-                            </span>
-                        </div>
-                    </div>
-                    <div className="right flex gap-[20px] flex-col w-[48%]">
-                        <div>
-                            <h3> Genres</h3>
-                            <div className="flex items-center flex-wrap gap-[15px]">
-                                {genres?.map((genre) => (
-                                    <CheckBox
-                                        key={genre?._id}
-                                        handleClick={() => selectGenres(genre?._id)}
-                                        genre={genre}
-                                        formData={formData}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[5px] relative">
-                            <label
-                                htmlFor="name"
-                                className="text-light-white"
-                            >
-                                Movie poster
-                            </label>
-                            {uploadProgress && uploadProgress > 0 ? (
-                                <div className="w-[100%] rounded-[4px] overflow-hidden h-[60px] border-blue flex items-center">
-                                    <div
-                                        style={
-                                            uploadProgress > 0
-                                                ? { width: `${uploadProgress}%` }
-                                                : { width: "0" }
-                                        }
-                                        className="h-[60px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
-                                    >
-                                        uploading {formData?.poster.name}...{" "}
-                                        <span className="text-[#111]">{uploadProgress}%</span>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div
-                                    style={inputStyle}
-                                    onClick={openFileInput}
-                                    className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
-                                >
-                                    {formData?.poster ? (
-                                        <h1>{formData?.poster?.name}</h1>
-                                    ) : (
-                                        <>
-                                            {" "}
-                                            <div
-                                                style={{ border: "1px dashed #336a8c" }}
-                                                className="absolute inset-[5px]"
-                                            ></div>
-                                            <div className="w-[20px] h-[20px] z-[100] ">
-                                                <img
-                                                    src={editImage}
-                                                    alt="edit-image"
-                                                />
-                                            </div>
-                                        </>
-                                    )}
-
-                                    <input
-                                        name="poster"
-                                        type="file"
-                                        onChange={handlePosterChange}
-                                        className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
-                                        ref={fileInputRef}
-                                    />
-                                    <div className="absolute z-20  right-[15px]">
-                                        {formData?.poster
-                                            ? "Change image"
-                                            : " click here to upload image"}
-                                    </div>
-                                </div>
-                            )}
-                            <p
-                                onMouseOver={(e) => e.stopPropagation()}
-                                className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
-                            >
-                                {errors.poster}
-                            </p>
-                        </div>
-                        <div className="flex flex-col gap-[5px]">
-                            <label
-                                htmlFor="rating"
-                                className="text-light-white"
-                            >
-                                Rating
-                            </label>
-                            <StarRating
-                                dimension={"40px"}
-                                handleRating={handleRating}
-                                name="rating"
-                                rating={formData?.rating}
-                            />
-                        </div>
-                        <button
-                            style={{ background: "rgb(12, 63, 102)" }}
-                            className="btn min-w-[130px]"
-                            onClick={AddMovie}
+            ) : ( */}
+            <form
+                onSubmit={AddMovie}
+                action=""
+                className="flex justify-between gap-[25px]"
+            >
+                <div className="left flex flex-col gap-[20px] w-[48%]">
+                    <div className="flex flex-col gap-[5px]">
+                        <label
+                            htmlFor="name"
+                            className="text-light-white"
                         >
-                            {isSubmitting ? <ButtonLoader /> : "Add Movie"}
-                        </button>
+                            Movie name
+                        </label>
+                        <Input
+                            formData={formData}
+                            name="name"
+                            type="text"
+                            handleDataChange={handleDataChange}
+                            errors={errors?.name}
+                            css={inputStyle}
+                        />
                     </div>
-                </form>
-            )}
+
+                    <div className="flex flex-col gap-[5px]">
+                        <label
+                            htmlFor="name"
+                            className="text-light-white"
+                        >
+                            Release year
+                        </label>
+                        <Input
+                            formData={formData}
+                            name="year"
+                            type="text"
+                            handleDataChange={handleDataChange}
+                            errors={errors?.year}
+                            css={inputStyle}
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-[5px]">
+                        <label
+                            htmlFor="name"
+                            className="text-light-white"
+                        >
+                            Lead Actor
+                        </label>
+                        <Input
+                            formData={formData}
+                            name="leadactor"
+                            type="text"
+                            handleDataChange={handleDataChange}
+                            errors={errors?.leadactor}
+                            css={inputStyle}
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-[5px] relative">
+                        <label
+                            htmlFor="name"
+                            className="text-light-white"
+                        >
+                            Details
+                        </label>
+                        <textarea
+                            placeholder="Add movie details"
+                            name="description"
+                            onChange={handleDataChange}
+                            style={inputStyle}
+                            className="p-[10px] min-h-[120px] max-h-[120px]"
+                        ></textarea>
+                        <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
+                            {errors?.description}
+                        </span>
+                    </div>
+                </div>
+                <div className="right flex gap-[20px] flex-col w-[48%]">
+                    <div>
+                        <h3> Genres</h3>
+                        <div className="flex items-center flex-wrap gap-[15px]">
+                            {genres?.map((genre) => (
+                                <CheckBox
+                                    key={genre?._id}
+                                    handleClick={() => selectGenres(genre?._id)}
+                                    genre={genre}
+                                    formData={formData}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-[5px] relative">
+                        <label
+                            htmlFor="name"
+                            className="text-light-white"
+                        >
+                            Movie poster
+                        </label>
+                        {uploadProgress && uploadProgress > 0 ? (
+                            <div className="w-[100%] rounded-[4px] overflow-hidden h-[60px] border-blue flex items-center">
+                                <div
+                                    style={
+                                        uploadProgress > 0
+                                            ? { width: `${uploadProgress}%` }
+                                            : { width: "0" }
+                                    }
+                                    className="h-[60px] bg-[#2faeae] rounded-[4px] overflow-hidden border border-[#dfdfdf]"
+                                >
+                                    uploading {formData?.poster.name}...{" "}
+                                    <span className="text-[#111]">{uploadProgress}%</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div
+                                style={inputStyle}
+                                onClick={openFileInput}
+                                className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
+                            >
+                                {formData?.poster ? (
+                                    <h1>{formData?.poster?.name}</h1>
+                                ) : (
+                                    <>
+                                        {" "}
+                                        <div
+                                            style={{ border: "1px dashed #336a8c" }}
+                                            className="absolute inset-[5px]"
+                                        ></div>
+                                        <div className="w-[20px] h-[20px] z-[100] ">
+                                            <img
+                                                src={editImage}
+                                                alt="edit-image"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+
+                                <input
+                                    name="poster"
+                                    type="file"
+                                    onChange={handlePosterChange}
+                                    className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
+                                    ref={fileInputRef}
+                                />
+                                <div className="absolute z-20  right-[15px]">
+                                    {formData?.poster
+                                        ? "Change image"
+                                        : " click here to upload image"}
+                                </div>
+                            </div>
+                        )}
+                        <p
+                            onMouseOver={(e) => e.stopPropagation()}
+                            className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
+                        >
+                            {errors.poster}
+                        </p>
+                    </div>
+                    <div className="flex flex-col gap-[5px]">
+                        <label
+                            htmlFor="rating"
+                            className="text-light-white"
+                        >
+                            Rating
+                        </label>
+                        <StarRating
+                            dimension={"40px"}
+                            handleRating={handleRating}
+                            name="rating"
+                            rating={formData?.rating}
+                        />
+                    </div>
+                    <button
+                        style={{ background: "rgb(12, 63, 102)" }}
+                        className="btn min-w-[130px]"
+                        onClick={AddMovie}
+                    >
+                        {isSubmitting ? <ButtonLoader /> : "Add Movie"}
+                    </button>
+                </div>
+            </form>
+            {/* )} */}
             <ToastContainer />
         </section>
     );
