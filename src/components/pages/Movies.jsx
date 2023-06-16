@@ -45,10 +45,15 @@ export const Movies = () => {
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
 
+    let abortController;
     //fetch all movies
     const fetchAllMovies = async (p) => {
         try {
-            const controller = new AbortController();
+            // Cancel any previous requests before making a new one
+            if (abortController) {
+                abortController.abort();
+            }
+            abortController = new AbortController();
             let url = "/movies";
             const params = {
                 p: p,
@@ -61,14 +66,16 @@ export const Movies = () => {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
-                signal: controller.signal,
+                signal: abortController.signal,
                 params: params,
             });
 
-            setMovies(response.data?.moviesList);
-            setPageCount(response.data?.total_pages);
-            setLoading(false);
-            controller.abort();
+            if (!abortController.signal.aborted) {
+                setMovies(response.data?.moviesList);
+                setPageCount(response.data?.total_pages);
+                setLoading(false);
+            }
+            // controller.abort();
         } catch (error) {}
     };
 
