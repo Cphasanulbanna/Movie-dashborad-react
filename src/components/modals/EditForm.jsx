@@ -81,7 +81,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     //setting data
     const handleDataChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: name === "year" ? Number(value) : value,
+        }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
@@ -97,9 +100,13 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         setPosterPreview(URL.createObjectURL(selectedFile));
     };
 
+    // Example usage
+    useEffect(() => {}, [formData]);
+
     //updating movie
     const updateMovieData = async () => {
         try {
+            const isEqual = checkDataEquality(prevFormDataRef.current, formData);
             if (!isEqual) {
                 const newFomrData = new FormData();
                 newFomrData.append("name", formData?.name);
@@ -167,9 +174,11 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     };
 
     const prevFormDataRef = useRef(null);
+    const [prevData, setPrevData] = useState({});
 
     useEffect(() => {
-        prevFormDataRef.current = formData;
+        setPrevData(formData);
+        prevFormDataRef.current = prevData;
     }, []);
 
     function checkDataEquality(obj1, obj2) {
@@ -180,9 +189,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         }
         return true; // All values are equal
     }
-
-    // Example usage
-    const isEqual = checkDataEquality(prevFormDataRef.current, formData);
 
     //image upload progress
     const onUploadProgress = (progressEvent) => {
@@ -245,7 +251,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         <Input
                                             formData={formData}
                                             name="year"
-                                            type="text"
+                                            type={"text"}
                                             handleDataChange={handleDataChange}
                                             errors={errors?.year}
                                             placeholder={movie?.year}
@@ -288,7 +294,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
                                     >
                                         {formData?.gallery.length !==
-                                        prevFormDataRef.current?.gallery.length ? (
+                                        prevFormDataRef.current?.gallery?.length ? (
                                             <h1 className="whitespace-nowrap text-ellipsis overflow-hidden px-[6px]">
                                                 {formData?.gallery?.map((item) => item.name + ", ")}
                                             </h1>
