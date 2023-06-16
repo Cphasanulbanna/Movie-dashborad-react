@@ -167,7 +167,8 @@ p {
 .dropzone div span {
     text-decoration: none;
     font-size: 14px;
-    font-weight: 400;
+    color: #111;
+    font-weight: medium;
 }
 
 /* //pagination */

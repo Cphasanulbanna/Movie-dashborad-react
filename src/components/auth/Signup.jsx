@@ -24,6 +24,7 @@ const Signup = () => {
     //form state
     const [formData, setFormData] = useState({
         username: "",
+        email: "",
         password: "",
         profilePic: "",
     });
@@ -48,6 +49,7 @@ const Signup = () => {
     //form  fields validation
     const formSchema = yup.object().shape({
         username: yup.string().required("This field is required"),
+        email: yup.string().required("Email is required").email("Invalid email"),
         password: yup
             .string()
             .test(
@@ -105,6 +107,15 @@ const Signup = () => {
                     errors={errors.username}
                     handleDataChange={handleDataChange}
                 />
+
+                <Input
+                    formData={formData}
+                    type={"text"}
+                    placeholder="email"
+                    name="email"
+                    errors={errors.email}
+                    handleDataChange={handleDataChange}
+                />
                 <Input
                     formData={formData}
                     errors={errors.password}
@@ -116,10 +127,15 @@ const Signup = () => {
                 <FileUploader
                     handleChange={handleChange}
                     name="profile"
-                    label={formData.profile ? formData.profile.filename : "upload profile pic"}
+                    label={imageName ? imageName : "upload profile pic"}
                     required={false}
                     classes={"dropzone"}
-                />
+                    hoverTitle={"click to upload picture"}
+                >
+                    <p className="flex items-center pl-[10px] text-[#111] h-[fill] text-[14px] cursor-pointer">
+                        {imageName ? imageName : "Upload Profile picture"}
+                    </p>
+                </FileUploader>
                 <Button
                     title={"SIGNUP"}
                     css={"rounded-[25px] overflow-hidden"}
