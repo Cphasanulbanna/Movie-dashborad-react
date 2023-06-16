@@ -76,8 +76,8 @@ export const Movies = () => {
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        const pageNumber = event?.selected + 1;
-        fetchAllMovies(pageNumber);
+        // const pageNumber = event?.selected + 1;
+        fetchAllMovies(event.selected);
     };
 
     //close deletemodal function
