@@ -26,7 +26,7 @@ import Notification from "../../assets/general/utils/Notification";
 const Login = () => {
     //form state
     const [formData, setFormData] = useState({
-        username: "",
+        email: "",
         password: "",
     });
     const [errors, setErrors] = useState({});
@@ -42,7 +42,7 @@ const Login = () => {
 
     //form  fields validation
     const formSchema = yup.object().shape({
-        username: yup.string().required("This field is required"),
+        email: yup.string().required("Email is required").email("Invalid email"),
         password: yup
             .string()
             .test(
@@ -62,9 +62,10 @@ const Login = () => {
 
             const response = await axiosConfig.post("/auth/login", formData);
 
-            const { StatusCode, username, access_token, profile_pic } = response.data;
+            const { StatusCode, email, username, access_token, profile_pic } = response.data;
             if (StatusCode === 6000) {
                 updateUserData({
+                    email: email,
                     username: username,
                     access_token: access_token,
                     profile_pic: profile_pic,
@@ -97,9 +98,9 @@ const Login = () => {
                 <Input
                     formData={formData}
                     type={"text"}
-                    placeholder="username"
-                    name="username"
-                    errors={errors.username}
+                    placeholder="email"
+                    name="email"
+                    errors={errors.email}
                     handleDataChange={handleDataChange}
                 />
                 <Input

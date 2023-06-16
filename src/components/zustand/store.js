@@ -19,6 +19,7 @@ const userData = JSON.parse(localStorage.getItem("user_data"));
 const userDataInitialState = {
     access_token: "",
     username: "",
+    email: "",
     profile_pic: "",
 };
 export const useUserDataStore = create((set) => ({
