@@ -18,6 +18,7 @@ import add from "../../assets/icons/add.png";
 //store
 import { useUserDataStore } from "../zustand/store";
 import Notification from "../../assets/general/utils/Notification";
+import ButtonLoader from "../general/Button-loader/ButtonLoader";
 
 const Genres = () => {
     //all genres
@@ -38,6 +39,8 @@ const Genres = () => {
     const [showAddInput, setShowAddInput] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isLoading, setLoading] = useState(true);
+    const [addButtonLoader, setAddButtonLoader] = useState(false);
+    const [editButtonloader, setEditButtonLoader] = useState(false);
 
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
@@ -67,6 +70,7 @@ const Genres = () => {
 
     const addGenre = async () => {
         try {
+            setAddButtonLoader(true);
             if (genreTitle) {
                 const response = await axiosConfig.post(
                     "/genres",
@@ -87,6 +91,8 @@ const Genres = () => {
             }
         } catch (error) {
             Notification(error?.response?.data?.message, "error");
+        } finally {
+            setAddButtonLoader(false);
         }
     };
 
@@ -142,6 +148,7 @@ const Genres = () => {
     //updating genre
     const updateGenre = async (id) => {
         try {
+            setEditButtonLoader(true);
             if (!editedGenre) {
                 setGerneId(null);
             } else {
@@ -164,6 +171,8 @@ const Genres = () => {
             }
         } catch (error) {
             Notification(error?.response?.data?.message, "error");
+        } finally {
+            setEditButtonLoader;
         }
     };
 
@@ -231,7 +240,7 @@ const Genres = () => {
                             className={` text-[#f2f2f2] cursor-pointer overflow-hidden h-[45px] px-[15px] right-[2px] flex justify-center items-center 
                            `}
                         >
-                            Add
+                            {addButtonLoader ? <ButtonLoader size={0.3} /> : "Add"}
                         </div>
                     </div>
                 )}
@@ -282,7 +291,11 @@ const Genres = () => {
                                                 onClick={() => updateGenre(genre?._id)}
                                                 className=" p-[10px] cursor-pointer h-[100%] flex items-center"
                                             >
-                                                save
+                                                {editButtonloader ? (
+                                                    <ButtonLoader size={0.2} />
+                                                ) : (
+                                                    "save"
+                                                )}
                                             </div>
                                         </div>
                                     </div>
