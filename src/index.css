@@ -194,7 +194,7 @@ p {
     background: rgb(12, 63, 102);
     user-select: none;
 }
-.previous-page-btn,
+.previous-page-btn a,
 .next-page-btn a {
     display: flex;
     justify-content: center;
