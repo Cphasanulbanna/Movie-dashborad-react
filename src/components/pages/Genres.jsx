@@ -65,14 +65,22 @@ const Genres = () => {
         fetchGenres();
     }, []);
 
-    //adding new genres
     const addGenre = async () => {
         try {
             if (genreTitle) {
-                const resposne = await axiosConfig.post("/genres", {
-                    title: genreTitle,
-                });
-                setGenres(resposne.data?.genres);
+                const response = await axiosConfig.post(
+                    "/genres",
+                    {
+                        title: genreTitle,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${access_token}`,
+                        },
+                    }
+                );
+
+                setGenres(response.data?.genres);
                 setGenreTitle("");
                 setShowAddInput(false);
                 Notification("Genre added", "success");
@@ -94,8 +102,9 @@ const Genres = () => {
     };
 
     //setting if of genre to edit
-    const handleGenreEdit = (id) => {
-        setGerneId(id);
+    const handleGenreEdit = (genre) => {
+        setEditedGenre(genre?.title);
+        setGerneId(genre?._id);
     };
 
     //delete genre
@@ -104,6 +113,9 @@ const Genres = () => {
             const response = await axiosConfig.delete("/genres", {
                 data: {
                     _id: genreIdToDelete,
+                },
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
                 },
             });
             setGenres((prev) => prev.filter((genre) => genre._id !== genreIdToDelete));
@@ -120,10 +132,18 @@ const Genres = () => {
             if (!editedGenre) {
                 setGerneId(null);
             } else {
-                const resposne = await axiosConfig.put("/genres", {
-                    _id: id,
-                    title: editedGenre,
-                });
+                const resposne = await axiosConfig.put(
+                    "/genres",
+                    {
+                        _id: id,
+                        title: editedGenre,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${access_token}`,
+                        },
+                    }
+                );
                 setGenres(resposne.data?.genres);
                 setGerneId(null);
                 setEditedGenre("");
@@ -222,7 +242,7 @@ const Genres = () => {
                                             <input
                                                 className="h-[48px] w-[fill] pl-[15px] bg-[inherit]"
                                                 type="text"
-                                                placeholder={genre?.title}
+                                                placeholder={"movie genre"}
                                                 value={editedGenre}
                                                 onChange={handleEditedGenreChange}
                                             />
@@ -266,7 +286,7 @@ const Genres = () => {
                                         <h2 className="text-[18px] font-bold"> {genre?.title}</h2>
                                         <div className="flex items-center gap-[15px]">
                                             <div
-                                                onClick={() => handleGenreEdit(genre?._id)}
+                                                onClick={() => handleGenreEdit(genre)}
                                                 className="w-[25px] h-[25px] cursor-pointer mr-[15px] icon"
                                             >
                                                 <img
