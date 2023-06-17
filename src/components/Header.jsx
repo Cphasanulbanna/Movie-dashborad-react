@@ -61,7 +61,7 @@ const Header = () => {
                     <img
                         src={userdata?.profile_pic.url || profile}
                         alt="profile"
-                        className="object-cover"
+                        className="object-cover object-top"
                     />
                 </div>
             </div>

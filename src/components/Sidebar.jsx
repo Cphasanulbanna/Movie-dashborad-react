@@ -13,6 +13,7 @@ import rightArrow from "../assets/icons/right-arrow.png";
 import logo from "../assets/icons/logo.png";
 import logouticon from "../assets/icons/log-out.png";
 import users from "../assets/icons/users.png";
+import genre from "../assets/icons/genre.png";
 
 export const Sidebar = () => {
     const { logout } = useUserDataStore();
@@ -61,11 +62,11 @@ export const Sidebar = () => {
                     >
                         <div className="w-[25px] h-[25px]">
                             <img
-                                src={create}
+                                src={genre}
                                 alt="edit"
                             />
                         </div>
-                        <span>Add Genres</span>
+                        <span>Genres</span>
                         <div className="w-[15px] h-[15px] ml-auto">
                             <img
                                 src={rightArrow}
