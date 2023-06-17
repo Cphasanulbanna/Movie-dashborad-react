@@ -6,8 +6,9 @@ import close from "../../assets/icons/close.png";
 
 //components
 import ModalWrapper from "../general/ModalWrapper";
+import ButtonLoader from "../general/Button-loader/ButtonLoader";
 
-const ConfirmDelete = ({ deleteItem, closeModal, state }) => {
+const ConfirmDelete = ({ deleteItem, closeModal, state, buttonLoader }) => {
     return (
         <ModalWrapper
             state={state}
@@ -33,9 +34,9 @@ const ConfirmDelete = ({ deleteItem, closeModal, state }) => {
                     </div>
                     <div
                         onClick={deleteItem}
-                        className="btn bg-[#f7215a] text-light-white"
+                        className="btn bg-[#f7215a] min-w-[100px] w-[100%] text-light-white h-[44px]"
                     >
-                        Delete
+                        {buttonLoader ? <ButtonLoader size={0.3} /> : "Delete"}
                     </div>
                 </div>
                 <div

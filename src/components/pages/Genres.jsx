@@ -41,6 +41,7 @@ const Genres = () => {
     const [isLoading, setLoading] = useState(true);
     const [addButtonLoader, setAddButtonLoader] = useState(false);
     const [editButtonloader, setEditButtonLoader] = useState(false);
+    const [deletButtonLoader, setDeleteButtonLoader] = useState(false);
 
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
@@ -129,6 +130,7 @@ const Genres = () => {
     //delete genre
     const deleteGenre = async () => {
         try {
+            setDeleteButtonLoader(true);
             const response = await axiosConfig.delete("/genres", {
                 data: {
                     _id: genreIdToDelete,
@@ -142,6 +144,8 @@ const Genres = () => {
             Notification("Genre deleted", "success");
         } catch (error) {
             Notification(error?.response?.data?.message, "error");
+        } finally {
+            setDeleteButtonLoader(false);
         }
     };
 
@@ -207,6 +211,7 @@ const Genres = () => {
                     deleteItem={deleteGenre}
                     state={showDeleteModal}
                     closeModal={closeDeleteModal}
+                    buttonLoader={deletButtonLoader}
                 />
             )}
             <section className="mx-[auto] w-[85%] ">
