@@ -118,6 +118,9 @@ export const Movies = () => {
                 data: {
                     movieId: movieIdToDelete,
                 },
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
             });
             updateMoviesList();
             Notification("Movie deleted", "success");

@@ -38,7 +38,6 @@ export const AddMovies = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [errors, setErrors] = useState({});
     const [isSubmitting, setSubmitting] = useState(false);
-    const [isLoading, setLoading] = useState(true);
 
     //form  fields validation
     const formSchema = yup.object().shape({
@@ -61,7 +60,6 @@ export const AddMovies = () => {
                 signal: controller.signal,
             });
             setGenres(response.data.genres);
-            setLoading(false);
             controller.abort();
         } catch (error) {}
     };
@@ -131,6 +129,7 @@ export const AddMovies = () => {
             const response = await axiosConfig.post(`/movies/`, newFomrData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${access_token}`,
                 },
 
                 onUploadProgress,

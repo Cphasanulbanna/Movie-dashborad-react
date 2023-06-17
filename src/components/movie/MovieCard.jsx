@@ -16,9 +16,6 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
     //movie edit modal state
     const [showEditModal, setShowEditModal] = useState(false);
 
-    //id of movie to edit
-    const [movieId, setMovieId] = useState("");
-
     //open edit form function
     const opneEditForm = () => {
         setShowEditModal(true);

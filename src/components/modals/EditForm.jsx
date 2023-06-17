@@ -122,6 +122,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                 const response = await axiosConfig.put(`/movies/${movie?._id}`, newFomrData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${access_token}`,
                     },
                     onUploadProgress,
                 });
