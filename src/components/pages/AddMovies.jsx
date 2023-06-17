@@ -256,7 +256,7 @@ export const AddMovies = () => {
                 <div className="right flex gap-[20px] flex-col w-[48%]">
                     <div>
                         <h3> Genres</h3>
-                        <div className="flex items-center flex-wrap gap-[15px]">
+                        <div className="flex items-center flex-wrap gap-[15px] border-blue rounded-[4px] p-[8px]">
                             {genres?.map((genre) => (
                                 <CheckBox
                                     key={genre?._id}
@@ -349,7 +349,7 @@ export const AddMovies = () => {
                     </div>
                     <button
                         style={{ background: "rgb(12, 63, 102)" }}
-                        className="btn min-w-[130px]"
+                        className="btn min-w-[130px] h-[42px]"
                         onClick={AddMovie}
                     >
                         {isSubmitting ? <ButtonLoader /> : "Add Movie"}

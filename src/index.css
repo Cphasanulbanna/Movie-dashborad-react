@@ -243,9 +243,11 @@ p {
 .paginate-container .disabled-page-btn {
     filter: grayscale(1);
     user-select: none;
+    color: grey;
     width: 35px;
     height: 35px;
 }
+
 .paginate-container .disabled-page-btn:hover {
     cursor: not-allowed !important;
     user-select: none;

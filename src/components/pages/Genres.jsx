@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 //axios
 import axiosConfig from "../../../axiosConfig";
@@ -90,15 +90,28 @@ const Genres = () => {
         }
     };
 
+    const addGenreRef = useRef(null);
     //opening input field to add new genre
     const handleAddInput = () => {
         setShowAddInput((prev) => !prev);
     };
 
+    useEffect(() => {
+        addGenreRef.current?.focus();
+    }, [showAddInput]);
+
     //setting new genre
     const handleGenreChange = (e) => {
         const value = e.target.value.toLowerCase();
         setGenreTitle(value);
+    };
+
+    const handleEnterkeyFunction = (e) => {
+        if (genreTitle) {
+            if (e.key === "Enter") {
+                addGenre();
+            }
+        }
     };
 
     //setting if of genre to edit
@@ -209,6 +222,8 @@ const Genres = () => {
                             placeholder="type here"
                             value={genreTitle}
                             onChange={handleGenreChange}
+                            onKeyDown={handleEnterkeyFunction}
+                            ref={addGenreRef}
                         />
                         <div
                             onClick={addGenre}
