@@ -56,15 +56,13 @@ export const MovieSinglePage = () => {
                     </div>
                     <div className="w-[60%] flex flex-col gap-[10px]">
                         <h1 className="text-[35px] font-bold">{movie?.name}</h1>
-                        <h2>Release year: {movie?.year}</h2>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate,
-                            recusandae.
-                        </p>
-                        <h2>Hero: Actor {movie?.leadactor}</h2>
+                        {movie?.year && <h2>Release year: {movie?.year}</h2>}
+                        {movie?.description && <p>{movie?.description}</p>}
+                        {movie?.leadactor && <h2>Hero: Actor {movie?.leadactor}</h2>}
+
                         <div className="flex items-center gap-[10px] flex-wrap">
                             {movie?.genre?.map((item) => (
-                                <div className="py-[7px] px-[22px] rounded-[25px] overflow-hidden border border-light-white">
+                                <div className="py-[7px] px-[22px] rounded-[25px] overflow-hidden  border-[2px] border-solid border-[#f1f1f1] text-[#f1f1f1]">
                                     {item.title}
                                 </div>
                             ))}
