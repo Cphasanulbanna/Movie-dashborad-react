@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //package
 import { ToastContainer } from "react-toastify";
@@ -30,6 +30,8 @@ export const Movies = () => {
     const [pageCount, setPageCount] = useState(null);
 
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
+    const [activePage, setActivePage] = useState(0);
+    const [isSearchCleared, setIsSearchCleared] = useState(false);
 
     const [isLoading, setLoading] = useState(true);
 
@@ -50,17 +52,14 @@ export const Movies = () => {
     const fetchAllMovies = async (p) => {
         try {
             // Cancel any previous requests before making a new one
-            if (abortController) {
-                abortController.abort();
-            }
+            abortController && abortController.abort();
+
             abortController = new AbortController();
             let url = "/movies";
             const params = {
                 p: p,
             };
-            if (query) {
-                params.q = query;
-            }
+            query && (params.q = query);
 
             const response = await axiosConfig.get(url, {
                 headers: {
@@ -75,7 +74,6 @@ export const Movies = () => {
                 setPageCount(response.data?.total_pages);
                 setLoading(false);
             }
-            // controller.abort();
         } catch (error) {}
     };
 
@@ -83,9 +81,30 @@ export const Movies = () => {
 
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-        // const pageNumber = event?.selected + 1;
         fetchAllMovies(event.selected);
+        setActivePage(event.selected);
     };
+
+    useEffect(() => {
+        if (query === "" || !query) {
+            setIsSearchCleared(true);
+            setActivePage(0);
+        } else {
+            setIsSearchCleared(false);
+        }
+    }, [query]);
+
+    useEffect(() => {
+        if (isSearchCleared) {
+            setActivePage(0);
+        }
+    }, [isSearchCleared]);
+
+    useEffect(() => {
+        if (!isSearchCleared) {
+            setActivePage(0);
+        }
+    }, [query]);
 
     //close deletemodal function
     const closeDeleteModal = () => {
@@ -141,6 +160,7 @@ export const Movies = () => {
                     pageRangeDisplayed={5}
                     pageCount={Math.ceil(pageCount)}
                     previousLabel="<"
+                    forcePage={activePage}
                     renderOnZeroPageCount={null}
                     activeClassName="active-page"
                     previousClassName="previous-page-btn"
