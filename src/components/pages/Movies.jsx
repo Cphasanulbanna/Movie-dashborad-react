@@ -32,7 +32,6 @@ export const Movies = () => {
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
     const [activePage, setActivePage] = useState(0);
     const [isSearchCleared, setIsSearchCleared] = useState(false);
-
     const [isLoading, setLoading] = useState(true);
 
     //search keyword

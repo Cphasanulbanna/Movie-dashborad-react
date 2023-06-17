@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./Header";
 import Movies from "./pages/movies";
 import Genres from "./pages/Genres";
+import Users from "./pages/Users";
 import { MovieSinglePage } from "./pages/MovieSinglePage";
 import { Sidebar } from "./Sidebar";
 import { AddMovies } from "./pages/AddMovies";
@@ -34,6 +35,10 @@ const LandingPage = () => {
                     <Route
                         path="/add-movie"
                         element={<AddMovies />}
+                    />
+                    <Route
+                        path="/users"
+                        element={<Users />}
                     />
                 </Routes>
             </section>

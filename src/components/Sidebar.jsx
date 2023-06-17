@@ -12,6 +12,7 @@ import film from "../assets/icons/film.png";
 import rightArrow from "../assets/icons/right-arrow.png";
 import logo from "../assets/icons/logo.png";
 import logouticon from "../assets/icons/log-out.png";
+import users from "../assets/icons/users.png";
 
 export const Sidebar = () => {
     const { logout } = useUserDataStore();
@@ -84,6 +85,25 @@ export const Sidebar = () => {
                             />
                         </div>
                         <span>Add Movie</span>
+                        <div className="w-[15px] h-[15px] ml-auto">
+                            <img
+                                src={rightArrow}
+                                alt="arrow"
+                            />
+                        </div>
+                    </NavLink>
+                    <NavLink
+                        style={navLinkActiveClass}
+                        to={"/users"}
+                        className="flex items-center gap-[6px] px-[25px] py-[12px] "
+                    >
+                        <div className="w-[25px] h-[25px]">
+                            <img
+                                src={users}
+                                alt="users"
+                            />
+                        </div>
+                        <span>Users</span>
                         <div className="w-[15px] h-[15px] ml-auto">
                             <img
                                 src={rightArrow}
