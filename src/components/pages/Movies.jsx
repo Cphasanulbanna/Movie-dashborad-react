@@ -14,6 +14,8 @@ import useDebounce from "../hooks/useDebounce";
 import { MovieCard } from "../movie/MovieCard";
 import ConfirmDelete from "../modals/ConfirmDelete";
 import Skelton from "../general/skelton-loader/Skelton";
+
+//functions
 import Notification from "../../assets/general/utils/Notification";
 
 //store
