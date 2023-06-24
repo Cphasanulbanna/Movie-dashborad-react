@@ -1,7 +1,7 @@
 import React from "react";
 
 const EmailPage = () => {
-    return <div>EmailPage</div>;
+    return <section>EmailPage</section>;
 };
 
 export default EmailPage;
