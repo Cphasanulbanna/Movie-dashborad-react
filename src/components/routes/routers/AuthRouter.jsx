@@ -8,6 +8,7 @@ import Signup from "../../auth/Signup";
 import Login from "../../auth/Login";
 import EmailPage from "../../auth/EmailPage";
 import OtpPage from "../../auth/OtpPage";
+import ChangePassword from "../../auth/ChangePassword";
 
 const AuthRouter = () => {
     return (
@@ -30,6 +31,10 @@ const AuthRouter = () => {
                 <Route
                     path="/verify-otp"
                     element={<OtpPage />}
+                />
+                <Route
+                    path="/change-password"
+                    element={<ChangePassword />}
                 />
             </Routes>
         </section>

@@ -55,7 +55,7 @@ const ChangePassword = () => {
     });
 
     //signup api connection
-    const submitOTP = async (e) => {
+    const resetPassword = async (e) => {
         e.preventDefault();
         try {
             await formSchema.validate(formData, { abortEarly: false });
@@ -64,11 +64,11 @@ const ChangePassword = () => {
             newFormData.append("email", "bannabca@gmail.com");
             newFormData.append("password", formData.password);
 
-            const response = await axiosConfig.post("/auth/verify-otp", newFormData);
+            const response = await axiosConfig.post("/auth/reset-password", newFormData);
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
-                // navigate("/auth/verify-otp");
+                navigate("/auth/login");
             }
         } catch (error) {
             const validationErrors = {};
@@ -89,22 +89,22 @@ const ChangePassword = () => {
             className="max-w-[400px] w-[100%] rounded-[8px] overflow-hidden bg-text-white p-[35px] flex flex-col h-[100%] relative"
         >
             <h1 className="text-[#111] font-bold text-center mb-[20px] text-[26px]">
-                Enter password
+                Reset password
             </h1>
             <form
-                onSubmit={submitOTP}
+                onSubmit={resetPassword}
                 className="flex flex-col gap-[20px]"
             >
                 <Input
                     formData={formData}
                     type={"text"}
-                    placeholder="Enter password"
+                    placeholder="Enter new password"
                     name="password"
                     errors={errors.password}
                     handleDataChange={handleDataChange}
                 />
                 <Button
-                    title={"Verify OTP"}
+                    title={"Reset Password"}
                     css={"rounded-[25px] overflow-hidden"}
                 />
             </form>

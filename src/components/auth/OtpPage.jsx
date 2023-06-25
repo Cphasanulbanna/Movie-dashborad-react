@@ -66,7 +66,7 @@ const OtpPage = () => {
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
-                // navigate("/auth/verify-otp");
+                navigate("/auth/change-password");
             }
         } catch (error) {
             const validationErrors = {};
