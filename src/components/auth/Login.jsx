@@ -115,6 +115,12 @@ const Login = () => {
                     title={"LOGIN"}
                     css={"rounded-[25px] overflow-hidden"}
                 />
+                <Link
+                    className="text-[16px] text-right text-[#8d8b8b] cursor-pointer hover:opacity-[0.8]"
+                    to="/auth/email"
+                >
+                    Forgot password?
+                </Link>
             </form>
             <div className="flex justify-center flex-col items-center gap-[15px] mt-[30px]">
                 <p className="text-[14px] text-[#8d8b8b]">Or Log In Using</p>
