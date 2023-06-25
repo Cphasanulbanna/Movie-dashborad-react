@@ -50,7 +50,12 @@ const EmailPage = () => {
         try {
             await formSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosConfig.post("/forget-password", formData);
+            const response = await axiosConfig.post("/auth/forget-password", formData);
+            const { StatusCode } = response.data;
+
+            if (StatusCode === 6000) {
+                navigate("/auth/verify-otp");
+            }
         } catch (error) {
             const validationErrors = {};
             error?.inner?.forEach((error) => {
