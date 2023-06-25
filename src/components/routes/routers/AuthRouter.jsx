@@ -9,6 +9,7 @@ import Login from "../../auth/Login";
 import EmailPage from "../../auth/EmailPage";
 import OtpPage from "../../auth/OtpPage";
 import ChangePassword from "../../auth/ChangePassword";
+import ProtectedRouteAfterLogin from "../routes/ProtectedRouteAfterLogin";
 
 const AuthRouter = () => {
     return (
@@ -16,14 +17,17 @@ const AuthRouter = () => {
             className={`flex justify-center items-center h-[100vh] w-[100%] py-[80px] bgc-gradient`}
         >
             <Routes>
-                <Route
-                    path="/signup"
-                    element={<Signup />}
-                />
-                <Route
-                    path="/login"
-                    element={<Login />}
-                />
+                <Route element={<ProtectedRouteAfterLogin />}>
+                    <Route
+                        path="/signup"
+                        element={<Signup />}
+                    />
+                    <Route
+                        path="/login"
+                        element={<Login />}
+                    />
+                </Route>
+
                 <Route
                     path="/email"
                     element={<EmailPage />}

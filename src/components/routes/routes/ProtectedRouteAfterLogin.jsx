@@ -1,12 +1,13 @@
 import React from "react";
 
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import { isAuth } from "../../general/utils";
 
 const ProtectedRouteAfterLogin = () => {
-    const auth = isAuth()
-    return auth ? <Navigate to={-1} /> : 
+    const auth = isAuth();
+    console.log(auth);
+    return auth ? <Navigate to={"/"} /> : <Outlet />;
 };
 
 export default ProtectedRouteAfterLogin;

@@ -11,12 +11,12 @@ import PrivateRoute from "./routes/PrivateRoute";
 const AppRouter = () => {
     return (
         <Routes>
-            <PrivateRoute>
+            <Route element={<PrivateRoute />}>
                 <Route
                     path="/*"
                     element={<LandingPage />}
                 />
-            </PrivateRoute>
+            </Route>
 
             <Route
                 path="/auth/*"
