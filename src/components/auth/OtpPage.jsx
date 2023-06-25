@@ -24,12 +24,14 @@ import axiosConfig from "../../../axiosConfig";
 import Notification from "../../assets/general/utils/Notification";
 
 const OtpPage = () => {
+    const { userdata } = useUserDataStore();
+
     //form state
     const [formData, setFormData] = useState({
         otp: "",
     });
     const [errors, setErrors] = useState({});
-    const { updateUserData } = useUserDataStore();
+
     const navigate = useNavigate();
 
     //storing data
@@ -48,13 +50,19 @@ const OtpPage = () => {
             .required("OTP is required"),
     });
 
+    console.log(userdata, "-----email");
+
     //signup api connection
     const submitOTP = async (e) => {
         e.preventDefault();
         try {
             await formSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosConfig.post("/auth/verify-otp", formData);
+            const newFormData = new FormData();
+            newFormData.append("email", "bannabca@gmail.com");
+            newFormData.append("otp", formData.otp);
+
+            const response = await axiosConfig.post("/auth/verify-otp", newFormData);
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
