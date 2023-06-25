@@ -30,7 +30,7 @@ const Header = () => {
     };
 
     return (
-        <header className="bg-dark-blue fixed top-0 left-[200px] w-[fill] py-[30px] px-[40px] flex justify-between items-center">
+        <header className="bg-dark-blue fixed top-0 left-[200px] lg1:left-[75px] md2:left-[50px] w-[fill] py-[30px] px-[40px] flex justify-between items-center">
             <div
                 style={inputStyle}
                 onClick={() => navigate("/")}

@@ -162,6 +162,8 @@ export const Movies = () => {
                     nextLabel=">"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}
+                    marginPagesDisplayed={5}
+                    breakAriaLabels={"."}
                     pageCount={Math.ceil(pageCount)}
                     previousLabel="<"
                     forcePage={activePage}

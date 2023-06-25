@@ -24,10 +24,10 @@ export const Sidebar = () => {
     };
 
     return (
-        <div className="bg-dark-blue h-full fixed w-[200px] overflow-hidden p-[25px] px-[0] flex flex-col gap-[30px]">
+        <div className="bg-dark-blue h-full fixed w-[200px] lg1:w-[75px] md2:w-[50px] overflow-hidden p-[25px] px-[0] flex flex-col gap-[30px]">
             <Link
                 to="/"
-                className="w-[45px] cursor-pointer ml-[25px]"
+                className="w-[45px] cursor-pointer ml-[25px] lg1:w-[30px] md2:ml-[12px]"
             >
                 <img
                     src={logo}
@@ -39,7 +39,7 @@ export const Sidebar = () => {
                     <NavLink
                         style={navLinkActiveClass}
                         to={"/"}
-                        className={`flex items-center px-[25px] py-[12px] gap-[6px] bg-[ #72c5f8]`}
+                        className={`flex items-center px-[25px] md2:px-[12px]  py-[12px] gap-[6px] bg-[ #72c5f8]`}
                     >
                         <div className="w-[25px] h-[25px]">
                             <img
@@ -47,8 +47,8 @@ export const Sidebar = () => {
                                 alt="movie"
                             />
                         </div>
-                        <span> Movies</span>
-                        <div className="w-[15px] h-[15px] ml-auto">
+                        <span className="lg1:hidden"> Movies</span>
+                        <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
                             <img
                                 src={rightArrow}
                                 alt="arrow"
@@ -58,7 +58,7 @@ export const Sidebar = () => {
                     <NavLink
                         style={navLinkActiveClass}
                         to={"/genres"}
-                        className="flex items-center gap-[6px] px-[25px] py-[12px] "
+                        className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
                     >
                         <div className="w-[25px] h-[25px]">
                             <img
@@ -66,8 +66,8 @@ export const Sidebar = () => {
                                 alt="edit"
                             />
                         </div>
-                        <span>Genres</span>
-                        <div className="w-[15px] h-[15px] ml-auto">
+                        <span className="lg1:hidden">Genres</span>
+                        <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
                             <img
                                 src={rightArrow}
                                 alt="arrow"
@@ -77,7 +77,7 @@ export const Sidebar = () => {
                     <NavLink
                         style={navLinkActiveClass}
                         to={"/add-movie"}
-                        className="flex items-center gap-[6px] px-[25px] py-[12px] "
+                        className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
                     >
                         <div className="w-[25px] h-[25px]">
                             <img
@@ -85,8 +85,8 @@ export const Sidebar = () => {
                                 alt="create"
                             />
                         </div>
-                        <span>Add Movie</span>
-                        <div className="w-[15px] h-[15px] ml-auto">
+                        <span className="lg1:hidden">Add Movie</span>
+                        <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
                             <img
                                 src={rightArrow}
                                 alt="arrow"
@@ -96,16 +96,16 @@ export const Sidebar = () => {
                     <NavLink
                         style={navLinkActiveClass}
                         to={"/users"}
-                        className="flex items-center gap-[6px] px-[25px] py-[12px] "
+                        className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
                     >
-                        <div className="w-[25px] h-[25px]">
+                        <div className="w-[25px] h-[25px] ">
                             <img
                                 src={users}
                                 alt="users"
                             />
                         </div>
-                        <span>Users</span>
-                        <div className="w-[15px] h-[15px] ml-auto">
+                        <span className="lg1:hidden">Users</span>
+                        <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
                             <img
                                 src={rightArrow}
                                 alt="arrow"
@@ -119,13 +119,13 @@ export const Sidebar = () => {
                     to="/auth/login"
                     onClick={logout}
                 >
-                    <div className="w-[25px] h-[25px] ml-[25px]">
+                    <div className="w-[25px] h-[25px] ml-[25px] lg1:hidden">
                         <img
                             src={logouticon}
                             alt="logout"
                         />
                     </div>
-                    <span> Log out</span>
+                    <span className="lg1:hidden"> Log out</span>
                 </Link>
             </div>
         </div>

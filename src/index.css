@@ -261,3 +261,27 @@ p {
     filter: grayscale(1) !important;
     user-select: none;
 }
+
+@media all and (max-width: 1400px) {
+    /* //STAR RATING */
+    .star-ratings .star-container {
+        padding-right: 3px !important;
+        padding-left: 3px !important;
+    }
+    .star-ratings .star-container svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+    .star-ratings .star-container:first-child {
+        padding-left: 0 !important;
+    }
+    .star-ratings .star-container:last-child {
+        padding-right: 0 !important;
+    }
+}
+
+@media all and (max-width: 540px) {
+    .middle-pages {
+        display: none;
+    }
+}

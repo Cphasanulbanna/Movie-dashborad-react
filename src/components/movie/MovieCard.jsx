@@ -31,7 +31,7 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
                 />
             )}
 
-            <div className="w-[31%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
+            <div className="w-[31%] lg4:w-[48%] md4:w-[100%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">
                     <img
                         src={movie?.poster.url}
@@ -39,17 +39,17 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
                         className="object-cover"
                     />
                 </div>
-                <div className="w-[60%] p-[20px] flex flex-col gap-[15px] one">
+                <div className="w-[60%] p-[20px] flex flex-col gap-[15px] one sm2:pr-[2px] sm2:pl-[10px]">
                     <div className="flex  flex-col gap-[10px]">
                         <h1 className="font-bold capitalize">
                             {movie.name} {movie.year && `(${movie.year})`}
                         </h1>
 
-                        <div className="flex gap-[12px] items-center flex-wrap">
+                        <div className="flex gap-[12px] items-center flex-wrap lg1:flex-nowrap lg1:overflow-hidden lg1:[&>*:nth-child(n+3)]:hidden md4:[&>*:nth-child(n+3)]:block md2:flex-wrap">
                             {movie.genre?.slice(0, 4).map((item) => (
                                 <p
                                     key={item?._id}
-                                    className=" py-[6px] px-[15px] rounded-[25px] border border-[#fff] w-max"
+                                    className=" py-[6px] px-[15px]  lg1:py-[2px] lg1:px-[12px] lg1:text-[14px] sm3:px-[8px]  rounded-[25px] border border-[#fff] w-max"
                                 >
                                     {item.title}
                                 </p>
@@ -60,7 +60,7 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
                     <div className="flex flex-col gap-[10px]">
                         <p>{movie?.description}</p>
                         <StarRating rating={movie?.rating} />
-                        <div className="flex items-center gap-[12px]">
+                        <div className="flex items-center gap-[12px] lg2:flex-wrap-reverse lg2:gap-[16px]">
                             <div
                                 onClick={opneEditForm}
                                 className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
