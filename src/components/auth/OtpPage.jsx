@@ -50,8 +50,6 @@ const OtpPage = () => {
             .required("OTP is required"),
     });
 
-    console.log(userdata, "-----email");
-
     //signup api connection
     const submitOTP = async (e) => {
         e.preventDefault();
@@ -59,13 +57,14 @@ const OtpPage = () => {
             await formSchema.validate(formData, { abortEarly: false });
 
             const newFormData = new FormData();
-            newFormData.append("email", "bannabca@gmail.com");
+            newFormData.append("email", userdata.email);
             newFormData.append("otp", formData.otp);
 
             const response = await axiosConfig.post("/auth/verify-otp", newFormData);
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
+                Notification(`otp verified`, "success");
                 navigate("/auth/change-password");
             }
         } catch (error) {

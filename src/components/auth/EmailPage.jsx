@@ -54,6 +54,10 @@ const EmailPage = () => {
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
+                updateUserData({
+                    email: formData.email,
+                });
+                Notification(`otp sent to ${formData.email}`, "success");
                 navigate("/auth/verify-otp");
             }
         } catch (error) {

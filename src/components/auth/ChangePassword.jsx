@@ -61,13 +61,14 @@ const ChangePassword = () => {
             await formSchema.validate(formData, { abortEarly: false });
 
             const newFormData = new FormData();
-            newFormData.append("email", "bannabca@gmail.com");
+            newFormData.append("email", userdata.email);
             newFormData.append("password", formData.password);
 
             const response = await axiosConfig.post("/auth/reset-password", newFormData);
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
+                Notification("password changed", "success");
                 navigate("/auth/login");
             }
         } catch (error) {
