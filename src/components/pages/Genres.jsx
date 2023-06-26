@@ -203,7 +203,7 @@ const Genres = () => {
     };
 
     return (
-        <section className="h-[fill] w-[fill]">
+        <section className="h-[fill] w-[fill] overflow-scroll">
             <ToastContainer />
             {showDeleteModal && (
                 <ConfirmDelete
@@ -213,7 +213,7 @@ const Genres = () => {
                     buttonLoader={deletButtonLoader}
                 />
             )}
-            <section className="mx-[auto] w-[85%] sm3:w-[95%]">
+            <section className="mx-[auto] w-[85%] sm3:w-[95%] pb-[40px]">
                 <div className="flex items-center justify-center relative mb-[30px]">
                     <h1 className="font-bold text-center text-[32px] sm3:text-[20px] md2:text-[24px] md4:text-[26px] lg2:text-[30px] sm2:text-[18px]">
                         Manage Genres
@@ -252,8 +252,8 @@ const Genres = () => {
                 )}
 
                 <ul
-                    style={{ maxHeight: showAddInput && "430px" }}
-                    className="flex flex-wrap justify-center max-h-[500px] w-[100%] gap-[15px] md1:gap-[10px] sm3:gap-[6px] overflow-y-scroll"
+                    // style={{ maxHeight: showAddInput && "430px" }}
+                    className="flex flex-col h-[100%] justify-center  w-[100%] gap-[15px] md1:gap-[10px] sm3:gap-[6px] overflow-y-scroll"
                 >
                     {isLoading ? (
                         <Skelton

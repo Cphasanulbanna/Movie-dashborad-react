@@ -49,7 +49,7 @@
 .skelton-rectangle {
     padding: 5px;
     width: 100%;
-    height: 60px;
+    height: 40px;
     background-color: #3e3e3e;
     animation: skelton 1s ease infinite alternate;
 }
@@ -141,4 +141,16 @@
 
 .singlepage .right .box {
     background-color: #4a4a4a;
+}
+
+@media all and (max-width: 1180px) {
+    .skelton-feed {
+        width: 48%;
+    }
+}
+
+@media all and (max-width: 768px) {
+    .skelton-feed {
+        width: 100%;
+    }
 }

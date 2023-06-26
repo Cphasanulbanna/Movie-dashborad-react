@@ -75,7 +75,7 @@ const Skelton = ({ type, count }) => {
     }
 
     if (type === "rectangle") {
-        return Array(6)
+        return Array(20)
             .fill()
             .map((_, index) => <RectangleSkelton key={index} />);
     }
