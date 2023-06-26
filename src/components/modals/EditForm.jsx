@@ -217,10 +217,10 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                 {isLoading ? (
                     <Skelton type="edit-form" />
                 ) : (
-                    <div className="flex flex-col gap-[35px]">
-                        <div className="flex gap-[15px] justify-between">
+                    <div className="flex flex-col overflow-y-scroll max-h-[450px] pb-7">
+                        <div className="flex gap-[15px] justify-between lg2:flex-col">
                             {/* leftbox  */}
-                            <div className="flex gap-[15px] flex-col w-[48%]">
+                            <div className="flex gap-[15px] flex-col w-[48%] lg2:w-full">
                                 <div className="flex flex-col gap-[8px] ">
                                     <div className="flex flex-col gap-[5px]">
                                         <label
@@ -274,7 +274,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             placeholder={movie?.description || "Add movie details"}
                                             onChange={handleDataChange}
                                             style={inputStyle}
-                                            className="p-[10px] min-h-[120px] max-h-[120px]"
+                                            className="p-[10px] min-h-[120px] max-h-[120px] lg5:min-h-[70px]"
                                         ></textarea>
                                         <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
                                             {errors?.description}
@@ -369,12 +369,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
 
                             {/* right box  */}
 
-                            <div className="flex gap-[15px] flex-col w-[48%]">
-                                <div>
+                            <div className="flex gap-[15px] flex-col w-[48%] lg2:w-full">
+                                <div className="flex flex-col gap-[5px]">
                                     <h3> Genres</h3>
                                     <div
                                         style={inputStyle}
-                                        className="flex items-center flex-wrap gap-[15px] p-[7px]"
+                                        className="flex items-center flex-wrap gap-[15px] p-[7px] max-h-[100px] md2:max-h-[80px] overflow-y-scroll"
                                     >
                                         {genres?.map((genre) => (
                                             <CheckBox
@@ -481,7 +481,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                         </div>
 
                         <button
-                            className="btn border-blue"
+                            className="mt-5 btn border-blue"
                             onClick={updateMovieData}
                         >
                             Update
