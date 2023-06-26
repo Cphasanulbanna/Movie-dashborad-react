@@ -173,16 +173,16 @@ export const AddMovies = () => {
     };
 
     return (
-        <section className="p-[30px]">
+        <section className="p-[30px] sm3:p-0">
             {/* {isLoading ? (
                 <Skelton type="edit-form" />
             ) : ( */}
             <form
                 onSubmit={AddMovie}
                 action=""
-                className="flex justify-between gap-[25px]"
+                className="flex justify-between gap-[25px] md4:flex-col"
             >
-                <div className="left flex flex-col gap-[20px] w-[48%]">
+                <div className="left flex flex-col gap-[20px] w-[48%] md4:w-full">
                     <div className="flex flex-col gap-[5px]">
                         <label
                             htmlFor="name"
@@ -246,17 +246,17 @@ export const AddMovies = () => {
                             name="description"
                             onChange={handleDataChange}
                             style={inputStyle}
-                            className="p-[10px] min-h-[120px] max-h-[120px]"
+                            className="p-[10px] min-h-[120px] max-h-[120px] sm3:min-h-[70px]"
                         ></textarea>
                         <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
                             {errors?.description}
                         </span>
                     </div>
                 </div>
-                <div className="right flex gap-[20px] flex-col w-[48%]">
+                <div className="right flex gap-[20px] flex-col w-[48%]  md4:w-full">
                     <div>
                         <h3> Genres</h3>
-                        <div className="flex items-center flex-wrap gap-[15px] border-blue rounded-[4px] p-[8px]">
+                        <div className="flex items-center flex-wrap gap-[15px] border-blue rounded-[4px] p-[8px] max-h-[100px] sm3:max-h-[80px] overflow-y-scroll">
                             {genres?.map((genre) => (
                                 <CheckBox
                                     key={genre?._id}

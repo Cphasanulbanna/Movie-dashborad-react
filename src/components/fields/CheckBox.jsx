@@ -13,8 +13,8 @@ const CheckBox = ({ genre, handleClick, formData }) => {
             className="cursor-pointer flex items-center gap-[5px]"
             onClick={handleClick}
         >
-            <span>{genre.title}</span>
-            <div className="w-[30px] h-[30px] rounded-[4px] overflow-hidden">
+            <span className="sm3:text-[15px]">{genre.title}</span>
+            <div className="w-[30px] h-[30px] rounded-[4px] overflow-hidden md4:w-[25px] md4:h-[25px] sm3:h-[22px] sm3:w-[22px]">
                 {isSelected ? (
                     <img
                         src={greenCheck}
