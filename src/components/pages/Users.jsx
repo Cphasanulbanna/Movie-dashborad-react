@@ -40,8 +40,11 @@ const Users = () => {
                 <p className="text-[15px] text-center w-[26%] lg1:w-[200px]">Date Joined</p>
                 <p className="text-[15px] text-center w-[10%]">Admin</p>
             </div>
-            {users?.map((user) => (
-                <div className="p-[10px] flex items-center justify-between bg-[#275161] md4:gap-[10px] md4:flex-shrink-0">
+            {users?.map((user, index) => (
+                <div
+                    key={index}
+                    className="p-[10px] flex items-center justify-between bg-[#275161] md4:gap-[10px] md4:flex-shrink-0"
+                >
                     <div className="w-[10%] flex justify-center">
                         <div className="w-[50px]  justify-center h-[50px] rounded-full overflow-hidden flex">
                             <img
