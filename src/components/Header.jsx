@@ -33,7 +33,7 @@ const Header = () => {
             <div
                 style={inputStyle}
                 onClick={() => navigate("/")}
-                className="relative  rounded-[25px] overflow-hidden px-[15px] h-[40px] max-w-[300px] w-[100%] lg1:h-[40px] sm3:max-w-[250px] sm2:max-w-[200px] sm1:max-w-[170px]"
+                className="relative  rounded-[25px] overflow-hidden px-[15px] h-[45px] max-w-[300px] w-[100%] lg1:h-[40px] sm3:max-w-[250px] sm2:max-w-[200px] sm1:max-w-[170px]"
             >
                 <div className="w-[20px] h-[20px] absolute z-[10] top-[50%] translate-y-[-50%] sm3:w-[15px] sm3:h-[15px]">
                     <img

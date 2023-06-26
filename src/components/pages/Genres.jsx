@@ -200,7 +200,6 @@ const Genres = () => {
         background: "#082335",
         border: "2px solid #336a8c",
         color: "#418cb3",
-        height: "60px",
     };
 
     return (
@@ -214,12 +213,14 @@ const Genres = () => {
                     buttonLoader={deletButtonLoader}
                 />
             )}
-            <section className="mx-[auto] w-[85%] ">
+            <section className="mx-[auto] w-[85%] sm3:w-[95%]">
                 <div className="flex items-center justify-center relative mb-[30px]">
-                    <h1 className="font-bold text-center text-[32px]">Manage Genres</h1>
+                    <h1 className="font-bold text-center text-[32px] sm3:text-[20px] md2:text-[24px] md4:text-[26px] lg2:text-[30px] sm2:text-[18px]">
+                        Manage Genres
+                    </h1>
                     <div
                         onClick={handleAddInput}
-                        className="w-[35px] h-[35px] icon cursor-pointer absolute right-[10px] top-[50%] translate-y-[-50%]"
+                        className="w-[35px] h-[35px] md1:w-[30px] md1:h-[30px] sm3:h-[25px] sm3:w-[25px] icon cursor-pointer absolute right-[10px] top-[50%] translate-y-[-50%]"
                     >
                         <img
                             src={add}
@@ -229,7 +230,7 @@ const Genres = () => {
                 </div>
 
                 {showAddInput && (
-                    <div className="mb-[20px] flex justify-between items-center h-[48px] bg-[#f1f1f1] pr-[2px]">
+                    <div className="mb-[20px] flex justify-between items-center h-[48px] lg2:h-[40px] bg-[#f1f1f1] pr-[2px]">
                         <input
                             className="w-[fill] p-[7px] text-[16px] h-[100%]"
                             type="text"
@@ -242,7 +243,7 @@ const Genres = () => {
                         <div
                             onClick={addGenre}
                             style={{ background: "#062030" }}
-                            className={` text-[#f2f2f2] cursor-pointer overflow-hidden h-[45px] px-[15px] right-[2px] flex justify-center items-center 
+                            className={` text-[#f2f2f2] cursor-pointer overflow-hidden h-[45px]  lg2:h-[40px] sm3:text-[14px] px-[15px] right-[2px] flex justify-center items-center 
                            `}
                         >
                             {addButtonLoader ? <ButtonLoader size={0.3} /> : "Add"}
@@ -252,7 +253,7 @@ const Genres = () => {
 
                 <ul
                     style={{ maxHeight: showAddInput && "430px" }}
-                    className="flex flex-wrap justify-center max-h-[500px] w-[100%] gap-[15px] overflow-y-scroll"
+                    className="flex flex-wrap justify-center max-h-[500px] w-[100%] gap-[15px] md1:gap-[10px] sm3:gap-[6px] overflow-y-scroll"
                 >
                     {isLoading ? (
                         <Skelton
@@ -265,27 +266,27 @@ const Genres = () => {
                                 return (
                                     <div
                                         style={inputStyle}
-                                        className="flex items-center justify-between w-[100%] px-[15px] pl-0 bg-dark-blue"
+                                        className="flex items-center h-[48px] justify-between w-[100%] px-[15px] pl-0 bg-dark-blue md1:h-[40px]"
                                     >
                                         <div className="w-[fill]">
                                             <input
-                                                className="h-[48px] w-[fill] pl-[15px] bg-[inherit]"
+                                                className="h-[48px] md1:h-[40px] w-[fill] pl-[15px] bg-[inherit]"
                                                 type="text"
                                                 placeholder={"movie genre"}
                                                 value={editedGenre}
                                                 onChange={handleEditedGenreChange}
                                             />
                                         </div>
-                                        <div className="flex gap-[12px] items-center h-[fill]">
+                                        <div className="flex gap-[12px] items-center h-[fill] sm3:gap-0">
                                             {genreId === genre?._id ? (
                                                 <div
                                                     onClick={cancelEdit}
-                                                    className=" px-[10px] cursor-pointer h-[100%] flex items-center"
+                                                    className=" px-[10px] cursor-pointer h-[100%] flex items-center sm3:text-[14px]"
                                                 >
                                                     cancel
                                                 </div>
                                             ) : (
-                                                <div className="w-[25px] h-[25px] cursor-pointer">
+                                                <div className="w-[25px] h-[25px] cursor-pointer sm3:text-[14px]">
                                                     <img
                                                         src={edit}
                                                         alt="edit"
@@ -313,14 +314,17 @@ const Genres = () => {
                                                 ? { backgroundColor: "rgb(1, 29, 48)" }
                                                 : { backgroundColor: "#001220" }
                                         }
-                                        className="bg-dark-blue w-[100%] py-[15px] px-[20px] h-[60px] flex justify-between items-center"
+                                        className="bg-dark-blue w-[100%] py-[15px] sm3:py-[10px] sm3:px-[15px] px-[20px] h-[48px] lg2:h-[50px] md1:h-[40px] flex justify-between items-center"
                                         key={genre?._id}
                                     >
-                                        <h2 className="text-[18px] font-bold"> {genre?.title}</h2>
-                                        <div className="flex items-center gap-[15px]">
+                                        <h2 className="text-[18px] font-bold lg2:text-[16px]">
+                                            {" "}
+                                            {genre?.title}
+                                        </h2>
+                                        <div className="flex items-center gap-[15px] md1:gap-[3px]">
                                             <div
                                                 onClick={() => handleGenreEdit(genre)}
-                                                className="w-[25px] h-[25px] cursor-pointer mr-[15px] icon"
+                                                className="w-[25px] h-[25px] cursor-pointer mr-[15px] md1:mr-[8px] icon md3:w-[22px] md3:h-[22px] sm3:h-[16px] sm3:w-[16px]"
                                             >
                                                 <img
                                                     src={edit}
@@ -332,7 +336,7 @@ const Genres = () => {
                                                     setShowDeleteModal(true);
                                                     setGerneIdToDelete(genre?._id);
                                                 }}
-                                                className="w-[25px] h-[25px] cursor-pointer icon"
+                                                className="w-[25px] h-[25px] cursor-pointer icon md3:w-[22px] md3:h-[22px] sm3:h-[16px] sm3:w-[16px]"
                                             >
                                                 <img
                                                     src={remove}

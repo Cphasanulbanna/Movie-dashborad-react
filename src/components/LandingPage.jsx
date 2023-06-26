@@ -12,7 +12,6 @@ import Users from "./pages/Users";
 import { MovieSinglePage } from "./pages/MovieSinglePage";
 import { Sidebar } from "./Sidebar";
 import { AddMovies } from "./pages/AddMovies";
-import EmailPage from "./auth/EmailPage";
 
 const LandingPage = () => {
     return (
