@@ -42,27 +42,29 @@ export const MovieSinglePage = () => {
         fetchMovie();
     }, []);
     return (
-        <div className=" flex gap-[30px] h-[100%] overflow-y-scroll">
+        <div className=" flex gap-[30px] h-[100%] sm3:h-auto overflow-y-scroll items-start lg2:flex-col-reverse">
             {isLoading ? (
                 <Skelton type="movie-singlepage" />
             ) : (
                 <>
-                    <div className="w-[40%]">
+                    <div className="w-[40%] lg2:hidden">
                         <img
                             className="object-contain"
                             src={movie?.poster.url}
                             alt="poster"
                         />
                     </div>
-                    <div className="w-[60%] flex flex-col gap-[10px]">
-                        <h1 className="text-[35px] font-bold">{movie?.name}</h1>
+                    <div className="w-[60%] flex flex-col gap-[10px] lg2:w-full">
+                        <h1 className="text-[35px] font-bold sm3:text-[24px] lg2:text-[28px]">
+                            {movie?.name}
+                        </h1>
                         {movie?.year && <h2>Release year: {movie?.year}</h2>}
                         {movie?.description && <p>{movie?.description}</p>}
                         {movie?.leadactor && <h2>Hero: Actor {movie?.leadactor}</h2>}
 
                         <div className="flex items-center gap-[10px] flex-wrap">
                             {movie?.genre?.map((item) => (
-                                <div className="py-[7px] px-[22px] rounded-[25px] overflow-hidden  border-[2px] border-solid border-[#f1f1f1] text-[#f1f1f1]">
+                                <div className="py-[7px] px-[22px] sm3:py-[4px] sm3:px-[18px] sm3:text-[14px] rounded-[25px] overflow-hidden  border-[2px] border-solid border-[#f1f1f1] text-[#f1f1f1]">
                                     {item.title}
                                 </div>
                             ))}
@@ -70,7 +72,7 @@ export const MovieSinglePage = () => {
                         <StarRating rating={movie?.rating} />
                         <div className="flex flex-wrap gap-[18px]">
                             {movie?.gallery?.map((item) => (
-                                <div className="w-[47%]">
+                                <div className="w-[47%] sm3:w-[100%]">
                                     <img
                                         src={item.url}
                                         alt="gallery-image"
