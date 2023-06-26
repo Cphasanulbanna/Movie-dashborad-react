@@ -24,7 +24,7 @@ export const Sidebar = () => {
     };
 
     return (
-        <div className="bg-dark-blue h-full fixed w-[200px] lg1:w-[75px] md2:w-[50px] overflow-hidden p-[25px] px-[0] flex flex-col gap-[30px]">
+        <div className="bg-dark-blue h-full fixed w-[200px] lg1:w-[75px] md2:w-[50px] overflow-hidden p-[25px] px-[0] flex flex-col gap-[30px] sm3:gap-[20px]">
             <Link
                 to="/"
                 className="w-[45px] cursor-pointer ml-[25px] lg1:w-[30px] md2:ml-[12px]"

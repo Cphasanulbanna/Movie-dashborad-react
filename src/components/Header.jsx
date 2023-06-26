@@ -26,17 +26,16 @@ const Header = () => {
         background: "#082335",
         border: "2px solid #336a8c",
         color: "#418cb3",
-        height: "45px",
     };
 
     return (
-        <header className="bg-dark-blue fixed top-0 left-[200px] lg1:left-[75px] md2:left-[50px] w-[fill] py-[30px] px-[40px] flex justify-between items-center">
+        <header className="bg-dark-blue fixed top-0 left-[200px] lg1:left-[75px] md2:left-[50px] w-[fill] py-[30px] lg1:pt-[15px] px-[40px] flex justify-between items-center md1:px-[20px] sm3:pb-[20px]">
             <div
                 style={inputStyle}
                 onClick={() => navigate("/")}
-                className="relative  rounded-[25px] overflow-hidden px-[15px] h-[40px] max-w-[300px] w-[100%]"
+                className="relative  rounded-[25px] overflow-hidden px-[15px] h-[40px] max-w-[300px] w-[100%] lg1:h-[40px] sm3:max-w-[250px] sm2:max-w-[200px] sm1:max-w-[170px]"
             >
-                <div className="w-[20px] h-[20px] absolute z-[10] top-[50%] translate-y-[-50%]">
+                <div className="w-[20px] h-[20px] absolute z-[10] top-[50%] translate-y-[-50%] sm3:w-[15px] sm3:h-[15px]">
                     <img
                         src={search}
                         alt="search-icon"
@@ -51,13 +50,13 @@ const Header = () => {
                 />
             </div>
             <div className="flex items-center gap-[25px]">
-                <div className="w-[25px] h-[25px] cursor-pointer hover:opacity-[0.8]">
+                <div className="w-[25px] h-[25px] cursor-pointer hover:opacity-[0.8] md3:hidden">
                     <img
                         src={notification}
                         alt="notification"
                     />
                 </div>
-                <div className="w-[50px] h-[50px] overflow-hidden rounded-full cursor-pointer hover:opacity-[0.8]">
+                <div className="w-[50px] h-[50px] overflow-hidden rounded-full cursor-pointer hover:opacity-[0.8] sm3:w-[40px] sm3:h-[40px]">
                     <img
                         src={userdata?.profile_pic.url || profile}
                         alt="profile"
