@@ -177,10 +177,13 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     const prevFormDataRef = useRef(null);
     const [prevData, setPrevData] = useState({});
 
+    console.log(prevFormDataRef.current, "ref");
+    console.log(formData, "formdata");
+
     useEffect(() => {
         setPrevData(formData);
-        prevFormDataRef.current = prevData;
     }, []);
+    prevFormDataRef.current = prevData;
 
     function checkDataEquality(obj1, obj2) {
         for (let key in obj1) {

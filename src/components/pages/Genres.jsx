@@ -251,10 +251,7 @@ const Genres = () => {
                     </div>
                 )}
 
-                <ul
-                    // style={{ maxHeight: showAddInput && "430px" }}
-                    className="flex flex-col h-[100%] justify-center  w-[100%] gap-[15px] md1:gap-[10px] sm3:gap-[6px] overflow-y-scroll"
-                >
+                <ul className="flex flex-col h-[100%] justify-center  w-[100%] gap-[15px] md1:gap-[10px] sm3:gap-[6px] overflow-y-scroll">
                     {isLoading ? (
                         <Skelton
                             type={"rectangle"}
