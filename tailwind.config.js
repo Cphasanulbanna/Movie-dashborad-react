@@ -23,6 +23,8 @@ export default {
         extend: {
             colors: {
                 "light-green": "#7bc1b3",
+                "light-green-2": "rgb(31, 121, 131)",
+                "blue-border": "rgb(51, 106, 140)",
                 overlay: "rgba(0,0,0,0.5)",
                 "light-white": "#f1f1f1",
                 violet: "rgba(222, 57, 247, 1)",

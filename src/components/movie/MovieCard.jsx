@@ -34,6 +34,7 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
             <div className="w-[31%] lg4:w-[48%] md4:w-[100%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">
                     <img
+                        fetchpriority="high"
                         src={movie?.poster.url}
                         alt="poster"
                         className="object-cover"

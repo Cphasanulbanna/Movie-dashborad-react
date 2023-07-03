@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 //packages
 import { Routes, Route } from "react-router-dom";
@@ -14,15 +14,35 @@ import { Sidebar } from "./Sidebar";
 import { AddMovies } from "./pages/AddMovies";
 
 const LandingPage = () => {
+    const [genreIds, setGenreIds] = useState([]);
+    const [rating, setRatings] = useState([]);
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
     return (
         <section>
-            <Header />
+            <Header
+                setGenreIds={setGenreIds}
+                setRatings={setRatings}
+                rating={rating}
+                genreIds={genreIds}
+                setSearch={setSearch}
+                search={search}
+                setPage={setPage}
+            />
             <Sidebar />
-            <section className="fixed top-[100px] lg1:top-[85px] sm3:top-[75px] overflow-y-scroll left-[200px] lg1:left-[75px] md2:left-[50px] w-[fill] h-[fill] bg-dark-blue-2 p-[20px] sm2:p-[10px]">
+            <section className="fixed z-40 top-[100px] lg1:top-[85px] sm3:top-[75px] overflow-y-scroll left-[200px] lg1:left-[75px] md2:left-[50px] w-[fill] h-[fill] bg-dark-blue-2 p-[20px] sm2:p-[10px]">
                 <Routes>
                     <Route
                         path="/"
-                        element={<Movies />}
+                        element={
+                            <Movies
+                                genreIds={genreIds}
+                                rating={rating}
+                                search={search}
+                                setPage={setPage}
+                                page={page}
+                            />
+                        }
                     />
                     <Route
                         path="/:id"

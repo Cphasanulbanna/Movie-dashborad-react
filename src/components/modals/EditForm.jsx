@@ -419,7 +419,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         dimension={"40px"}
                                         handleRating={handleRating}
                                         name="rating"
-                                        rating={movie?.rating || formData?.rating}
+                                        rating={formData?.rating}
                                     />
                                 </div>
                                 <div className="flex flex-col gap-[8px] ">

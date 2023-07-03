@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 
 //package
 import { ToastContainer } from "react-toastify";
-import ReactPaginate from "react-paginate";
 
 //axios
 import axiosConfig from "../../../axiosConfig";
 
 //hook
-import useDebounce from "../hooks/useDebounce";
+import { useDebounce } from "../hooks/useDebounce";
 
 //components
 import { MovieCard } from "../movie/MovieCard";
@@ -19,93 +18,89 @@ import Skelton from "../general/skelton-loader/Skelton";
 import Notification from "../../assets/general/utils/Notification";
 
 //store
-import {
-    useQueryStore,
-    useShowDeletemodal,
-    useUpdateMovies,
-    useUserDataStore,
-} from "../zustand/store";
+import { useGenres, useShowDeletemodal, useUpdateMovies, useUserDataStore } from "../zustand/store";
 
-export const Movies = () => {
+export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     //All movies
-    const [movies, setMovies] = useState([]);
-    const [pageCount, setPageCount] = useState(null);
+
+    const [data, setData] = useState({});
+    // const [page, setPage] = useState(1);
 
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
-    const [activePage, setActivePage] = useState(0);
-    const [isSearchCleared, setIsSearchCleared] = useState(false);
+
     const [isLoading, setLoading] = useState(true);
 
     //search keyword
-    const { query } = useQueryStore();
+    // const { query } = useQueryStore();
 
     //movie delete modal state
     const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
 
     //to update homepage when a movie is edited
-    const { updateMoviesList, updatemovies } = useUpdateMovies();
+    const { updateMoviesList } = useUpdateMovies();
+    const { updateGenres } = useGenres();
 
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
 
+    // let abortController;
+    // //fetch all movies
+    // const fetchAllMovies = async (p) => {
+    //     try {
+    //         // Cancel any previous requests before making a new one
+    //         abortController && abortController.abort();
+
+    //         abortController = new AbortController();
+    //         let url = "/movies";
+    //         const params = {
+    //             p: p,
+    //         };
+    //         query && (params.q = query);
+
+    //         const response = await axiosConfig.get(url, {
+    //             headers: {
+    //                 Authorization: `Bearer ${access_token}`,
+    //             },
+    //             signal: abortController.signal,
+    //             params: params,
+    //         });
+
+    //         if (!abortController.signal.aborted) {
+    //             setMovies(response.data?.moviesList);
+    //             setPageCount(response.data?.total_pages);
+    //             setLoading(false);
+    //         }
+    //     } catch (error) {}
+    // };
+
+    const debouncedValue = useDebounce(search);
+
     let abortController;
-    //fetch all movies
-    const fetchAllMovies = async (p) => {
+    const getAllMovies = async () => {
         try {
             // Cancel any previous requests before making a new one
             abortController && abortController.abort();
 
             abortController = new AbortController();
-            let url = "/movies";
-            const params = {
-                p: p,
-            };
-            query && (params.q = query);
-
-            const response = await axiosConfig.get(url, {
+            const URL = `/movies?page=${page}&genre=${genreIds.toString()}&rating=${rating}&search=${search}`;
+            const response = await axiosConfig.get(URL, {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
                 signal: abortController.signal,
-                params: params,
             });
-
-            if (!abortController.signal.aborted) {
-                setMovies(response.data?.moviesList);
-                setPageCount(response.data?.total_pages);
-                setLoading(false);
-            }
-        } catch (error) {}
-    };
-
-    useDebounce(fetchAllMovies, [query, updatemovies]);
-
-    // Invoke when user click to request another page.
-    const handlePageClick = (event) => {
-        fetchAllMovies(event.selected);
-        setActivePage(event.selected);
+            console.log(response.data);
+            setData(response.data);
+            updateGenres(response.data.genres);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
-        if (query === "" || !query) {
-            setIsSearchCleared(true);
-            setActivePage(0);
-        } else {
-            setIsSearchCleared(false);
-        }
-    }, [query]);
-
-    useEffect(() => {
-        if (isSearchCleared) {
-            setActivePage(0);
-        }
-    }, [isSearchCleared]);
-
-    useEffect(() => {
-        if (!isSearchCleared) {
-            setActivePage(0);
-        }
-    }, [query]);
+        getAllMovies();
+    }, [debouncedValue, genreIds, rating, page]);
 
     //close deletemodal function
     const closeDeleteModal = () => {
@@ -131,6 +126,11 @@ export const Movies = () => {
         }
     };
 
+    const totalPages = Math.ceil(data.count / data.limit);
+    const selectPage = (newPage) => {
+        setPage(newPage + 1);
+    };
+
     return (
         <>
             {showDeleteModal && (
@@ -147,7 +147,7 @@ export const Movies = () => {
                     {isLoading ? (
                         <Skelton type={"feed"} />
                     ) : (
-                        movies?.map((movie) => (
+                        data.movies?.map((movie) => (
                             <MovieCard
                                 key={movie?._id}
                                 movie={movie}
@@ -157,25 +157,39 @@ export const Movies = () => {
                         ))
                     )}
                 </div>
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel=">"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={5}
-                    marginPagesDisplayed={5}
-                    breakAriaLabels={"."}
-                    pageCount={Math.ceil(pageCount)}
-                    previousLabel="<"
-                    forcePage={activePage}
-                    renderOnZeroPageCount={null}
-                    activeClassName="active-page"
-                    previousClassName="previous-page-btn"
-                    nextClassName="next-page-btn"
-                    containerClassName="paginate-container"
-                    pageClassName="middle-pages"
-                    disabledClassName="disabled-page-btn"
-                    nextLinkClassName="disabled-page-link"
-                />
+
+                <div className="flex justify-center gap-5 p-5">
+                    <button
+                        onClick={() => setPage((prev) => (prev - 1 > 0 ? prev - 1 : prev))}
+                        className="page-btn"
+                    >
+                        {"<"}
+                    </button>
+                    {totalPages > 0 &&
+                        Array(totalPages)
+                            .fill()
+                            .map((_, index) => (
+                                <>
+                                    <button
+                                        key={index}
+                                        onClick={() => selectPage(index)}
+                                        className={
+                                            page === index + 1 ? `active-page page-btn` : "page-btn"
+                                        }
+                                    >
+                                        {index + 1}
+                                    </button>
+                                </>
+                            ))}
+                    <button
+                        onClick={() =>
+                            setPage((prev) => (prev + 1 <= totalPages ? prev + 1 : totalPages))
+                        }
+                        className="page-btn"
+                    >
+                        {">"}
+                    </button>
+                </div>
             </section>
         </>
     );
