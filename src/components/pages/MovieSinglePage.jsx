@@ -25,16 +25,18 @@ export const MovieSinglePage = () => {
     //fetch single movie details
     const fetchMovie = async () => {
         try {
-            const controller = new AbortController();
-            const resposne = await axiosConfig.get(`/movies/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
-                signal: controller.signal,
-            });
-            setMovie(resposne.data?.movie);
-            setloading(false);
-            controller.abort();
+            if (id) {
+                const controller = new AbortController();
+                const resposne = await axiosConfig.get(`/movies/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`,
+                    },
+                    signal: controller.signal,
+                });
+                setMovie(resposne.data?.movie);
+                setloading(false);
+                controller.abort();
+            }
         } catch (error) {}
     };
 
