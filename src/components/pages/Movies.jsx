@@ -174,7 +174,9 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                                         key={index}
                                         onClick={() => selectPage(index)}
                                         className={
-                                            page === index + 1 ? `active-page page-btn` : "page-btn"
+                                            page === index + 1
+                                                ? `active-page page-btn middle-btns`
+                                                : "page-btn middle-btns"
                                         }
                                     >
                                         {index + 1}

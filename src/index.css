@@ -282,7 +282,7 @@ p {
 }
 
 @media all and (max-width: 540px) {
-    .page-btn {
+    .middle-btns {
         display: none;
     }
 }
