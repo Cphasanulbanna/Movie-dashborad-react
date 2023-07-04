@@ -13,7 +13,10 @@ const ConfirmDelete = ({ deleteItem, closeModal, state, buttonLoader }) => {
             className={`overlay flex justify-center items-center ${state ? "visible" : "hidden"}`}
             onClick={closeModal}
         >
-            <div className="flex flex-col justify-center items-center bg-text-white p-[30px] rounded-[10px] gap-[20px] relative lg2:w-[375px] sm3:w-[300px]">
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className="flex flex-col justify-center items-center bg-text-white p-[30px] rounded-[10px] gap-[20px] relative lg2:w-[375px] sm3:w-[300px]"
+            >
                 <div className="w-[60px] h-[60px] lg2:w-[45px] lg2:h-[45px]">
                     <img
                         src={remove}

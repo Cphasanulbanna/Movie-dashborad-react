@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import ModalWrapper from "../general/ModalWrapper";
 import { Input } from "../fields/Input";
 import StarRating from "../general/StarRating";
-import Skelton from "../general/skelton-loader/Skelton";
 
 //icons
 import editImage from "../../assets/icons/edit-image.png";
@@ -25,7 +24,6 @@ import ButtonLoader from "../general/Button-loader/ButtonLoader";
 
 export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     //states
-    // const [movie, setMovie] = useState({});
     const [genres, setGenres] = useState([]);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [errors, setErrors] = useState({});
@@ -44,7 +42,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
 
     const [galleryPreview, setGalleryPreview] = useState([]);
 
-    const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
+    const { updateMoviesList } = useUpdateMovies();
     const { userdata } = useUserDataStore();
 
     const access_token = userdata?.access_token;
@@ -108,6 +106,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     const updateMovieData = async () => {
         try {
             setLoading(true);
+            updateMoviesList();
             const isEqual = checkDataEquality(prevFormDataRef.current, formData);
             if (!isEqual) {
                 const newFomrData = new FormData();
@@ -128,7 +127,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                     },
                     onUploadProgress,
                 });
-                updateMoviesList();
+
                 setUploadProgress(0);
 
                 Notification("Movie updated", "success");

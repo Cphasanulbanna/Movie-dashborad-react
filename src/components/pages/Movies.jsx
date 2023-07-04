@@ -18,12 +18,18 @@ import Skelton from "../general/skelton-loader/Skelton";
 import Notification from "../../assets/general/utils/Notification";
 
 //store
-import { useGenres, useShowDeletemodal, useUpdateMovies, useUserDataStore } from "../zustand/store";
+import {
+    useGenres,
+    useShowDeletemodal,
+    useUpdateMovies,
+    useUserDataStore,
+    // useMovies,
+} from "../zustand/store";
 
 export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     //All movies
 
-    const [data, setData] = useState({});
+    // const [data, setData] = useState({});
     // const [page, setPage] = useState(1);
 
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
@@ -34,8 +40,11 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
 
     //to update homepage when a movie is edited
-    const { updateMoviesList } = useUpdateMovies();
+    const { updateMoviesList, updatemovies } = useUpdateMovies();
     const { updateGenres } = useGenres();
+    // const { setMovies, movies } = useMovies();
+
+    // console.log(movies, "movies");
 
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
@@ -43,8 +52,11 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     const [movies, setMovies] = useState([]);
     const [count, setCount] = useState(null);
     const [limit, setLimit] = useState(6);
+    const [deleteBtnLoader, setDeleteBtnLoader] = useState(false);
 
     const debouncedValue = useDebounce(search);
+
+    console.log("movies re rendered");
 
     let abortController = new AbortController();
     const getAllMovies = async () => {
@@ -76,7 +88,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
         return () => {
             abortController.abort();
         };
-    }, [debouncedValue, genreIds, rating, page]);
+    }, [debouncedValue, genreIds, rating, page, updatemovies]);
 
     //close deletemodal function
     const closeDeleteModal = () => {
@@ -86,7 +98,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     //delete movie function
     const deleteMovie = async () => {
         try {
-            setShowDeleteModal(false);
+            setDeleteBtnLoader(true);
             const response = await axiosConfig.delete("/movies", {
                 data: {
                     movieId: movieIdToDelete,
@@ -96,9 +108,17 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                 },
             });
             updateMoviesList();
-            Notification("Movie deleted", "success");
+
+            console.log(response.data, "res");
+
+            if (response.data.StatusCode === 6000) {
+                setShowDeleteModal(false);
+                Notification("Movie deleted", "success");
+            }
         } catch (error) {
             Notification(error?.response?.data?.message, "error");
+        } finally {
+            setDeleteBtnLoader(false);
         }
     };
 
@@ -114,6 +134,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                     deleteItem={deleteMovie}
                     closeModal={closeDeleteModal}
                     state={showDeleteModal}
+                    buttonLoader={deleteBtnLoader}
                 />
             )}
             <ToastContainer />

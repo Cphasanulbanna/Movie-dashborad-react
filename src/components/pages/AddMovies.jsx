@@ -23,7 +23,7 @@ import { useUpdateMovies, useUserDataStore } from "../zustand/store";
 import Skelton from "../general/skelton-loader/Skelton";
 
 export const AddMovies = () => {
-    const updateMoviesList = useUpdateMovies((state) => state.updateMoviesList);
+    const { updateMoviesList } = useUpdateMovies();
     const [formData, setFormData] = useState({
         name: "",
         year: "",
@@ -114,6 +114,7 @@ export const AddMovies = () => {
     //adding new movie function
     const AddMovie = async (e) => {
         try {
+            updateMoviesList();
             setSubmitting(true);
             e.preventDefault();
             const newFomrData = new FormData();
@@ -134,7 +135,7 @@ export const AddMovies = () => {
 
                 onUploadProgress,
             });
-            updateMoviesList();
+
             setUploadProgress(0);
             Notification("Movie added", "success");
             resetForm();

@@ -12,7 +12,7 @@ import next from "../../assets/icons/next-arrow.png";
 //components
 import { EditForm } from "../modals/EditForm";
 
-export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
+export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
     //movie edit modal state
     const [showEditModal, setShowEditModal] = useState(false);
 
@@ -20,6 +20,8 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
     const opneEditForm = () => {
         setShowEditModal(true);
     };
+
+    console.log(" movie card re rendered****");
 
     return (
         <>
@@ -35,7 +37,7 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
                 <div className="w-[40%] h-[300px]">
                     <img
                         fetchpriority="high"
-                        src={movie?.poster.url}
+                        src={movie?.poster?.url}
                         alt="poster"
                         className="object-cover"
                     />
@@ -101,4 +103,4 @@ export const MovieCard = React.memo(({ movie, setMovieIdToDelete, setShowDeleteM
             </div>
         </>
     );
-});
+};
