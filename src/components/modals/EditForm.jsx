@@ -106,7 +106,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     const updateMovieData = async () => {
         try {
             setLoading(true);
-            updateMoviesList();
+
             const isEqual = checkDataEquality(prevFormDataRef.current, formData);
             if (!isEqual) {
                 const newFomrData = new FormData();
@@ -127,6 +127,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                     },
                     onUploadProgress,
                 });
+                updateMoviesList();
 
                 setUploadProgress(0);
 
