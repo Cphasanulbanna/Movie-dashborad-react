@@ -34,7 +34,7 @@ const ConfirmDelete = ({ deleteItem, closeModal, state, buttonLoader }) => {
                         onClick={deleteItem}
                         className="btn bg-[#f7215a] min-w-[100px] w-[100%] text-light-white h-[44px] lg2:h-[40px]"
                     >
-                        {buttonLoader ? <ButtonLoader size={0.3} /> : "Delete"}
+                        {buttonLoader ? <ButtonLoader /> : "Delete"}
                     </div>
                 </div>
                 <div

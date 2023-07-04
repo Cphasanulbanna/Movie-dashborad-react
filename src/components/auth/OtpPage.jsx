@@ -31,6 +31,7 @@ const OtpPage = () => {
         otp: "",
     });
     const [errors, setErrors] = useState({});
+    const [isLoading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -54,6 +55,7 @@ const OtpPage = () => {
     const submitOTP = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
             const newFormData = new FormData();
@@ -74,6 +76,8 @@ const OtpPage = () => {
             });
             Notification(error?.response?.data?.message, "error");
             setErrors(validationErrors);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -101,6 +105,7 @@ const OtpPage = () => {
                 <Button
                     title={"Verify OTP"}
                     css={"rounded-[25px] overflow-hidden"}
+                    isLoading={isLoading}
                 />
             </form>
             <div className="flex justify-center flex-col items-center gap-[15px] mt-[30px]">

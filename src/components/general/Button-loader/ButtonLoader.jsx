@@ -1,21 +1,12 @@
 import React from "react";
 
-import "./button-loader.css";
+import Lottie from "lottie-react";
+import animationData from "../../../assets/json/button-loader.json";
 
-const ButtonLoader = ({ size }) => {
+const ButtonLoader = () => {
     return (
-        <div
-            class="lds-roller"
-            style={{ transform: `scale(${size || 0.4})` }}
-        >
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div className="w-[70px]">
+            <Lottie animationData={animationData} />
         </div>
     );
 };

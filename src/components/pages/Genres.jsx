@@ -246,7 +246,7 @@ const Genres = () => {
                             className={` text-[#f2f2f2] cursor-pointer overflow-hidden h-[45px]  lg2:h-[40px] sm3:text-[14px] px-[15px] right-[2px] flex justify-center items-center 
                            `}
                         >
-                            {addButtonLoader ? <ButtonLoader size={0.3} /> : "Add"}
+                            {addButtonLoader ? <ButtonLoader /> : "Add"}
                         </div>
                     </div>
                 )}
@@ -294,11 +294,7 @@ const Genres = () => {
                                                 onClick={() => updateGenre(genre?._id)}
                                                 className=" p-[10px] cursor-pointer h-[100%] flex items-center"
                                             >
-                                                {editButtonloader ? (
-                                                    <ButtonLoader size={0.2} />
-                                                ) : (
-                                                    "save"
-                                                )}
+                                                {editButtonloader ? <ButtonLoader /> : "save"}
                                             </div>
                                         </div>
                                     </div>

@@ -30,6 +30,7 @@ const Signup = () => {
     });
     const [imageName, setImageName] = useState("");
     const [errors, setErrors] = useState({});
+    const [isLoading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -65,6 +66,7 @@ const Signup = () => {
     const signup = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosConfig.post("/auth/signup", formData, {
@@ -83,6 +85,8 @@ const Signup = () => {
             });
             Notification(error?.response?.data?.message, "error");
             setErrors(validationErrors);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -137,6 +141,7 @@ const Signup = () => {
                     </p>
                 </FileUploader>
                 <Button
+                    isLoading={isLoading}
                     title={"SIGNUP"}
                     css={"rounded-[25px] overflow-hidden"}
                 />

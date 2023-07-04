@@ -30,6 +30,7 @@ const EmailPage = () => {
     });
     const [errors, setErrors] = useState({});
     const { updateUserData } = useUserDataStore();
+    const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     //storing data
@@ -48,6 +49,7 @@ const EmailPage = () => {
     const submitEmail = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosConfig.post("/auth/forget-password", formData);
@@ -67,6 +69,8 @@ const EmailPage = () => {
             });
             Notification(error?.response?.data?.message, "error");
             setErrors(validationErrors);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -94,6 +98,7 @@ const EmailPage = () => {
                 <Button
                     title={"Verify Email"}
                     css={"rounded-[25px] overflow-hidden"}
+                    isLoading={isLoading}
                 />
             </form>
             <div className="flex justify-center flex-col items-center gap-[15px] mt-[30px]">

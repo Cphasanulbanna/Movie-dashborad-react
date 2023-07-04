@@ -30,9 +30,6 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
 
     const [isLoading, setLoading] = useState(true);
 
-    //search keyword
-    // const { query } = useQueryStore();
-
     //movie delete modal state
     const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
 
@@ -43,54 +40,29 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     const { userdata } = useUserDataStore();
     const access_token = userdata?.access_token;
 
-    // let abortController;
-    // //fetch all movies
-    // const fetchAllMovies = async (p) => {
-    //     try {
-    //         // Cancel any previous requests before making a new one
-    //         abortController && abortController.abort();
-
-    //         abortController = new AbortController();
-    //         let url = "/movies";
-    //         const params = {
-    //             p: p,
-    //         };
-    //         query && (params.q = query);
-
-    //         const response = await axiosConfig.get(url, {
-    //             headers: {
-    //                 Authorization: `Bearer ${access_token}`,
-    //             },
-    //             signal: abortController.signal,
-    //             params: params,
-    //         });
-
-    //         if (!abortController.signal.aborted) {
-    //             setMovies(response.data?.moviesList);
-    //             setPageCount(response.data?.total_pages);
-    //             setLoading(false);
-    //         }
-    //     } catch (error) {}
-    // };
+    const [movies, setMovies] = useState([]);
+    const [count, setCount] = useState(null);
+    const [limit, setLimit] = useState(6);
 
     const debouncedValue = useDebounce(search);
 
-    let abortController;
+    let abortController = new AbortController();
     const getAllMovies = async () => {
         try {
-            // Cancel any previous requests before making a new one
-            abortController && abortController.abort();
+            const newAbortController = new AbortController();
+            abortController = newAbortController;
 
-            abortController = new AbortController();
             const URL = `/movies?page=${page}&genre=${genreIds.toString()}&rating=${rating}&search=${search}`;
             const response = await axiosConfig.get(URL, {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 },
-                signal: abortController.signal,
+                signal: newAbortController.signal,
             });
-            console.log(response.data);
-            setData(response.data);
+
+            setMovies(response.data.movies);
+            setCount(response.data.count);
+            setLimit(response.data.limit);
             updateGenres(response.data.genres);
             setLoading(false);
         } catch (error) {
@@ -100,6 +72,10 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
 
     useEffect(() => {
         getAllMovies();
+
+        return () => {
+            abortController.abort();
+        };
     }, [debouncedValue, genreIds, rating, page]);
 
     //close deletemodal function
@@ -126,7 +102,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
         }
     };
 
-    const totalPages = Math.ceil(data.count / data.limit);
+    const totalPages = Math.ceil(count / limit);
     const selectPage = (newPage) => {
         setPage(newPage + 1);
     };
@@ -147,7 +123,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                     {isLoading ? (
                         <Skelton type={"feed"} />
                     ) : (
-                        data.movies?.map((movie) => (
+                        movies?.map((movie) => (
                             <MovieCard
                                 key={movie?._id}
                                 movie={movie}

@@ -31,6 +31,7 @@ const Login = () => {
     });
     const [errors, setErrors] = useState({});
     const { updateUserData } = useUserDataStore();
+    const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     //storing data
@@ -58,6 +59,7 @@ const Login = () => {
     const login = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosConfig.post("/auth/login", formData);
@@ -79,6 +81,8 @@ const Login = () => {
             });
             Notification(error?.response?.data?.message, "error");
             setErrors(validationErrors);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -114,6 +118,7 @@ const Login = () => {
                 <Button
                     title={"LOGIN"}
                     css={"rounded-[25px] overflow-hidden"}
+                    isLoading={isLoading}
                 />
                 <Link
                     className="text-[16px] text-right text-[#8d8b8b] cursor-pointer hover:opacity-[0.8]"

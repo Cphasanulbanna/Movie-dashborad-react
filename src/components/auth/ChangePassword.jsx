@@ -31,6 +31,7 @@ const ChangePassword = () => {
         password: "",
     });
     const [errors, setErrors] = useState({});
+    const [isLoading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -58,6 +59,7 @@ const ChangePassword = () => {
     const resetPassword = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
             const newFormData = new FormData();
@@ -78,6 +80,8 @@ const ChangePassword = () => {
             });
             Notification(error?.response?.data?.message, "error");
             setErrors(validationErrors);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -107,6 +111,7 @@ const ChangePassword = () => {
                 <Button
                     title={"Reset Password"}
                     css={"rounded-[25px] overflow-hidden"}
+                    isLoading={isLoading}
                 />
             </form>
             <div className="flex justify-center flex-col items-center gap-[15px] mt-[30px]">
