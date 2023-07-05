@@ -21,6 +21,7 @@ import { useUpdateMovies, useUserDataStore } from "../zustand/store";
 //functions
 import Notification from "../../assets/general/utils/Notification";
 import ButtonLoader from "../general/Button-loader/ButtonLoader";
+import { axiosInstance } from "../../../interceptor";
 
 export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     //states
@@ -53,10 +54,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     const fetchGenres = async () => {
         try {
             const controller = new AbortController();
-            const response = await axiosConfig.get("/genres", {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
+            const response = await axiosInstance("/genres", {
+                method: "GET",
                 signal: controller.signal,
             });
             setGenres(response.data?.genres);
@@ -120,10 +119,11 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                     newFomrData.append("gallery", file);
                 });
 
-                const response = await axiosConfig.put(`/movies/${movie?._id}`, newFomrData, {
+                const response = await axiosInstance(`/movies/${movie?._id}`, {
+                    method: "PUT",
+                    data: newFomrData,
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${access_token}`,
                     },
                     onUploadProgress,
                 });

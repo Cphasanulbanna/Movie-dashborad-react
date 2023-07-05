@@ -21,6 +21,7 @@ import axiosConfig from "../../../axiosConfig";
 //store
 import { useUpdateMovies, useUserDataStore } from "../zustand/store";
 import Skelton from "../general/skelton-loader/Skelton";
+import { axiosInstance } from "../../../interceptor";
 
 export const AddMovies = () => {
     const { updateMoviesList } = useUpdateMovies();
@@ -53,10 +54,8 @@ export const AddMovies = () => {
     const fetchGenres = async () => {
         try {
             const controller = new AbortController();
-            const response = await axiosConfig.get("/genres", {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
+            const response = await axiosInstance("/genres", {
+                method: "GET",
                 signal: controller.signal,
             });
             setGenres(response.data.genres);

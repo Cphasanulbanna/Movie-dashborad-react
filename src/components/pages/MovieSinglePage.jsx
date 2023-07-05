@@ -12,6 +12,7 @@ import StarRating from "../general/StarRating";
 //store
 import { useUserDataStore } from "../zustand/store";
 import Skelton from "../general/skelton-loader/Skelton";
+import { axiosInstance } from "../../../interceptor";
 
 export const MovieSinglePage = () => {
     //id of each movie
@@ -27,7 +28,7 @@ export const MovieSinglePage = () => {
         try {
             if (id) {
                 const controller = new AbortController();
-                const resposne = await axiosConfig.get(`/movies/${id}`, {
+                const resposne = await axiosInstance.get(`/movies/${id}`, {
                     headers: {
                         Authorization: `Bearer ${access_token}`,
                     },

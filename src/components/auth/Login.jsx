@@ -22,6 +22,7 @@ import axiosConfig from "../../../axiosConfig";
 
 //functions
 import Notification from "../../assets/general/utils/Notification";
+import { axiosInstance } from "../../../interceptor";
 
 const Login = () => {
     //form state
@@ -62,7 +63,11 @@ const Login = () => {
             setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosConfig.post("/auth/login", formData);
+            const response = await axiosInstance("/auth/login", {
+                method: "POST",
+                withCredentials: true,
+                data: formData,
+            });
 
             const { StatusCode, email, username, access_token, profile_pic } = response.data;
             if (StatusCode === 6000) {

@@ -19,6 +19,7 @@ import axiosConfig from "../../../axiosConfig";
 
 //functions
 import Notification from "../../assets/general/utils/Notification";
+import { axiosInstance } from "../../../interceptor";
 
 const Signup = () => {
     //form state
@@ -69,7 +70,9 @@ const Signup = () => {
             setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosConfig.post("/auth/signup", formData, {
+            const response = await axiosInstance("/auth/signup", {
+                method: "POST",
+                data: formData,
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

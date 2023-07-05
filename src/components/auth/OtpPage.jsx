@@ -22,6 +22,7 @@ import axiosConfig from "../../../axiosConfig";
 
 //functions
 import Notification from "../../assets/general/utils/Notification";
+import { axiosInstance } from "../../../interceptor";
 
 const OtpPage = () => {
     const { userdata } = useUserDataStore();
@@ -62,7 +63,10 @@ const OtpPage = () => {
             newFormData.append("email", userdata.email);
             newFormData.append("otp", formData.otp);
 
-            const response = await axiosConfig.post("/auth/verify-otp", newFormData);
+            const response = await axiosInstance("/auth/verify-otp", {
+                method: "POST",
+                data: newFormData,
+            });
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import Cookies from "js-cookie";
 
 export const useUpdateMovies = create((set) => ({
     updatemovies: false,
@@ -34,6 +35,7 @@ export const useUserDataStore = create((set) => ({
     logout: () => {
         set(() => {
             localStorage.clear();
+            Cookies.remove("refreshToken");
             return { userdata: userDataInitialState };
         });
     },

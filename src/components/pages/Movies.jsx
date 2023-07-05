@@ -25,6 +25,7 @@ import {
     useUserDataStore,
     // useMovies,
 } from "../zustand/store";
+import { axiosInstance } from "../../../interceptor";
 
 export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     //All movies
@@ -65,10 +66,8 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
             abortController = newAbortController;
 
             const URL = `/movies?page=${page}&genre=${genreIds.toString()}&rating=${rating}&search=${search}`;
-            const response = await axiosConfig.get(URL, {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
+            const response = await axiosInstance(URL, {
+                method: "GET",
                 signal: newAbortController.signal,
             });
 
@@ -99,12 +98,10 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     const deleteMovie = async () => {
         try {
             setDeleteBtnLoader(true);
-            const response = await axiosConfig.delete("/movies", {
+            const response = await axiosInstance("/movies", {
+                method: "DELETE",
                 data: {
                     movieId: movieIdToDelete,
-                },
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
                 },
             });
             updateMoviesList();
@@ -156,12 +153,14 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                 </div>
 
                 <div className="flex justify-center gap-5 p-5">
-                    <button
-                        onClick={() => setPage((prev) => (prev - 1 > 0 ? prev - 1 : prev))}
-                        className="page-btn"
-                    >
-                        {"<"}
-                    </button>
+                    {totalPages > 1 && (
+                        <button
+                            onClick={() => setPage((prev) => (prev - 1 > 0 ? prev - 1 : prev))}
+                            className="page-btn"
+                        >
+                            {"<"}
+                        </button>
+                    )}
                     {totalPages > 0 &&
                         Array(totalPages)
                             .fill()
@@ -180,14 +179,16 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                                     </button>
                                 </>
                             ))}
-                    <button
-                        onClick={() =>
-                            setPage((prev) => (prev + 1 <= totalPages ? prev + 1 : totalPages))
-                        }
-                        className="page-btn"
-                    >
-                        {">"}
-                    </button>
+                    {totalPages > 1 && (
+                        <button
+                            onClick={() =>
+                                setPage((prev) => (prev + 1 <= totalPages ? prev + 1 : totalPages))
+                            }
+                            className="page-btn"
+                        >
+                            {">"}
+                        </button>
+                    )}
                 </div>
             </section>
         </>

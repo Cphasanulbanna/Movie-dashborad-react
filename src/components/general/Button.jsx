@@ -12,7 +12,7 @@ export const Button = ({ title, css, onClickFunction, isLoading }) => {
             className={`w-[100%] text-[#f1f1f1] text-center cursor-pointer text-[14px] h-[42px] py-[7px] px-[16px] hover:opacity-[0.7] overflow-hidden font-medium  bgc-button ${css} `}
             type="submit"
         >
-            {isLoading ? <ButtonLoader /> : { title }}
+            {isLoading ? <ButtonLoader /> : title}
         </button>
     );
 };

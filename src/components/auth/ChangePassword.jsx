@@ -22,6 +22,7 @@ import axiosConfig from "../../../axiosConfig";
 
 //functions
 import Notification from "../../assets/general/utils/Notification";
+import { axiosInstance } from "../../../interceptor";
 
 const ChangePassword = () => {
     const { userdata } = useUserDataStore();
@@ -66,7 +67,7 @@ const ChangePassword = () => {
             newFormData.append("email", userdata.email);
             newFormData.append("password", formData.password);
 
-            const response = await axiosConfig.post("/auth/reset-password", newFormData);
+            const response = await axiosInstance.post("/auth/reset-password", newFormData);
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {

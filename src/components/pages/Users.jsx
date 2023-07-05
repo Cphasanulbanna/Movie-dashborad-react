@@ -7,6 +7,7 @@ import { useUserDataStore } from "../zustand/store";
 
 //axios
 import axiosConfig from "../../../axiosConfig";
+import { axiosInstance } from "../../../interceptor";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -16,10 +17,8 @@ const Users = () => {
     const fetchUsers = async () => {
         try {
             const controller = new AbortController();
-            const response = await axiosConfig.get("/auth/users", {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
+            const response = await axiosInstance("/auth/users", {
+                method: "GET",
                 signal: controller.signal,
             });
 

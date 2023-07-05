@@ -19,6 +19,7 @@ import add from "../../assets/icons/add.png";
 import { useUserDataStore } from "../zustand/store";
 import Notification from "../../assets/general/utils/Notification";
 import ButtonLoader from "../general/Button-loader/ButtonLoader";
+import { axiosInstance } from "../../../interceptor";
 
 const Genres = () => {
     //all genres
@@ -50,10 +51,8 @@ const Genres = () => {
     const fetchGenres = async () => {
         try {
             const controller = new AbortController();
-            const response = await axiosConfig.get("/genres", {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
+            const response = await axiosInstance("/genres", {
+                method: "GET",
                 signal: controller.signal,
             });
 
@@ -73,17 +72,12 @@ const Genres = () => {
         try {
             setAddButtonLoader(true);
             if (genreTitle) {
-                const response = await axiosConfig.post(
-                    "/genres",
-                    {
+                const response = await axiosInstance("/genres", {
+                    method: "POST",
+                    data: {
                         title: genreTitle,
                     },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${access_token}`,
-                        },
-                    }
-                );
+                });
 
                 setGenres(response.data?.genres);
                 setGenreTitle("");
@@ -131,12 +125,10 @@ const Genres = () => {
     const deleteGenre = async () => {
         try {
             setDeleteButtonLoader(true);
-            const response = await axiosConfig.delete("/genres", {
+            const response = await axiosInstance("/genres", {
+                method: "DELETE",
                 data: {
                     _id: genreIdToDelete,
-                },
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
                 },
             });
             setGenres((prev) => prev.filter((genre) => genre._id !== genreIdToDelete));
@@ -156,18 +148,10 @@ const Genres = () => {
             if (!editedGenre) {
                 setGerneId(null);
             } else {
-                const resposne = await axiosConfig.put(
-                    "/genres",
-                    {
-                        _id: id,
-                        title: editedGenre,
-                    },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${access_token}`,
-                        },
-                    }
-                );
+                const resposne = await axiosInstance("/genres", {
+                    method: "PUT",
+                    data: { _id: id, title: editedGenre },
+                });
                 setGenres(resposne.data?.genres);
                 setGerneId(null);
                 setEditedGenre("");

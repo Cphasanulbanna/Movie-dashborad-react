@@ -22,6 +22,7 @@ import axiosConfig from "../../../axiosConfig";
 
 //functions
 import Notification from "../../assets/general/utils/Notification";
+import { axiosInstance } from "../../../interceptor";
 
 const EmailPage = () => {
     //form state
@@ -52,7 +53,7 @@ const EmailPage = () => {
             setLoading(true);
             await formSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosConfig.post("/auth/forget-password", formData);
+            const response = await axiosInstance.post("/auth/forget-password", formData);
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
