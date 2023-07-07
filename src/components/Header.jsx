@@ -125,7 +125,7 @@ const Header = ({ setGenreIds, genreIds, setRatings, rating, setSearch, search, 
                 {viewratings && (
                     <div
                         ref={ratingModalRef}
-                        className="flex flex-wrap items-center gap-4 p-2 bg-dark-blue absolute top-[50px] right-0 z-50 border-blue-border border-[2px] border-solid rounded-sm"
+                        className="flex flex-wrap w-full justify-between items-center gap-4 p-2 bg-dark-blue absolute top-[50px] right-0 z-50 border-blue-border border-[2px] border-solid rounded-sm"
                     >
                         {allRatings?.map((item) => (
                             <div className="flex items-center gap-1 cursor-pointer">

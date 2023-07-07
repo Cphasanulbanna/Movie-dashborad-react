@@ -150,14 +150,14 @@ p {
 
 .modal {
     position: absolute;
-    top: 50%;
+    top: 51%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 50px;
     border-radius: 12px;
     overflow: hidden;
     z-index: 1500;
     border: 2px solid #284747;
+    width: 80%;
 }
 
 .boxshadow {
@@ -294,6 +294,18 @@ p {
     }
     .star-ratings .star-container:last-child {
         padding-right: 0 !important;
+    }
+}
+
+@media all and (max-width: 980px) {
+    .modal {
+        width: 65%;
+    }
+}
+
+@media all and (max-width: 640px) {
+    .modal {
+        width: 90%;
     }
 }
 
