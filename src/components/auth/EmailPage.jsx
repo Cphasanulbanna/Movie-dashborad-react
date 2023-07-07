@@ -86,6 +86,7 @@ const EmailPage = () => {
                     name="email"
                     errors={errors.email}
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
                 <Button
                     title={"Verify Email"}

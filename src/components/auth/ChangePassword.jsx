@@ -86,6 +86,7 @@ const ChangePassword = () => {
                     name="password"
                     errors={errors.password}
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
                 <Button
                     title={"Reset Password"}

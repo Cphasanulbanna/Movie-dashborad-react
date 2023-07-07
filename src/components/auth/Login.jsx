@@ -90,6 +90,7 @@ const Login = () => {
                     name="email"
                     errors={errors.email}
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
                 <Input
                     formData={formData}
@@ -98,6 +99,7 @@ const Login = () => {
                     placeholder="password"
                     name="password"
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
                 <Button
                     title={"LOGIN"}

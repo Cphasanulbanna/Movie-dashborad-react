@@ -90,6 +90,7 @@ const Signup = () => {
                     name="username"
                     errors={errors.username}
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
 
                 <Input
@@ -99,6 +100,7 @@ const Signup = () => {
                     name="email"
                     errors={errors.email}
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
                 <Input
                     formData={formData}
@@ -107,6 +109,7 @@ const Signup = () => {
                     placeholder="password"
                     name="password"
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
                 <FileUploader
                     handleChange={handleChange}

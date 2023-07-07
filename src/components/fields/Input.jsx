@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Input = ({ formData, handleDataChange, type, name, errors, placeholder }) => {
+export const Input = ({ formData, handleDataChange, type, name, errors, placeholder, css }) => {
     //border style
     // const greyBorder = "border-[1px] border-solid border-light-grey";
     // const greyBorder = "";
@@ -8,7 +8,10 @@ export const Input = ({ formData, handleDataChange, type, name, errors, placehol
     const _name = name.toLowerCase();
 
     return (
-        <div className={`p-[7px] relative h-[42px] input`}>
+        <div
+            style={css}
+            className={`p-[7px] relative h-[42px] input`}
+        >
             <input
                 className={`text-[14px] bg-[inherit] w-[100%] text-[inherit]`}
                 id={_name}

@@ -87,6 +87,7 @@ const OtpPage = () => {
                     name="otp"
                     errors={errors.otp}
                     handleDataChange={handleDataChange}
+                    css={{ background: "#ffff", border: "2px solid #dfdfdf", color: "#111" }}
                 />
                 <Button
                     title={"Verify OTP"}
