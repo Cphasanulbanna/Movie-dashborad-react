@@ -455,7 +455,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                 </div>
             </section>
 
-            <ToastContainer />
+            <ToastContainer limit={1} />
         </>
     );
 };

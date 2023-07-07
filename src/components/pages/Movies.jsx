@@ -97,7 +97,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                     buttonLoader={deleteBtnLoader}
                 />
             )}
-            <ToastContainer />
+            <ToastContainer limit={1} />
 
             <section
                 id="movies"
@@ -131,19 +131,17 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                         Array(totalPages)
                             .fill()
                             .map((_, index) => (
-                                <>
-                                    <button
-                                        key={index}
-                                        onClick={() => selectPage(index)}
-                                        className={
-                                            page === index + 1
-                                                ? `active-page page-btn middle-btns`
-                                                : "page-btn middle-btns"
-                                        }
-                                    >
-                                        {index + 1}
-                                    </button>
-                                </>
+                                <button
+                                    key={index}
+                                    onClick={() => selectPage(index)}
+                                    className={
+                                        page === index + 1
+                                            ? `active-page page-btn middle-btns`
+                                            : "page-btn middle-btns"
+                                    }
+                                >
+                                    {index + 1}
+                                </button>
                             ))}
                     {totalPages > 1 && (
                         <button

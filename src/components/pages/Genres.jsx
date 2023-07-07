@@ -158,7 +158,7 @@ const Genres = () => {
 
     return (
         <section className="h-[fill] w-[fill] overflow-y-scroll py-[20px]">
-            <ToastContainer />
+            <ToastContainer limit={1} />
             {showDeleteModal && (
                 <ConfirmDelete
                     deleteItem={deleteGenre}
@@ -215,7 +215,10 @@ const Genres = () => {
                         genres?.map((genre, index) => {
                             if (genre._id === genreId) {
                                 return (
-                                    <div className="flex items-center h-[48px] justify-between w-[100%] px-[15px] pl-0 bg-dark-blue md1:h-[40px] input">
+                                    <div
+                                        key={genre?._id}
+                                        className="flex items-center h-[48px] justify-between w-[100%] px-[15px] pl-0 bg-dark-blue md1:h-[40px] input"
+                                    >
                                         <div className="w-[fill]">
                                             <input
                                                 className="h-[48px] md1:h-[40px] w-[fill] pl-[15px] bg-[inherit]"

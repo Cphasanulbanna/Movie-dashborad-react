@@ -310,8 +310,8 @@ export const AddMovies = () => {
                     </button>
                 </div>
             </form>
-            {/* )} */}
-            <ToastContainer />
+
+            <ToastContainer limit={1} />
         </section>
     );
 };

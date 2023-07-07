@@ -122,7 +122,7 @@ const ChangePassword = () => {
             >
                 LOGIN
             </Link>
-            <ToastContainer />
+            <ToastContainer limit={1} />
         </div>
     );
 };

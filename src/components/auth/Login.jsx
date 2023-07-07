@@ -140,7 +140,7 @@ const Login = () => {
             >
                 SIGNUP
             </Link>
-            <ToastContainer />
+            <ToastContainer limit={1} />
         </div>
     );
 };

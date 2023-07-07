@@ -53,8 +53,11 @@ export const MovieSinglePage = () => {
                         {movie?.leadactor && <h2>Hero: Actor {movie?.leadactor}</h2>}
 
                         <div className="flex items-center gap-[10px] flex-wrap">
-                            {movie?.genre?.map((item) => (
-                                <div className="py-[7px] px-[22px] sm3:py-[4px] sm3:px-[18px] sm3:text-[14px] rounded-[25px] overflow-hidden  border-[2px] border-solid border-[#f1f1f1] text-[#f1f1f1]">
+                            {movie?.genre?.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="py-[7px] px-[22px] sm3:py-[4px] sm3:px-[18px] sm3:text-[14px] rounded-[25px] overflow-hidden  border-[2px] border-solid border-[#f1f1f1] text-[#f1f1f1]"
+                                >
                                     {item.title}
                                 </div>
                             ))}
@@ -62,7 +65,10 @@ export const MovieSinglePage = () => {
                         <StarRating rating={movie?.rating} />
                         <div className="flex flex-wrap gap-[18px]">
                             {movie?.gallery?.map((item) => (
-                                <div className="w-[47%] sm3:w-[100%]">
+                                <div
+                                    key={item.url}
+                                    className="w-[47%] sm3:w-[100%]"
+                                >
                                     <img
                                         src={item.url}
                                         alt="gallery-image"
