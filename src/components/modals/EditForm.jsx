@@ -374,6 +374,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                             <div className="flex flex-col gap-[5px]">
                                 <h3> Genres</h3>
                                 <div
+                                    id="genre-box"
                                     style={inputStyle}
                                     className="flex items-center flex-wrap gap-[15px] p-[7px] max-h-[100px] md2:max-h-[80px] overflow-y-scroll"
                                 >

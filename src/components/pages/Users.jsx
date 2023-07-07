@@ -31,7 +31,7 @@ const Users = () => {
     }, []);
 
     return (
-        <section className="flex flex-col gap-[5px] relative pt-[50px] overflow-scroll md4:flex-shrink-0 md4:min-w-full md4:w-fit">
+        <section className="flex flex-col gap-[5px] relative pt-[50px]  md4:flex-shrink-0 md4:min-w-full md4:w-fit">
             <div className="p-[10px] flex items-center justify-between absolute top-0 left-0 w-full bg-blue-text md4:gap-[10px] md4:flex-shrink-0">
                 <p className="text-[15px] text-center w-[10%]">Profile</p>
                 <p className="text-[15px] text-center w-[26%] lg1:w-[220px] min-w-[220px]">Name</p>

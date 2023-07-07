@@ -30,7 +30,7 @@ const LandingPage = () => {
                 setPage={setPage}
             />
             <Sidebar />
-            <section className="fixed z-40 top-[100px] lg1:top-[85px] sm3:top-[75px] overflow-y-scroll left-[200px] lg1:left-[75px] md2:left-[50px] w-[fill] h-[fill] bg-dark-blue-2 p-[20px] sm2:p-[10px]">
+            <section className="fixed z-40 top-[100px] lg1:top-[85px] sm3:top-[75px] overflow-auto left-[200px] lg1:left-[75px] md2:left-[50px] w-[fill] h-[fill] bg-dark-blue-2  pr-0 ">
                 <Routes>
                     <Route
                         path="/"

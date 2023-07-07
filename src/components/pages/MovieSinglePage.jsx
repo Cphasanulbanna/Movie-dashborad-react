@@ -45,7 +45,7 @@ export const MovieSinglePage = () => {
         fetchMovie();
     }, []);
     return (
-        <div className=" flex gap-[30px] h-[100%] sm3:h-auto overflow-y-scroll items-start lg2:flex-col-reverse">
+        <div className=" flex gap-[30px] h-[100%] p-[25px] sm3:p-[15px] sm3:h-auto overflow-y-scroll items-start lg2:flex-col-reverse">
             {isLoading ? (
                 <Skelton type="movie-singlepage" />
             ) : (

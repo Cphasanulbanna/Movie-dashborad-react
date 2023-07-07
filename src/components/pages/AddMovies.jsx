@@ -173,7 +173,7 @@ export const AddMovies = () => {
     };
 
     return (
-        <section className="p-[30px] sm3:p-0">
+        <section className="p-[30px] sm3:p-[15px]">
             {/* {isLoading ? (
                 <Skelton type="edit-form" />
             ) : ( */}
@@ -256,7 +256,10 @@ export const AddMovies = () => {
                 <div className="right flex gap-[20px] flex-col w-[48%]  md4:w-full">
                     <div>
                         <h3> Genres</h3>
-                        <div className="flex items-center flex-wrap gap-[15px] border-blue rounded-[4px] p-[8px] max-h-[100px] sm3:max-h-[80px] overflow-y-scroll">
+                        <div
+                            id="genre-box"
+                            className="flex items-center flex-wrap gap-[15px] border-blue rounded-[4px] p-[8px] max-h-[100px] sm3:max-h-[80px] overflow-y-scroll"
+                        >
                             {genres?.map((genre) => (
                                 <CheckBox
                                     key={genre?._id}

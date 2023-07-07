@@ -136,8 +136,11 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
             )}
             <ToastContainer />
 
-            <section className="w-[100%] ">
-                <div className="flex justify-between items-center flex-wrap gap-[20px] ">
+            <section
+                id="movies"
+                className="w-[100%] h-full overflow-y-scroll"
+            >
+                <div className="flex justify-between items-center flex-wrap gap-[20px] p-[20px] sm2:p-[10px]">
                     {isLoading ? (
                         <Skelton type={"feed"} />
                     ) : (

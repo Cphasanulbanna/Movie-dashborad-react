@@ -187,7 +187,7 @@ const Genres = () => {
     };
 
     return (
-        <section className="h-[fill] w-[fill] overflow-scroll">
+        <section className="h-[fill] w-[fill] overflow-y-scroll py-[20px]">
             <ToastContainer />
             {showDeleteModal && (
                 <ConfirmDelete
@@ -235,7 +235,7 @@ const Genres = () => {
                     </div>
                 )}
 
-                <ul className="flex flex-col h-[100%] justify-center  w-[100%] gap-[15px] md1:gap-[10px] sm3:gap-[6px] overflow-y-scroll">
+                <ul className="flex flex-col h-[100%] justify-center w-[100%] gap-[15px] md1:gap-[10px] sm3:gap-[6px] ">
                     {isLoading ? (
                         <Skelton
                             type={"rectangle"}
