@@ -1,8 +1,13 @@
 import axios from "axios";
 
 //DEMO
+// export const axiosInstance = axios.create({
+//     baseURL: "http://localhost:5005/api/",
+// });
+
+//LIVE
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:5005/api/",
+    baseURL: "https://movie-dashboard-server.onrender.com/api/",
 });
 
 //401 unauthorized

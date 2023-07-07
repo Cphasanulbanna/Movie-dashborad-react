@@ -35,9 +35,9 @@ const Genres = () => {
 
     const addGenreRef = useRef(null);
 
+    let controller = new AbortController();
     const fetchGenres = async () => {
         try {
-            const controller = new AbortController();
             const response = await axiosInstance("/genres", {
                 method: "GET",
                 signal: controller.signal,
@@ -45,12 +45,15 @@ const Genres = () => {
 
             setGenres(response.data?.genres);
             setLoading(false);
-            controller.abort();
         } catch (error) {}
     };
 
     useEffect(() => {
         fetchGenres();
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     const addGenre = async () => {

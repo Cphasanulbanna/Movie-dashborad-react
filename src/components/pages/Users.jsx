@@ -7,20 +7,23 @@ import { axiosInstance } from "../../../interceptor";
 const Users = () => {
     const [users, setUsers] = useState([]);
 
+    let controller = new AbortController();
     const fetchUsers = async () => {
         try {
-            const controller = new AbortController();
             const response = await axiosInstance("/auth/users", {
                 method: "GET",
                 signal: controller.signal,
             });
 
             setUsers(response.data?.users);
-            controller.abort();
         } catch (error) {}
     };
     useEffect(() => {
         fetchUsers();
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     const label = "text-[15px] text-center";

@@ -14,22 +14,25 @@ export const MovieSinglePage = () => {
     const [movie, setMovie] = useState({});
     const [isLoading, setloading] = useState(true);
 
+    let controller = new AbortController();
     const fetchMovie = async () => {
         try {
             if (id) {
-                const controller = new AbortController();
                 const resposne = await axiosInstance.get(`/movies/${id}`, {
                     signal: controller.signal,
                 });
                 setMovie(resposne.data?.movie);
                 setloading(false);
-                controller.abort();
             }
         } catch (error) {}
     };
 
     useEffect(() => {
         fetchMovie();
+
+        return () => {
+            controller.abort();
+        };
     }, []);
     return (
         <div className=" flex gap-[30px] h-[100%] p-[25px] sm3:p-[15px] sm3:h-auto overflow-y-scroll items-start lg2:flex-col-reverse">
