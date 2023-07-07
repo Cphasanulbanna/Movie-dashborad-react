@@ -215,7 +215,7 @@ const Genres = () => {
                             count={genres?.length}
                         />
                     ) : (
-                        genres?.map((genre, index) => {
+                        genres?.sort().map((genre, index) => {
                             if (genre._id === genreId) {
                                 return (
                                     <div
