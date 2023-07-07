@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 //packages
-import * as yup from "yup";
 import { FileUploader } from "react-drag-drop-files";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,6 +15,7 @@ import google from "../../assets/icons/google.png";
 
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
+import { signupSchema } from "../schemas";
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -41,25 +41,11 @@ const Signup = () => {
         setImageName(file.name);
     };
 
-    const formSchema = yup.object().shape({
-        username: yup.string().required("This field is required"),
-        email: yup.string().required("Email is required").email("Invalid email"),
-        password: yup
-            .string()
-            .test(
-                "has-capital-letter",
-                "Password must contain at least one capital letter",
-                (value) => /[A-Z]/.test(value)
-            )
-            .min(6, "Password must be at least 6 characters")
-            .required("This field is required"),
-    });
-
     const signup = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            await formSchema.validate(formData, { abortEarly: false });
+            await signupSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosInstance("/auth/signup", {
                 method: "POST",

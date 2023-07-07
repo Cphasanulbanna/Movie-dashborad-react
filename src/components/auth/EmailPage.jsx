@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 //packages
-import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -18,6 +17,7 @@ import { useUserDataStore } from "../zustand/store";
 
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
+import { emailSchema } from "../schemas";
 
 const EmailPage = () => {
     const [formData, setFormData] = useState({
@@ -35,15 +35,11 @@ const EmailPage = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    const formSchema = yup.object().shape({
-        email: yup.string().required("Email is required").email("Invalid email"),
-    });
-
     const submitEmail = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            await formSchema.validate(formData, { abortEarly: false });
+            await emailSchema.validate(formData, { abortEarly: false });
 
             const response = await axiosInstance.post("/auth/forget-password", formData);
             const { StatusCode } = response.data;

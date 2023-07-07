@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 //packages
-import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -18,6 +17,7 @@ import { useUserDataStore } from "../zustand/store";
 
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
+import { resetPasswordSchema } from "../schemas";
 
 const ChangePassword = () => {
     const [formData, setFormData] = useState({
@@ -35,23 +35,11 @@ const ChangePassword = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    const formSchema = yup.object().shape({
-        password: yup
-            .string()
-            .test(
-                "has-capital-letter",
-                "Password must contain at least one capital letter",
-                (value) => /[A-Z]/.test(value)
-            )
-            .min(6, "Password must be at least 6 characters")
-            .required("This field is required"),
-    });
-
     const resetPassword = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            await formSchema.validate(formData, { abortEarly: false });
+            await resetPasswordSchema.validate(formData, { abortEarly: false });
 
             const newFormData = new FormData();
             newFormData.append("email", userdata.email);

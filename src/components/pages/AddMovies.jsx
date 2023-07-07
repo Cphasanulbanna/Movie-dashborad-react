@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
 //packages
-import * as yup from "yup";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,6 +16,7 @@ import editImage from "../../assets/icons/edit-image.png";
 
 import { useUpdateMovies } from "../zustand/store";
 import { axiosInstance } from "../../../interceptor";
+import { addMovieSchema } from "../schemas";
 
 export const AddMovies = () => {
     const [formData, setFormData] = useState({
@@ -36,11 +36,6 @@ export const AddMovies = () => {
 
     const posterRef = useRef(null);
     const { updateMoviesList } = useUpdateMovies();
-
-    const formSchema = yup.object().shape({
-        name: yup.string().required("Movie name is required"),
-        poster: yup.string().required("Movie poster is required"),
-    });
 
     const fetchGenres = async () => {
         try {
@@ -110,7 +105,7 @@ export const AddMovies = () => {
             newFomrData.append("poster", formData.poster);
             newFomrData.append("genre", formData.genre);
 
-            await formSchema.validate(formData, { abortEarly: false });
+            await addMovieSchema.validate(formData, { abortEarly: false });
 
             await axiosInstance(`/movies/`, newFomrData, {
                 method: "POST",

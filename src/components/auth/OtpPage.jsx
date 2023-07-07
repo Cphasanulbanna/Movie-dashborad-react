@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 //packages
-import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -18,6 +17,7 @@ import { useUserDataStore } from "../zustand/store";
 
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
+import { otpSchema } from "../schemas";
 
 const OtpPage = () => {
     const [formData, setFormData] = useState({
@@ -35,19 +35,11 @@ const OtpPage = () => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    const formSchema = yup.object().shape({
-        otp: yup
-            .string()
-            .min(4, "OTP lenght should be 4 ")
-            .max(4, "OTP length can't exceed 4")
-            .required("OTP is required"),
-    });
-
     const submitOTP = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            await formSchema.validate(formData, { abortEarly: false });
+            await otpSchema.validate(formData, { abortEarly: false });
 
             const newFormData = new FormData();
             newFormData.append("email", userdata.email);

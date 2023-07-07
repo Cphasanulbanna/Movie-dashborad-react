@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 
 //packages
-import StarRating from "../general/StarRating";
+import StarRating from "./general/StarRating";
 import { Link } from "react-router-dom";
 
 //icons
-import edit from "../../assets/icons/edit-movie.png";
-import deleteIcon from "../../assets/icons/delete.png";
-import next from "../../assets/icons/next-arrow.png";
+import edit from "../assets/icons/edit-movie.png";
+import deleteIcon from "../assets/icons/delete.png";
+import next from "../assets/icons/next-arrow.png";
 
 //components
-import { EditForm } from "../modals/EditForm";
+import { EditForm } from "./modals/EditForm";
 
 export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
     const [showEditModal, setShowEditModal] = useState(false);

@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 import { useDebounce } from "../hooks/useDebounce";
 
 //components
-import { MovieCard } from "../movie/MovieCard";
+import { MovieCard } from "../MovieCard";
 import ConfirmDelete from "../modals/ConfirmDelete";
 import Skelton from "../general/skelton-loader/Skelton";
 
