@@ -41,7 +41,10 @@ const EmailPage = () => {
             setLoading(true);
             await emailSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosInstance.post("/auth/forget-password", formData);
+            const response = await axiosInstance("/auth/forget-password", {
+                method: "POST",
+                data: formData,
+            });
             const { StatusCode } = response.data;
 
             if (StatusCode === 6000) {
