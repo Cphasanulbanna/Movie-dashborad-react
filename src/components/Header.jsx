@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
-//package
 import { useNavigate } from "react-router-dom";
 
 //store
@@ -13,6 +12,7 @@ import profile from "../assets/icons/profile.png";
 import filter from "../assets/icons/filter.png";
 import ratingIcon from "../assets/icons/rating.png";
 import whiteTick from "../assets/icons/white-tick.png";
+import useOutsideClick from "./hooks/useOutsideclick";
 
 const Header = ({ setGenreIds, genreIds, setRatings, rating, setSearch, search, setPage }) => {
     // const { query, updateQuery } = useQueryStore();
@@ -61,6 +61,14 @@ const Header = ({ setGenreIds, genreIds, setRatings, rating, setSearch, search, 
         color: "#418cb3",
     };
 
+    const ratingModalRef = useRef(null);
+    const ratingiconRef = useRef(null);
+    const genreModalRef = useRef(null);
+    const genreiconRef = useRef(null);
+
+    useOutsideClick(ratingModalRef, ratingiconRef, () => setViewratings(false));
+    useOutsideClick(genreModalRef, genreiconRef, () => setViewgenres(false));
+
     return (
         <header
             className={`bg-dark-blue fixed top-0 left-[200px] h-[100px] lg1:left-[75px] md2:left-[50px] w-[fill] py-[30px] lg1:pt-[15px] px-[40px] flex justify-between items-center md1:px-[20px] sm3:pb-[20px] sm2:pl-[10px] ${
@@ -90,7 +98,10 @@ const Header = ({ setGenreIds, genreIds, setRatings, rating, setSearch, search, 
                 />
 
                 {viewgenres && (
-                    <div className="dropdown flex flex-col bg-dark-blue absolute top-[50px] w-full right-0 z-50 max-h-[150px] border-blue-border border-[2px] border-solid overflow-y-scroll rounded-sm">
+                    <div
+                        ref={genreModalRef}
+                        className="dropdown flex flex-col bg-dark-blue absolute top-[50px] w-full right-0 z-50 max-h-[150px] border-blue-border border-[2px] border-solid overflow-y-scroll rounded-sm"
+                    >
                         {genres?.map((genre) => (
                             <button
                                 onClick={() => selectGenre(genre._id)}
@@ -112,7 +123,10 @@ const Header = ({ setGenreIds, genreIds, setRatings, rating, setSearch, search, 
                 )}
 
                 {viewratings && (
-                    <div className="flex flex-wrap items-center gap-4 p-2 bg-dark-blue absolute top-[50px] right-0 z-50 border-blue-border border-[2px] border-solid rounded-sm">
+                    <div
+                        ref={ratingModalRef}
+                        className="flex flex-wrap items-center gap-4 p-2 bg-dark-blue absolute top-[50px] right-0 z-50 border-blue-border border-[2px] border-solid rounded-sm"
+                    >
                         {allRatings?.map((item) => (
                             <div className="flex items-center gap-1 cursor-pointer">
                                 <p className="text-[15px] text-[#dcdcdc]">{item}</p>
@@ -128,6 +142,7 @@ const Header = ({ setGenreIds, genreIds, setRatings, rating, setSearch, search, 
                 )}
 
                 <div
+                    ref={ratingiconRef}
                     onClick={() => setViewratings((prev) => !prev)}
                     className="w-[20px] cursor-pointer h-[20px] absolute z-[10] -right-8 top-[50%] translate-y-[-50%] sm2:w-[18px]  hover:opacity-[0.8]"
                 >
@@ -138,6 +153,7 @@ const Header = ({ setGenreIds, genreIds, setRatings, rating, setSearch, search, 
                 </div>
 
                 <div
+                    ref={genreiconRef}
                     onClick={() => setViewgenres((prev) => !prev)}
                     className="absolute cursor-pointer z-[10] w-[20px] h-[20px] -right-16 top-[50%] translate-y-[-50%] sm2:w-[18px]   hover:opacity-[0.8]"
                 >
