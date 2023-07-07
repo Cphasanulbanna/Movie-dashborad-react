@@ -14,15 +14,10 @@ import facebook from "../../assets/icons/facebook.png";
 import twitter from "../../assets/icons/twitter.png";
 import google from "../../assets/icons/google.png";
 
-//axios
-import axiosConfig from "../../../axiosConfig";
-
-//functions
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
 
 const Signup = () => {
-    //form state
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -35,20 +30,17 @@ const Signup = () => {
 
     const navigate = useNavigate();
 
-    //storing data
     const handleDataChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    //storing profile image
     const handleChange = (file) => {
         setFormData((prev) => ({ ...prev, ["profilePic"]: file }));
         setImageName(file.name);
     };
 
-    //form  fields validation
     const formSchema = yup.object().shape({
         username: yup.string().required("This field is required"),
         email: yup.string().required("Email is required").email("Invalid email"),
@@ -63,7 +55,6 @@ const Signup = () => {
             .required("This field is required"),
     });
 
-    //signup api connection
     const signup = async (e) => {
         e.preventDefault();
         try {

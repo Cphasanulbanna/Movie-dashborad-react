@@ -15,16 +15,10 @@ import Notification from "../../assets/general/utils/Notification";
 //icons
 import editImage from "../../assets/icons/edit-image.png";
 
-//axios
-import axiosConfig from "../../../axiosConfig";
-
-//store
-import { useUpdateMovies, useUserDataStore } from "../zustand/store";
-import Skelton from "../general/skelton-loader/Skelton";
+import { useUpdateMovies } from "../zustand/store";
 import { axiosInstance } from "../../../interceptor";
 
 export const AddMovies = () => {
-    const { updateMoviesList } = useUpdateMovies();
     const [formData, setFormData] = useState({
         name: "",
         year: "",
@@ -36,21 +30,18 @@ export const AddMovies = () => {
     });
 
     const [genres, setGenres] = useState([]);
-    const [uploadProgress, setUploadProgress] = useState(0);
     const [errors, setErrors] = useState({});
     const [isSubmitting, setSubmitting] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
-    //form  fields validation
+    const posterRef = useRef(null);
+    const { updateMoviesList } = useUpdateMovies();
+
     const formSchema = yup.object().shape({
         name: yup.string().required("Movie name is required"),
         poster: yup.string().required("Movie poster is required"),
     });
 
-    const { userdata } = useUserDataStore();
-    const access_token = userdata?.access_token;
-    const fileInputRef = useRef(null);
-
-    //fetch all genres
     const fetchGenres = async () => {
         try {
             const controller = new AbortController();
@@ -67,40 +58,26 @@ export const AddMovies = () => {
         fetchGenres();
     }, []);
 
-    //opening file input to upload image
     const openFileInput = () => {
         fileInputRef.current.click();
     };
 
-    //setting formdata
     const handleDataChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    //setting rating
     const handleRating = (rate) => {
         setFormData((prev) => ({ ...prev, ["rating"]: rate }));
     };
 
-    //setting movie poster
     const handlePosterChange = (e) => {
         const selectedFile = e.target.files[0];
         setFormData((prev) => ({ ...prev, ["poster"]: selectedFile }));
         setErrors((prev) => ({ ...prev, ["poster"]: "" }));
     };
 
-    //image upload progress
-    const onUploadProgress = (progressEvent) => {
-        const { loaded, total } = progressEvent;
-        let percent = Math.floor((loaded * 100) / total);
-        if (formData?.poster) {
-            setUploadProgress(percent);
-        }
-    };
-
-    //selecting/unselecting gernes
     const selectGenres = (genreId) => {
         setFormData((prev) => {
             if (!prev?.genre.includes(genreId)) {
@@ -110,12 +87,20 @@ export const AddMovies = () => {
         });
     };
 
-    //adding new movie function
+    const onUploadProgress = (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        if (formData?.poster) {
+            setUploadProgress(percent);
+        }
+    };
+
     const AddMovie = async (e) => {
         try {
             updateMoviesList();
             setSubmitting(true);
             e.preventDefault();
+
             const newFomrData = new FormData();
             newFomrData.append("name", formData.name);
             newFomrData.append("year", formData.year);
@@ -124,14 +109,14 @@ export const AddMovies = () => {
             newFomrData.append("description", formData.description);
             newFomrData.append("poster", formData.poster);
             newFomrData.append("genre", formData.genre);
+
             await formSchema.validate(formData, { abortEarly: false });
 
-            const response = await axiosConfig.post(`/movies/`, newFomrData, {
+            await axiosInstance(`/movies/`, newFomrData, {
+                method: "POST",
                 headers: {
                     "Content-Type": "multipart/form-data",
-                    Authorization: `Bearer ${access_token}`,
                 },
-
                 onUploadProgress,
             });
 
@@ -151,7 +136,6 @@ export const AddMovies = () => {
         }
     };
 
-    // Function to reset the form fields
     const resetForm = () => {
         setFormData({
             name: "",
@@ -165,25 +149,15 @@ export const AddMovies = () => {
         setErrors({});
     };
 
-    const inputStyle = {
-        background: "#082335",
-        borderRadius: "5px",
-        border: "2px solid #336a8c",
-        color: "#418cb3",
-    };
-
     return (
         <section className="p-[30px] sm3:p-[15px]">
-            {/* {isLoading ? (
-                <Skelton type="edit-form" />
-            ) : ( */}
             <form
                 onSubmit={AddMovie}
                 action=""
                 className="flex justify-between gap-[25px] md4:flex-col"
             >
-                <div className="left flex flex-col gap-[20px] w-[48%] md4:w-full">
-                    <div className="flex flex-col gap-[5px]">
+                <div className="left flex-colum gap-[20px] w-[48%] md4:w-full">
+                    <div className="flex-colum gap-[5px]">
                         <label
                             htmlFor="name"
                             className="text-light-white"
@@ -196,11 +170,10 @@ export const AddMovies = () => {
                             type="text"
                             handleDataChange={handleDataChange}
                             errors={errors?.name}
-                            css={inputStyle}
                         />
                     </div>
 
-                    <div className="flex flex-col gap-[5px]">
+                    <div className="flex-colum gap-[5px]">
                         <label
                             htmlFor="name"
                             className="text-light-white"
@@ -213,11 +186,10 @@ export const AddMovies = () => {
                             type="text"
                             handleDataChange={handleDataChange}
                             errors={errors?.year}
-                            css={inputStyle}
                         />
                     </div>
 
-                    <div className="flex flex-col gap-[5px]">
+                    <div className="flex-colum gap-[5px]">
                         <label
                             htmlFor="name"
                             className="text-light-white"
@@ -230,11 +202,10 @@ export const AddMovies = () => {
                             type="text"
                             handleDataChange={handleDataChange}
                             errors={errors?.leadactor}
-                            css={inputStyle}
                         />
                     </div>
 
-                    <div className="flex flex-col gap-[5px] relative">
+                    <div className="flex-colum gap-[5px] relative">
                         <label
                             htmlFor="name"
                             className="text-light-white"
@@ -245,21 +216,15 @@ export const AddMovies = () => {
                             placeholder="Add movie details"
                             name="description"
                             onChange={handleDataChange}
-                            style={inputStyle}
-                            className="p-[10px] min-h-[120px] max-h-[120px] sm3:min-h-[70px]"
+                            className="p-[10px] min-h-[120px] max-h-[120px] sm3:min-h-[70px] input"
                         ></textarea>
-                        <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
-                            {errors?.description}
-                        </span>
+                        <span className="error">{errors?.description}</span>
                     </div>
                 </div>
                 <div className="right flex gap-[20px] flex-col w-[48%]  md4:w-full">
                     <div>
                         <h3> Genres</h3>
-                        <div
-                            id="genre-box"
-                            className="flex items-center flex-wrap gap-[15px] border-blue rounded-[4px] p-[8px] max-h-[100px] sm3:max-h-[80px] overflow-y-scroll"
-                        >
+                        <div className="flex items-center flex-wrap gap-[15px] border-blue rounded-[4px] p-[8px] max-h-[100px] sm3:max-h-[80px] overflow-y-scroll">
                             {genres?.map((genre) => (
                                 <CheckBox
                                     key={genre?._id}
@@ -270,7 +235,7 @@ export const AddMovies = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[5px] relative">
+                    <div className="flex-colum gap-[5px] relative">
                         <label
                             htmlFor="name"
                             className="text-light-white"
@@ -293,15 +258,13 @@ export const AddMovies = () => {
                             </div>
                         ) : (
                             <div
-                                style={inputStyle}
                                 onClick={openFileInput}
-                                className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
+                                className="relative h-[60px] hover:opacity-[0.8] rounded-[5px] overflow-hidden flex justify-between px-[20px] items-center input cursor-pointer"
                             >
                                 {formData?.poster ? (
                                     <h1>{formData?.poster?.name}</h1>
                                 ) : (
                                     <>
-                                        {" "}
                                         <div
                                             style={{ border: "1px dashed #336a8c" }}
                                             className="absolute inset-[5px]"
@@ -320,23 +283,16 @@ export const AddMovies = () => {
                                     type="file"
                                     onChange={handlePosterChange}
                                     className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
-                                    ref={fileInputRef}
+                                    ref={posterRef}
                                 />
                                 <div className="absolute z-20  right-[15px]">
-                                    {formData?.poster
-                                        ? "Change image"
-                                        : " click here to upload image"}
+                                    {formData?.poster ? "Change image" : "upload image"}
                                 </div>
                             </div>
                         )}
-                        <p
-                            onMouseOver={(e) => e.stopPropagation()}
-                            className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
-                        >
-                            {errors.poster}
-                        </p>
+                        <p className="error">{errors.poster}</p>
                     </div>
-                    <div className="flex flex-col gap-[5px]">
+                    <div className="flex-colum gap-[5px]">
                         <label
                             htmlFor="rating"
                             className="text-light-white"

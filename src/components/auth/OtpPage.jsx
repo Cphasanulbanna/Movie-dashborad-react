@@ -14,36 +14,27 @@ import facebook from "../../assets/icons/facebook.png";
 import twitter from "../../assets/icons/twitter.png";
 import google from "../../assets/icons/google.png";
 
-//store
 import { useUserDataStore } from "../zustand/store";
 
-//axios
-import axiosConfig from "../../../axiosConfig";
-
-//functions
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
 
 const OtpPage = () => {
-    const { userdata } = useUserDataStore();
-
-    //form state
     const [formData, setFormData] = useState({
         otp: "",
     });
     const [errors, setErrors] = useState({});
     const [isLoading, setLoading] = useState(false);
 
+    const { userdata } = useUserDataStore();
     const navigate = useNavigate();
 
-    //storing data
     const handleDataChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    //form  fields validation
     const formSchema = yup.object().shape({
         otp: yup
             .string()
@@ -52,7 +43,6 @@ const OtpPage = () => {
             .required("OTP is required"),
     });
 
-    //signup api connection
     const submitOTP = async (e) => {
         e.preventDefault();
         try {

@@ -6,7 +6,6 @@ import { isAuth } from "../../general/utils";
 
 const ProtectedRouteAfterLogin = () => {
     const auth = isAuth();
-    console.log(auth);
     return auth ? <Navigate to={"/"} /> : <Outlet />;
 };
 

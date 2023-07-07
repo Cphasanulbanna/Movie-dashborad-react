@@ -1,37 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 
-//axios
-import axiosConfig from "../../../axiosConfig";
-
-//package
 import { ToastContainer } from "react-toastify";
 
 //components
 import ConfirmDelete from "../modals/ConfirmDelete";
 import Skelton from "../general/skelton-loader/Skelton";
+import ButtonLoader from "../general/Button-loader/ButtonLoader";
 
 //icons
 import edit from "../../assets/icons/edit-movie.png";
 import remove from "../../assets/icons/delete.png";
 import add from "../../assets/icons/add.png";
 
-//store
-import { useUserDataStore } from "../zustand/store";
 import Notification from "../../assets/general/utils/Notification";
-import ButtonLoader from "../general/Button-loader/ButtonLoader";
 import { axiosInstance } from "../../../interceptor";
 
 const Genres = () => {
-    //all genres
     const [genres, setGenres] = useState([]);
-
-    //new genre name
     const [genreTitle, setGenreTitle] = useState("");
 
     //if of genre to edit
     const [genreId, setGerneId] = useState("");
-
-    //id of geren to delete
     const [genreIdToDelete, setGerneIdToDelete] = useState("");
 
     //genre name to update
@@ -44,10 +33,8 @@ const Genres = () => {
     const [editButtonloader, setEditButtonLoader] = useState(false);
     const [deletButtonLoader, setDeleteButtonLoader] = useState(false);
 
-    const { userdata } = useUserDataStore();
-    const access_token = userdata?.access_token;
+    const addGenreRef = useRef(null);
 
-    //fetch all genres
     const fetchGenres = async () => {
         try {
             const controller = new AbortController();
@@ -57,9 +44,7 @@ const Genres = () => {
             });
 
             setGenres(response.data?.genres);
-
             setLoading(false);
-
             controller.abort();
         } catch (error) {}
     };
@@ -91,8 +76,6 @@ const Genres = () => {
         }
     };
 
-    const addGenreRef = useRef(null);
-    //opening input field to add new genre
     const handleAddInput = () => {
         setShowAddInput((prev) => !prev);
     };
@@ -101,7 +84,6 @@ const Genres = () => {
         addGenreRef.current?.focus();
     }, [showAddInput]);
 
-    //setting new genre
     const handleGenreChange = (e) => {
         const value = e.target.value.toLowerCase();
         setGenreTitle(value);
@@ -115,17 +97,15 @@ const Genres = () => {
         }
     };
 
-    //setting if of genre to edit
     const handleGenreEdit = (genre) => {
         setEditedGenre(genre?.title);
         setGerneId(genre?._id);
     };
 
-    //delete genre
     const deleteGenre = async () => {
         try {
             setDeleteButtonLoader(true);
-            const response = await axiosInstance("/genres", {
+            await axiosInstance("/genres", {
                 method: "DELETE",
                 data: {
                     _id: genreIdToDelete,
@@ -141,7 +121,6 @@ const Genres = () => {
         }
     };
 
-    //updating genre
     const updateGenre = async (id) => {
         try {
             setEditButtonLoader(true);
@@ -164,26 +143,17 @@ const Genres = () => {
         }
     };
 
-    //setting updated genre name
     const handleEditedGenreChange = (e) => {
         const value = e.target.value.toLowerCase();
         setEditedGenre(value);
     };
 
-    //closing edit field
     const cancelEdit = () => {
         setGerneId(null);
     };
 
-    //closing deletemodal
     const closeDeleteModal = () => {
         setShowDeleteModal(false);
-    };
-
-    const inputStyle = {
-        background: "#082335",
-        border: "2px solid #336a8c",
-        color: "#418cb3",
     };
 
     return (
@@ -245,10 +215,7 @@ const Genres = () => {
                         genres?.map((genre, index) => {
                             if (genre._id === genreId) {
                                 return (
-                                    <div
-                                        style={inputStyle}
-                                        className="flex items-center h-[48px] justify-between w-[100%] px-[15px] pl-0 bg-dark-blue md1:h-[40px]"
-                                    >
+                                    <div className="flex items-center h-[48px] justify-between w-[100%] px-[15px] pl-0 bg-dark-blue md1:h-[40px] input">
                                         <div className="w-[fill]">
                                             <input
                                                 className="h-[48px] md1:h-[40px] w-[fill] pl-[15px] bg-[inherit]"

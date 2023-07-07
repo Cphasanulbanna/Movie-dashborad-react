@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-//package
 import { ToastContainer } from "react-toastify";
-
-//axios
-import axiosConfig from "../../../axiosConfig";
 
 //hook
 import { useDebounce } from "../hooks/useDebounce";
@@ -14,50 +10,23 @@ import { MovieCard } from "../movie/MovieCard";
 import ConfirmDelete from "../modals/ConfirmDelete";
 import Skelton from "../general/skelton-loader/Skelton";
 
-//functions
 import Notification from "../../assets/general/utils/Notification";
-
-//store
-import {
-    useGenres,
-    useShowDeletemodal,
-    useUpdateMovies,
-    useUserDataStore,
-    // useMovies,
-} from "../zustand/store";
+import { useGenres, useShowDeletemodal, useUpdateMovies, useUserDataStore } from "../zustand/store";
 import { axiosInstance } from "../../../interceptor";
 
 export const Movies = ({ genreIds, rating, search, page, setPage }) => {
-    //All movies
-
-    // const [data, setData] = useState({});
-    // const [page, setPage] = useState(1);
-
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
-
     const [isLoading, setLoading] = useState(true);
-
-    //movie delete modal state
-    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
-
-    //to update homepage when a movie is edited
-    const { updateMoviesList, updatemovies } = useUpdateMovies();
-    const { updateGenres } = useGenres();
-    // const { setMovies, movies } = useMovies();
-
-    // console.log(movies, "movies");
-
-    const { userdata } = useUserDataStore();
-    const access_token = userdata?.access_token;
-
     const [movies, setMovies] = useState([]);
     const [count, setCount] = useState(null);
     const [limit, setLimit] = useState(6);
     const [deleteBtnLoader, setDeleteBtnLoader] = useState(false);
 
-    const debouncedValue = useDebounce(search);
+    const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
+    const { updateMoviesList, updatemovies } = useUpdateMovies();
+    const { updateGenres } = useGenres();
 
-    console.log("movies re rendered");
+    const debouncedValue = useDebounce(search);
 
     let abortController = new AbortController();
     const getAllMovies = async () => {
@@ -76,9 +45,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
             setLimit(response.data.limit);
             updateGenres(response.data.genres);
             setLoading(false);
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {
@@ -89,12 +56,10 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
         };
     }, [debouncedValue, genreIds, rating, page, updatemovies]);
 
-    //close deletemodal function
     const closeDeleteModal = () => {
         setShowDeleteModal(false);
     };
 
-    //delete movie function
     const deleteMovie = async () => {
         try {
             setDeleteBtnLoader(true);
@@ -105,8 +70,6 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                 },
             });
             updateMoviesList();
-
-            console.log(response.data, "res");
 
             if (response.data.StatusCode === 6000) {
                 setShowDeleteModal(false);

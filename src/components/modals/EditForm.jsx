@@ -5,31 +5,23 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 //components
-import ModalWrapper from "../general/ModalWrapper";
 import { Input } from "../fields/Input";
 import StarRating from "../general/StarRating";
+import ButtonLoader from "../general/Button-loader/ButtonLoader";
 
 //icons
 import editImage from "../../assets/icons/edit-image.png";
-import axiosConfig from "../../../axiosConfig";
 import CheckBox from "../../components/fields/CheckBox";
 import close from "../../assets/icons/close.png";
 
-//store
-import { useUpdateMovies, useUserDataStore } from "../zustand/store";
-
-//functions
+import { useUpdateMovies } from "../zustand/store";
 import Notification from "../../assets/general/utils/Notification";
-import ButtonLoader from "../general/Button-loader/ButtonLoader";
 import { axiosInstance } from "../../../interceptor";
 
 export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
-    //states
     const [genres, setGenres] = useState([]);
-    const [uploadProgress, setUploadProgress] = useState(0);
-    const [errors, setErrors] = useState({});
-    const [posterPreview, setPosterPreview] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+    const [galleryPreview, setGalleryPreview] = useState([]);
+    const [prevData, setPrevData] = useState({});
     const [formData, setFormData] = useState({
         name: movie?.name,
         year: movie?.year || "",
@@ -40,17 +32,18 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         genre: movie?.genre?.map((item) => item?._id) || [],
         gallery: movie?.gallery || [],
     });
+    const [errors, setErrors] = useState({});
+    const [isLoading, setLoading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [posterPreview, setPosterPreview] = useState(null);
 
-    const [galleryPreview, setGalleryPreview] = useState([]);
+    const posterRef = useRef(null);
+    const galleryRef = useRef(null);
+    const prevFormDataRef = useRef(null);
+    prevFormDataRef.current = prevData;
 
     const { updateMoviesList } = useUpdateMovies();
-    const { userdata } = useUserDataStore();
 
-    const access_token = userdata?.access_token;
-    const fileInputRef = useRef(null);
-    const filesInputRef = useRef(null);
-
-    //fetchGenres
     const fetchGenres = async () => {
         try {
             const controller = new AbortController();
@@ -65,18 +58,17 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
 
     useEffect(() => {
         fetchGenres();
+        setPrevData(formData);
     }, []);
 
-    //opening file input to upload image
-    const openFileInput = () => {
-        fileInputRef.current.click();
+    const openPosterinput = () => {
+        posterRef.current.click();
     };
 
-    const openFilesInput = () => {
-        filesInputRef.current.click();
+    const openGalleryinput = () => {
+        galleryRef.current.click();
     };
 
-    //setting data
     const handleDataChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -86,76 +78,14 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    //setting rating
     const handleRating = (rate) => {
         setFormData((prev) => ({ ...prev, ["rating"]: rate }));
     };
 
-    //setting movie poster
     const handlePosterChange = (e) => {
         const selectedFile = e.target.files[0];
         setFormData((prev) => ({ ...prev, ["poster"]: selectedFile }));
         setPosterPreview(URL.createObjectURL(selectedFile));
-    };
-
-    // Example usage
-    useEffect(() => {}, [formData]);
-
-    //updating movie
-    const updateMovieData = async () => {
-        try {
-            setLoading(true);
-
-            const isEqual = checkDataEquality(prevFormDataRef.current, formData);
-            if (!isEqual) {
-                const newFomrData = new FormData();
-                newFomrData.append("name", formData?.name);
-                newFomrData.append("year", formData?.year);
-                newFomrData.append("rating", formData?.rating);
-                newFomrData.append("description", formData?.description);
-                newFomrData.append("poster", formData?.poster);
-                newFomrData.append("genre", formData?.genre);
-                Array.from(formData?.gallery)?.forEach((file) => {
-                    newFomrData.append("gallery", file);
-                });
-
-                const response = await axiosInstance(`/movies/${movie?._id}`, {
-                    method: "PUT",
-                    data: newFomrData,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                    onUploadProgress,
-                });
-                updateMoviesList();
-
-                setUploadProgress(0);
-
-                Notification("Movie updated", "success");
-                setShowEditModal(false);
-            } else {
-                Notification("Please modify data to update", "error");
-            }
-        } catch (error) {
-            Notification(error?.response?.data?.message, "error");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    //selecting / unselecting genres
-    const selectGenres = (genreId) => {
-        setFormData((prev) => {
-            if (!prev?.genre?.includes(genreId)) {
-                return { ...prev, genre: [...prev?.genre, genreId] };
-            }
-            return { ...prev, genre: prev.genre.filter((id) => id !== genreId) };
-        });
-    };
-
-    //closing edit form
-    const closeModal = () => {
-        setShowEditModal(false);
     };
 
     const handleGalleryChange = (e) => {
@@ -169,6 +99,20 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         ]);
     };
 
+    //selecting / unselecting genres
+    const selectGenres = (genreId) => {
+        setFormData((prev) => {
+            if (!prev?.genre?.includes(genreId)) {
+                return { ...prev, genre: [...prev?.genre, genreId] };
+            }
+            return { ...prev, genre: prev.genre.filter((id) => id !== genreId) };
+        });
+    };
+
+    const closeEditmodal = () => {
+        setShowEditModal(false);
+    };
+
     const closePreview = (preview, index) => {
         setGalleryPreview((prev) => [...prev.filter((item) => item !== preview)]);
         setFormData((prev) => {
@@ -178,24 +122,15 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         });
     };
 
-    const prevFormDataRef = useRef(null);
-    const [prevData, setPrevData] = useState({});
-
-    useEffect(() => {
-        setPrevData(formData);
-    }, []);
-    prevFormDataRef.current = prevData;
-
     function checkDataEquality(obj1, obj2) {
         for (let key in obj1) {
             if (obj1[key] !== obj2[key]) {
-                return false; // Found a mismatch, objects are not equal
+                return false;
             }
         }
-        return true; // All values are equal
+        return true;
     }
 
-    //image upload progress
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
         let percent = Math.floor((loaded * 100) / total);
@@ -204,31 +139,65 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         }
     };
 
-    const inputStyle = {
-        background: "#082335",
-        borderRadius: "5px",
-        border: "2px solid #336a8c",
-        color: "#418cb3",
+    const updateMovieData = async () => {
+        try {
+            setLoading(true);
+            const isEqual = checkDataEquality(prevFormDataRef.current, formData);
+
+            if (!isEqual) {
+                const newFomrData = new FormData();
+
+                newFomrData.append("name", formData?.name);
+                newFomrData.append("year", formData?.year);
+                newFomrData.append("rating", formData?.rating);
+                newFomrData.append("description", formData?.description);
+                newFomrData.append("poster", formData?.poster);
+                newFomrData.append("genre", formData?.genre);
+                Array.from(formData?.gallery)?.forEach((file) => {
+                    newFomrData.append("gallery", file);
+                });
+
+                await axiosInstance(`/movies/${movie?._id}`, {
+                    method: "PUT",
+                    data: newFomrData,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    onUploadProgress,
+                });
+                updateMoviesList();
+                setUploadProgress(0);
+                Notification("Movie updated", "success");
+                setShowEditModal(false);
+            } else {
+                Notification("Please modify data to update", "error");
+            }
+        } catch (error) {
+            Notification(error?.response?.data?.message, "error");
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const divStyle = "flex gap-[15px] flex-col w-[48%] lg2:w-full";
+    const relativeDiv = "flex-colum gap-[5px] relative";
+
     return (
         <>
             <section
-                className={`overlay flex justify-center items-center z-50 ${
-                    showEditModal ? "visible" : "hidden"
-                }`}
-                onClick={closeModal}
+                className={`overlay flex-center z-50 ${showEditModal ? "visible" : "hidden"}`}
+                onClick={closeEditmodal}
             >
                 <div
-                    // style={style}
                     onClick={(e) => e.stopPropagation()}
                     className="z-40 bg-light-black border-blue modal"
                 >
-                    <div className="flex flex-col p-10 sm3:p-5 w-full overflow-y-scroll max-h-[80vh]">
+                    <div className="flex-colum p-10 sm3:p-5 w-full overflow-y-scroll max-h-[80vh]">
                         <div className="flex gap-[15px] justify-between lg2:flex-col">
                             {/* leftbox  */}
-                            <div className="flex gap-[15px] flex-col w-[48%] lg2:w-full">
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px]">
+                            <div className={divStyle}>
+                                <div>
+                                    <div className="input-container">
                                         <label
                                             htmlFor="name"
                                             className="text-light-white"
@@ -242,13 +211,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             handleDataChange={handleDataChange}
                                             errors={errors?.name}
                                             placeholder={movie?.name}
-                                            css={inputStyle}
                                             value={movie?.name}
                                         />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px]">
+                                <div>
+                                    <div className="input-container">
                                         <label
                                             htmlFor="name"
                                             className="text-light-white"
@@ -262,13 +230,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             handleDataChange={handleDataChange}
                                             errors={errors?.year}
                                             placeholder={movie?.year}
-                                            css={inputStyle}
                                         />
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px] relative">
+                                <div>
+                                    <div className={relativeDiv}>
                                         <label
                                             htmlFor="name"
                                             className="text-light-white"
@@ -279,15 +246,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             name="description"
                                             placeholder={movie?.description || "Add movie details"}
                                             onChange={handleDataChange}
-                                            style={inputStyle}
-                                            className="p-[10px] min-h-[120px] max-h-[120px] lg5:min-h-[70px]"
+                                            className="p-[10px] min-h-[120px] max-h-[120px] lg5:min-h-[70px] input"
                                         ></textarea>
-                                        <span className="absolute left-0 bottom-[-20px] text-[12px] text-[red]">
-                                            {errors?.description}
-                                        </span>
+                                        <span className="error">{errors?.description}</span>
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[5px] relative">
+                                <div className={relativeDiv}>
                                     <label
                                         htmlFor="name"
                                         className="text-light-white"
@@ -296,9 +260,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                     </label>
 
                                     <div
-                                        style={inputStyle}
-                                        onClick={openFilesInput}
-                                        className="relative  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
+                                        onClick={openGalleryinput}
+                                        className="relative input  h-[60px] rounded-[5px] hover:opacity-[0.8] overflow-hidden flex justify-between px-[20px] items-center cursor-pointer"
                                     >
                                         {formData?.gallery.length !==
                                         prevFormDataRef.current?.gallery?.length ? (
@@ -326,7 +289,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             multiple
                                             onChange={handleGalleryChange}
                                             className="absolute z-[-1]  h-[100%] w-[100%] opacity-0"
-                                            ref={filesInputRef}
+                                            ref={galleryRef}
                                         />
                                         <div className="absolute z-20  right-[15px]">
                                             {formData?.gallery?.length ? "" : "upload images"}
@@ -335,7 +298,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
 
                                     <p
                                         onMouseOver={(e) => e.stopPropagation()}
-                                        className="absolute left-0 bottom-[-20px] text-[12px] text-[red]"
+                                        className="error"
                                     >
                                         {errors.poster}
                                     </p>
@@ -348,7 +311,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                                     key={index}
                                                     className="w-[50px] relative max-h-[50px]"
                                                 >
-                                                    {/* {item && (<></>)} */}
                                                     <div
                                                         onClick={() => closePreview(item, index)}
                                                         className=" w-[15px] f-[15px] cursor-pointer top-[-8px] absolute right-[-6px] h-[15px] p-[3px] bg-[#dfdfdf] overflow-hidden rounded-full"
@@ -373,13 +335,12 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
 
                             {/* right box  */}
 
-                            <div className="flex gap-[15px] flex-col w-[48%] lg2:w-full">
-                                <div className="flex flex-col gap-[5px]">
+                            <div className={divStyle}>
+                                <div className="input-container">
                                     <h3> Genres</h3>
                                     <div
                                         id="genre-box"
-                                        style={inputStyle}
-                                        className="flex items-center flex-wrap gap-[15px] p-[7px] max-h-[100px] md2:max-h-[80px] overflow-y-scroll"
+                                        className="flex items-center flex-wrap gap-[15px] p-[7px] max-h-[100px] md2:max-h-[80px] overflow-y-scroll input"
                                     >
                                         {genres?.map((genre) => (
                                             <CheckBox
@@ -391,8 +352,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px]">
+                                <div>
+                                    <div className="input-container">
                                         <label
                                             htmlFor="name"
                                             className="text-light-white"
@@ -405,12 +366,11 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             type="text"
                                             handleDataChange={handleDataChange}
                                             errors={errors?.leadactor}
-                                            css={inputStyle}
                                             placeholder={movie?.leadactor}
                                         />
                                     </div>
                                 </div>
-                                <div className="flex flex-col gap-[5px]">
+                                <div className="input-container">
                                     <label
                                         htmlFor="rating"
                                         className="text-light-white"
@@ -424,8 +384,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                         rating={formData?.rating}
                                     />
                                 </div>
-                                <div className="flex flex-col gap-[8px] ">
-                                    <div className="flex flex-col gap-[5px]">
+                                <div>
+                                    <div className="input-container">
                                         <label
                                             htmlFor="name"
                                             className="text-light-white"
@@ -433,8 +393,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             Movie poster
                                         </label>
                                         <div
-                                            onClick={openFileInput}
-                                            className="relative w-[160px] h-[150px] rounded-[5px] overflow-hidden flex justify-center items-center"
+                                            onClick={openPosterinput}
+                                            className="relative w-[160px] h-[150px] rounded-[5px] overflow-hidden flex-center"
                                         >
                                             <div className="w-[35px] h-[35px] cursor-pointer z-[100] hover:opacity-[0.8]">
                                                 <img
@@ -447,7 +407,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                                 type="file"
                                                 onChange={handlePosterChange}
                                                 className="absolute z-[-1] h-[100%] w-[100%] opacity-0"
-                                                ref={fileInputRef}
+                                                ref={posterRef}
                                             />
                                             <div className="absolute z-20 inset-0  cursor-pointer opacity-[0.7]">
                                                 <img

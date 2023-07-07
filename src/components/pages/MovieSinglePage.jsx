@@ -1,37 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-//packages
 import { useParams } from "react-router-dom";
-
-//axios
-import axiosConfig from "../../../axiosConfig";
 
 //components
 import StarRating from "../general/StarRating";
-
-//store
-import { useUserDataStore } from "../zustand/store";
 import Skelton from "../general/skelton-loader/Skelton";
+
 import { axiosInstance } from "../../../interceptor";
 
 export const MovieSinglePage = () => {
-    //id of each movie
     const { id } = useParams();
+
     const [movie, setMovie] = useState({});
     const [isLoading, setloading] = useState(true);
 
-    const { userdata } = useUserDataStore();
-    const access_token = userdata?.access_token;
-
-    //fetch single movie details
     const fetchMovie = async () => {
         try {
             if (id) {
                 const controller = new AbortController();
                 const resposne = await axiosInstance.get(`/movies/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${access_token}`,
-                    },
                     signal: controller.signal,
                 });
                 setMovie(resposne.data?.movie);

@@ -2,8 +2,7 @@ import React from "react";
 
 import "./skelton.css";
 
-const Skelton = ({ type, count }) => {
-    const COUNT = 6;
+const Skelton = ({ type }) => {
     const FeedSkelton = () => {
         return (
             <div className="skelton-feed">

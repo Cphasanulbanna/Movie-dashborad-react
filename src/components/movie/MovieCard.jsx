@@ -13,15 +13,11 @@ import next from "../../assets/icons/next-arrow.png";
 import { EditForm } from "../modals/EditForm";
 
 export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
-    //movie edit modal state
     const [showEditModal, setShowEditModal] = useState(false);
 
-    //open edit form function
     const opneEditForm = () => {
         setShowEditModal(true);
     };
-
-    console.log(" movie card re rendered****");
 
     return (
         <>
@@ -42,7 +38,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                         className="object-cover"
                     />
                 </div>
-                <div className="w-[60%] p-[20px] flex flex-col gap-[15px] one sm2:pr-[2px] sm2:pl-[10px]">
+                <div className="w-[60%] p-[20px] flex-colum gap-[15px] one sm2:pr-[2px] sm2:pl-[10px]">
                     <div className="flex  flex-col gap-[10px]">
                         <h1 className="font-bold capitalize">
                             {movie.name} {movie.year && `(${movie.year})`}
@@ -60,7 +56,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-[10px]">
+                    <div className="flex-colum gap-[10px]">
                         <p>{movie?.description}</p>
                         <StarRating rating={movie?.rating} />
                         <div className="flex items-center gap-[12px] lg2:flex-wrap-reverse lg2:gap-[16px]">
