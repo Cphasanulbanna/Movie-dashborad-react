@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 //components
 
 import Header from "./Header";
-import Movies from "./pages/movies";
+import Movies from "./pages/Movies";
 import Genres from "./pages/Genres";
 import Users from "./pages/Users";
 import { MovieSinglePage } from "./pages/MovieSinglePage";
