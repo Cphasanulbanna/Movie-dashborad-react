@@ -17,10 +17,12 @@ axiosInstance.interceptors.response.use(
         if (error.response.status === 401) {
             let userdata = JSON.parse(localStorage.getItem("user_data"));
 
+            error.config._retry = true;
             const response = await axiosInstance.get("/auth/refresh-token");
             if (userdata) {
                 userdata.access_token = response.data.access_token;
                 localStorage.setItem("user_data", JSON.stringify(userdata));
+
                 window.location.reload();
             }
         }

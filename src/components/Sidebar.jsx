@@ -15,6 +15,8 @@ import logouticon from "../assets/icons/log-out.png";
 import users from "../assets/icons/users.png";
 import genre from "../assets/icons/genre.png";
 
+import { isAdmin } from "./general/utils";
+
 export const Sidebar = () => {
     const { logout } = useUserDataStore();
     const navLinkActiveClass = ({ isActive }) => {
@@ -22,6 +24,8 @@ export const Sidebar = () => {
             backgroundColor: isActive ? " rgb(31, 121, 131)" : "",
         };
     };
+
+    const admin = isAdmin();
 
     return (
         <div className="bg-dark-blue h-full fixed w-[200px] lg1:w-[75px] md2:w-[50px] overflow-hidden p-[25px] px-[0] flex flex-col gap-[30px] sm3:gap-[20px]">
@@ -55,63 +59,67 @@ export const Sidebar = () => {
                             />
                         </div>
                     </NavLink>
-                    <NavLink
-                        style={navLinkActiveClass}
-                        to={"/genres"}
-                        className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
-                    >
-                        <div className="w-[25px] h-[25px]">
-                            <img
-                                src={genre}
-                                alt="edit"
-                            />
-                        </div>
-                        <span className="lg1:hidden">Genres</span>
-                        <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
-                            <img
-                                src={rightArrow}
-                                alt="arrow"
-                            />
-                        </div>
-                    </NavLink>
-                    <NavLink
-                        style={navLinkActiveClass}
-                        to={"/add-movie"}
-                        className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
-                    >
-                        <div className="w-[25px] h-[25px]">
-                            <img
-                                src={create}
-                                alt="create"
-                            />
-                        </div>
-                        <span className="lg1:hidden">Add Movie</span>
-                        <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
-                            <img
-                                src={rightArrow}
-                                alt="arrow"
-                            />
-                        </div>
-                    </NavLink>
-                    <NavLink
-                        style={navLinkActiveClass}
-                        to={"/users"}
-                        className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
-                    >
-                        <div className="w-[25px] h-[25px] ">
-                            <img
-                                src={users}
-                                alt="users"
-                            />
-                        </div>
-                        <span className="lg1:hidden">Users</span>
-                        <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
-                            <img
-                                src={rightArrow}
-                                alt="arrow"
-                            />
-                        </div>
-                    </NavLink>
+                    {admin && (
+                        <>
+                            <NavLink
+                                style={navLinkActiveClass}
+                                to={"/genres"}
+                                className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
+                            >
+                                <div className="w-[25px] h-[25px]">
+                                    <img
+                                        src={genre}
+                                        alt="edit"
+                                    />
+                                </div>
+                                <span className="lg1:hidden">Genres</span>
+                                <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
+                                    <img
+                                        src={rightArrow}
+                                        alt="arrow"
+                                    />
+                                </div>
+                            </NavLink>
+                            <NavLink
+                                style={navLinkActiveClass}
+                                to={"/add-movie"}
+                                className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
+                            >
+                                <div className="w-[25px] h-[25px]">
+                                    <img
+                                        src={create}
+                                        alt="create"
+                                    />
+                                </div>
+                                <span className="lg1:hidden">Add Movie</span>
+                                <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
+                                    <img
+                                        src={rightArrow}
+                                        alt="arrow"
+                                    />
+                                </div>
+                            </NavLink>
+                            <NavLink
+                                style={navLinkActiveClass}
+                                to={"/users"}
+                                className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
+                            >
+                                <div className="w-[25px] h-[25px] ">
+                                    <img
+                                        src={users}
+                                        alt="users"
+                                    />
+                                </div>
+                                <span className="lg1:hidden">Users</span>
+                                <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
+                                    <img
+                                        src={rightArrow}
+                                        alt="arrow"
+                                    />
+                                </div>
+                            </NavLink>{" "}
+                        </>
+                    )}
                 </div>
 
                 <Link

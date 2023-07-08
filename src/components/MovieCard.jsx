@@ -11,6 +11,7 @@ import next from "../assets/icons/next-arrow.png";
 
 //components
 import { EditForm } from "./modals/EditForm";
+import { isAdmin } from "./general/utils";
 
 export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
     const [showEditModal, setShowEditModal] = useState(false);
@@ -19,6 +20,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
         setShowEditModal(true);
     };
 
+    const admin = isAdmin();
     return (
         <>
             {showEditModal && (
@@ -60,27 +62,31 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                         <p>{movie?.description}</p>
                         <StarRating rating={movie?.rating} />
                         <div className="flex items-center gap-[12px] lg2:flex-wrap-reverse lg2:gap-[16px]">
-                            <div
-                                onClick={opneEditForm}
-                                className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
-                            >
-                                <img
-                                    src={edit}
-                                    alt="edit"
-                                />
-                            </div>
-                            <div
-                                onClick={() => {
-                                    setMovieIdToDelete(movie?._id);
-                                    setShowDeleteModal(true);
-                                }}
-                                className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
-                            >
-                                <img
-                                    src={deleteIcon}
-                                    alt="delete"
-                                />
-                            </div>
+                            {admin && (
+                                <>
+                                    <div
+                                        onClick={opneEditForm}
+                                        className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
+                                    >
+                                        <img
+                                            src={edit}
+                                            alt="edit"
+                                        />
+                                    </div>
+                                    <div
+                                        onClick={() => {
+                                            setMovieIdToDelete(movie?._id);
+                                            setShowDeleteModal(true);
+                                        }}
+                                        className="cursor-pointer w-[20px] h-[20px] hover:opacity-[0.7]"
+                                    >
+                                        <img
+                                            src={deleteIcon}
+                                            alt="delete"
+                                        />
+                                    </div>
+                                </>
+                            )}
                             <Link
                                 to={`/${movie._id}`}
                                 className="flex items-center gap-[8px] cursor-pointer hover:opacity-[0.7]"

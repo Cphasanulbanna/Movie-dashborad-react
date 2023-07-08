@@ -1,12 +1,15 @@
 import React from "react";
 
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-import { isAuth } from "../../general/utils";
+import { isAuth, isRouteAccessible } from "../../general/utils";
 
 const PrivateRoute = () => {
+    const { pathname } = useLocation();
     const auth = isAuth();
-    return auth ? <Outlet /> : <Navigate to="/auth/login" />;
+    const isAuthorized = isRouteAccessible(pathname);
+
+    return auth && isAuthorized ? <Outlet /> : <Navigate to="/auth/login" />;
 };
 
 export default PrivateRoute;
