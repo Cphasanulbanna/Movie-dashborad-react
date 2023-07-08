@@ -48,10 +48,11 @@ const Login = () => {
                 data: formData,
             });
 
-            const { StatusCode, email, username, access_token, profile_pic } = response.data;
+            const { StatusCode, email, role, username, access_token, profile_pic } = response.data;
             if (StatusCode === 6000) {
                 updateUserData({
                     email: email,
+                    role: role,
                     username: username,
                     access_token: access_token,
                     profile_pic: profile_pic,

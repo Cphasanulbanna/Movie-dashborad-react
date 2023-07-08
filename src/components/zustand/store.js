@@ -20,6 +20,7 @@ const userData = JSON.parse(localStorage.getItem("user_data"));
 const userDataInitialState = {
     access_token: "",
     username: "",
+    role: "",
     email: "",
     profile_pic: "",
 };
