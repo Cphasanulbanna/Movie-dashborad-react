@@ -73,7 +73,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
-            [name]: name === "year" ? Number(value) : value,
+            [name]: name === "year" ? Number(value) : value.trimStart(),
         }));
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
@@ -149,6 +149,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
 
                 newFomrData.append("name", formData?.name);
                 newFomrData.append("year", formData?.year);
+                newFomrData.append("leadactor", formData?.leadactor);
                 newFomrData.append("rating", formData?.rating);
                 newFomrData.append("description", formData?.description);
                 newFomrData.append("poster", formData?.poster);

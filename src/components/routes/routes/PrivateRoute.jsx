@@ -6,6 +6,7 @@ import { isAuth, isRouteAccessible } from "../../general/utils";
 
 const PrivateRoute = () => {
     const { pathname } = useLocation();
+
     const auth = isAuth();
     const isAuthorized = isRouteAccessible(pathname);
 

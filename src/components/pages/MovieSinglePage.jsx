@@ -53,7 +53,7 @@ export const MovieSinglePage = () => {
                         </h1>
                         {movie?.year && <h2>Release year: {movie?.year}</h2>}
                         {movie?.description && <p>{movie?.description}</p>}
-                        {movie?.leadactor && <h2>Hero: Actor {movie?.leadactor}</h2>}
+                        {movie?.leadactor && <h2>Hero: {movie?.leadactor}</h2>}
 
                         <div className="flex items-center gap-[10px] flex-wrap">
                             {movie?.genre?.map((item, index) => (

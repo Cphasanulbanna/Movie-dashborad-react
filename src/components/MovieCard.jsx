@@ -46,11 +46,11 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                             {movie.name} {movie.year && `(${movie.year})`}
                         </h1>
 
-                        <div className="flex gap-[12px] items-center flex-wrap lg1:flex-nowrap lg1:overflow-hidden lg1:[&>*:nth-child(n+3)]:hidden md4:[&>*:nth-child(n+3)]:block md2:flex-wrap">
-                            {movie.genre?.slice(0, 4).map((item) => (
+                        <div className="flex gap-[8px] items-center flex-wrap lg1:flex-nowrap lg1:overflow-hidden lg1:[&>*:nth-child(n+3)]:hidden md4:[&>*:nth-child(n+3)]:block md2:flex-wrap">
+                            {movie.genre?.slice(0, 3).map((item) => (
                                 <p
                                     key={item?._id}
-                                    className=" py-[6px] px-[15px]  lg1:py-[2px] lg1:px-[12px] lg1:text-[14px] sm3:px-[8px]  rounded-[25px] border border-[#fff] w-max"
+                                    className=" py-[4px] px-[10px]  lg1:py-[2px] lg1:px-[12px] lg1:text-[14px] sm3:px-[8px] text-[14px]  rounded-[25px] border border-[#fff] w-max"
                                 >
                                     {item.title}
                                 </p>
@@ -59,7 +59,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                     </div>
 
                     <div className="flex-colum gap-[10px]">
-                        <p>{movie?.description}</p>
+                        <p className="line-clamp-2 text-[14px]">{movie?.description}</p>
                         <StarRating rating={movie?.rating} />
                         <div className="flex items-center gap-[12px] lg2:flex-wrap-reverse lg2:gap-[16px]">
                             {admin && (
