@@ -145,11 +145,11 @@ export const Sidebar = () => {
                 </div>
 
                 <Link
-                    className="flex items-center gap-[6px]"
+                    className="flex items-center gap-[6px] "
                     to="/auth/login"
                     onClick={logout}
                 >
-                    <div className="w-[25px] h-[25px] ml-[25px] ">
+                    <div className="w-[25px] h-[25px] ml-[25px] lg1:mx-auto ">
                         <img
                             src={logouticon}
                             alt="logout"
