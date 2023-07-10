@@ -149,7 +149,7 @@ export const Sidebar = () => {
                     to="/auth/login"
                     onClick={logout}
                 >
-                    <div className="w-[25px] h-[25px] ml-[25px] lg1:hidden">
+                    <div className="w-[25px] h-[25px] ml-[25px] ">
                         <img
                             src={logouticon}
                             alt="logout"
