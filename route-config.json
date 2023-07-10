@@ -7,5 +7,8 @@
     },
     "/genres": {
         "role": "Admin"
+    },
+    "/watch-later": {
+        "role": "User"
     }
 }

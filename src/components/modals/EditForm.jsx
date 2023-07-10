@@ -14,9 +14,9 @@ import editImage from "../../assets/icons/edit-image.png";
 import CheckBox from "../../components/fields/CheckBox";
 import close from "../../assets/icons/close.png";
 
-import { useUpdateMovies } from "../zustand/store";
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     const [genres, setGenres] = useState([]);
@@ -33,7 +33,6 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         gallery: movie?.gallery || [],
     });
     const [errors, setErrors] = useState({});
-    const [isLoading, setLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [posterPreview, setPosterPreview] = useState(null);
 
@@ -42,7 +41,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
     const prevFormDataRef = useRef(null);
     prevFormDataRef.current = prevData;
 
-    const { updateMoviesList } = useUpdateMovies();
+    const queryClient = useQueryClient();
 
     const fetchGenres = async () => {
         try {
@@ -139,9 +138,8 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
         }
     };
 
-    const updateMovieData = async () => {
-        try {
-            setLoading(true);
+    const updateMovieMutation = useMutation(
+        async () => {
             const isEqual = checkDataEquality(prevFormDataRef.current, formData);
 
             if (!isEqual) {
@@ -158,7 +156,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                     newFomrData.append("gallery", file);
                 });
 
-                await axiosInstance(`/movies/${movie?._id}`, {
+                const response = await axiosInstance(`/movies/${movie?._id}`, {
                     method: "PUT",
                     data: newFomrData,
                     headers: {
@@ -166,18 +164,28 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                     },
                     onUploadProgress,
                 });
-                updateMoviesList();
-                setUploadProgress(0);
-                Notification("Movie updated", "success");
-                setShowEditModal(false);
+                return response;
             } else {
                 Notification("Please modify data to update", "error");
             }
-        } catch (error) {
-            Notification(error?.response?.data?.message, "error");
-        } finally {
-            setLoading(false);
+        },
+        {
+            onSuccess: (response) => {
+                if (response.status === 200) {
+                    queryClient.invalidateQueries({ queryKey: ["movies"] });
+                    setUploadProgress(0);
+                    Notification("Movie updated", "success");
+                    setShowEditModal(false);
+                }
+            },
+            onError: (error) => {
+                Notification(error?.response?.data?.message, "error");
+            },
         }
+    );
+
+    const updateMovie = () => {
+        updateMovieMutation.mutate();
     };
 
     const divStyle = "flex gap-[15px] flex-col w-[48%] lg2:w-full";
@@ -448,9 +456,9 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
 
                         <button
                             className="lg2:mt-3 btn border-blue"
-                            onClick={updateMovieData}
+                            onClick={updateMovie}
                         >
-                            {isLoading ? <ButtonLoader /> : "Update"}
+                            {updateMovieMutation.isLoading ? <ButtonLoader /> : "Update"}
                         </button>
                     </div>
                 </div>

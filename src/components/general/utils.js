@@ -1,4 +1,3 @@
-import { matchPath } from "react-router-dom";
 import routeConfig from "../../../route-config.json";
 
 export const isAuth = () => {

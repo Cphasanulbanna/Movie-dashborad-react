@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { ToastContainer } from "react-toastify";
 
@@ -11,75 +11,80 @@ import ConfirmDelete from "../modals/ConfirmDelete";
 import Skelton from "../general/skelton-loader/Skelton";
 
 import Notification from "../../assets/general/utils/Notification";
-import { useGenres, useShowDeletemodal, useUpdateMovies, useUserDataStore } from "../zustand/store";
+import { useGenres, useShowDeletemodal } from "../zustand/store";
 import { axiosInstance } from "../../../interceptor";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Spinner from "../general/Button-loader/Spinner";
 
 export const Movies = ({ genreIds, rating, search, page, setPage }) => {
     const [movieIdToDelete, setMovieIdToDelete] = useState("");
-    const [isLoading, setLoading] = useState(true);
     const [movies, setMovies] = useState([]);
     const [count, setCount] = useState(null);
     const [limit, setLimit] = useState(6);
-    const [deleteBtnLoader, setDeleteBtnLoader] = useState(false);
+    const [pageLoading, setPageloading] = useState(true);
 
     const { setShowDeleteModal, showDeleteModal } = useShowDeletemodal();
-    const { updateMoviesList, updatemovies } = useUpdateMovies();
     const { updateGenres } = useGenres();
+    const queryClient = useQueryClient();
 
     const debouncedValue = useDebounce(search);
 
-    let abortController = new AbortController();
-    const getAllMovies = async () => {
-        try {
-            const newAbortController = new AbortController();
-            abortController = newAbortController;
+    const getAllMovies = async (signal) => {
+        const URL = `/movies?page=${page}&genre=${genreIds.toString()}&rating=${rating}&search=${debouncedValue}`;
+        const response = await axiosInstance(URL, {
+            method: "GET",
+            signal,
+        });
 
-            const URL = `/movies?page=${page}&genre=${genreIds.toString()}&rating=${rating}&search=${search}`;
-            const response = await axiosInstance(URL, {
-                method: "GET",
-                signal: newAbortController.signal,
-            });
-
-            setMovies(response.data.movies);
-            setCount(response.data.count);
-            setLimit(response.data.limit);
-            updateGenres(response.data.genres);
-            setLoading(false);
-        } catch (error) {}
+        return response.data;
     };
 
-    useEffect(() => {
-        getAllMovies();
-
-        return () => {
-            abortController.abort();
-        };
-    }, [debouncedValue, genreIds, rating, page, updatemovies]);
-
-    const closeDeleteModal = () => {
-        setShowDeleteModal(false);
-    };
-
-    const deleteMovie = async () => {
-        try {
-            setDeleteBtnLoader(true);
-            const response = await axiosInstance("/movies", {
-                method: "DELETE",
+    const { isFetching } = useQuery(
+        ["movies", page, genreIds, rating, debouncedValue],
+        ({ signal }) => getAllMovies(signal),
+        {
+            onSuccess: (data) => {
+                setPageloading(false);
+                setMovies(data.movies);
+                setCount(data.count);
+                setLimit(data.limit);
+                updateGenres(data.genres);
+            },
+            onSettled: () => {
+                setPageloading(false);
+            },
+            keepPreviousData: true,
+            refetchOnWindowFocus: false,
+        }
+    );
+    const deleteMovieMutation = useMutation(
+        async () => {
+            const response = await axiosInstance.delete("/movies", {
                 data: {
                     movieId: movieIdToDelete,
                 },
             });
-            updateMoviesList();
-
-            if (response.data.StatusCode === 6000) {
+            return response.data;
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ["movies"] });
                 setShowDeleteModal(false);
                 Notification("Movie deleted", "success");
-            }
-        } catch (error) {
-            Notification(error?.response?.data?.message, "error");
-        } finally {
-            setDeleteBtnLoader(false);
+            },
+
+            onError: (error) => {
+                Notification(error?.response?.data?.message, "error");
+            },
         }
+    );
+
+    const deleteMovie = () => {
+        deleteMovieMutation.mutate(movieIdToDelete);
+    };
+
+    const closeDeleteModal = () => {
+        setShowDeleteModal(false);
     };
 
     const totalPages = Math.ceil(count / limit);
@@ -94,7 +99,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                     deleteItem={deleteMovie}
                     closeModal={closeDeleteModal}
                     state={showDeleteModal}
-                    buttonLoader={deleteBtnLoader}
+                    buttonLoader={deleteMovieMutation.isLoading}
                 />
             )}
             <ToastContainer limit={1} />
@@ -104,7 +109,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                 className="w-[100%] h-full overflow-y-scroll"
             >
                 <div className="flex justify-between items-center flex-wrap gap-[20px] p-[20px] sm2:p-[10px]">
-                    {isLoading ? (
+                    {pageLoading ? (
                         <Skelton type={"feed"} />
                     ) : (
                         movies?.map((movie) => (
@@ -140,7 +145,7 @@ export const Movies = ({ genreIds, rating, search, page, setPage }) => {
                                             : "page-btn middle-btns"
                                     }
                                 >
-                                    {index + 1}
+                                    {isFetching && page === index + 1 ? <Spinner /> : index + 1}
                                 </button>
                             ))}
                     {totalPages > 1 && (

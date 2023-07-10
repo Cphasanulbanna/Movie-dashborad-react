@@ -8,10 +8,15 @@ import { Link } from "react-router-dom";
 import edit from "../assets/icons/edit-movie.png";
 import deleteIcon from "../assets/icons/delete.png";
 import next from "../assets/icons/next-arrow.png";
+import watchlater from "../assets/icons/watchlater.png";
 
 //components
 import { EditForm } from "./modals/EditForm";
 import { isAdmin } from "./general/utils";
+import { useMutation } from "@tanstack/react-query";
+import { axiosInstance } from "../../interceptor";
+import { useUserDataStore } from "./zustand/store";
+import Notification from "../assets/general/utils/Notification";
 
 export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => {
     const [showEditModal, setShowEditModal] = useState(false);
@@ -21,6 +26,32 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
     };
 
     const admin = isAdmin();
+    const { userdata } = useUserDataStore();
+
+    const watchLaterMutation = useMutation(
+        async (id) => {
+            const response = await axiosInstance("/auth/watchlater", {
+                method: "POST",
+                data: {
+                    id: id,
+                    email: userdata?.email,
+                },
+            });
+            return response.data;
+        },
+        {
+            onSuccess: () => {
+                Notification("Added to watchlater", "success");
+            },
+            onError: (error) => {
+                Notification(error?.response?.data?.message, "error");
+            },
+        }
+    );
+
+    const watchLater = (id) => {
+        watchLaterMutation.mutate(id);
+    };
     return (
         <>
             {showEditModal && (
@@ -61,7 +92,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                     <div className="flex-colum gap-[10px]">
                         <p className="line-clamp-2 text-[14px]">{movie?.description}</p>
                         <StarRating rating={movie?.rating} />
-                        <div className="flex items-center gap-[12px] lg2:flex-wrap-reverse lg2:gap-[16px]">
+                        <div className="flex items-center flex-wrap gap-[12px] lg2:flex-wrap-reverse lg2:gap-[16px]">
                             {admin && (
                                 <>
                                     <div
@@ -86,6 +117,20 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                                         />
                                     </div>
                                 </>
+                            )}
+                            {!admin && (
+                                <div
+                                    onClick={() => watchLater(movie?._id)}
+                                    className=" cursor-pointer flex items-center gap-[10px] hover:opacity-[0.7]"
+                                >
+                                    <span className="text-[14px]">Watch later</span>
+                                    <div className=" w-[20px] h-[20px] ">
+                                        <img
+                                            src={watchlater}
+                                            alt="watchlater"
+                                        />
+                                    </div>
+                                </div>
                             )}
                             <Link
                                 to={`/${movie._id}`}

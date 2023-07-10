@@ -1,11 +1,6 @@
 import { create } from "zustand";
 import Cookies from "js-cookie";
 
-export const useUpdateMovies = create((set) => ({
-    updatemovies: false,
-    updateMoviesList: () => set((state) => ({ updatemovies: !state.updatemovies })),
-}));
-
 export const useShowDeletemodal = create((set) => ({
     showDeleteModal: false,
     setShowDeleteModal: (value) => set({ showDeleteModal: value }),
@@ -23,6 +18,7 @@ const userDataInitialState = {
     role: "",
     email: "",
     profile_pic: "",
+    id: "",
 };
 export const useUserDataStore = create((set) => ({
     userdata: userData ? userData : userDataInitialState,

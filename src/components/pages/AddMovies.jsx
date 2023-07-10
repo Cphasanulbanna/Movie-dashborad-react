@@ -14,11 +14,13 @@ import Notification from "../../assets/general/utils/Notification";
 //icons
 import editImage from "../../assets/icons/edit-image.png";
 
-import { useUpdateMovies } from "../zustand/store";
 import { axiosInstance } from "../../../interceptor";
 import { addMovieSchema } from "../schemas";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const AddMovies = () => {
+    const queryClient = useQueryClient();
+
     const [formData, setFormData] = useState({
         name: "",
         year: "",
@@ -31,30 +33,44 @@ export const AddMovies = () => {
 
     const [genres, setGenres] = useState([]);
     const [errors, setErrors] = useState({});
-    const [isSubmitting, setSubmitting] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
     const posterRef = useRef(null);
-    const { updateMoviesList } = useUpdateMovies();
 
-    const fetchGenres = async () => {
-        try {
-            const controller = new AbortController();
-            const response = await axiosInstance("/genres", {
-                method: "GET",
-                signal: controller.signal,
-            });
-            setGenres(response.data.genres);
-            controller.abort();
-        } catch (error) {}
+    // const fetchGenres = async () => {
+    //     try {
+    //         const controller = new AbortController();
+    //         const response = await axiosInstance("/genres", {
+    //             method: "GET",
+    //             signal: controller.signal,
+    //         });
+    //         setGenres(response.data.genres);
+    //         controller.abort();
+    //     } catch (error) {}
+    // };
+
+    // useEffect(() => {
+    //     fetchGenres();
+    // }, []);
+
+    const getAllGenres = async (signal) => {
+        const response = await axiosInstance("/genres", {
+            method: "GET",
+            signal,
+        });
+        return response.data;
     };
 
-    useEffect(() => {
-        fetchGenres();
-    }, []);
+    useQuery(["genres"], ({ signal }) => getAllGenres(signal), {
+        onSuccess: (data) => {
+            setGenres(data.genres);
+        },
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
+    });
 
     const openFileInput = () => {
-        fileInputRef.current.click();
+        posterRef.current.click();
     };
 
     const handleDataChange = (e) => {
@@ -84,18 +100,13 @@ export const AddMovies = () => {
 
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
-        let percent = Math.floor((loaded * 100) / total);
         if (formData?.poster) {
-            setUploadProgress(percent);
+            setUploadProgress(Math.round(100 * loaded) / total);
         }
     };
 
-    const AddMovie = async (e) => {
-        try {
-            updateMoviesList();
-            setSubmitting(true);
-            e.preventDefault();
-
+    const addMovieMutation = useMutation(
+        async () => {
             const newFomrData = new FormData();
             newFomrData.append("name", formData.name);
             newFomrData.append("year", formData.year);
@@ -106,29 +117,39 @@ export const AddMovies = () => {
             newFomrData.append("genre", formData.genre);
 
             await addMovieSchema.validate(formData, { abortEarly: false });
-
-            await axiosInstance(`/movies/`, newFomrData, {
+            const response = await axiosInstance(`/movies/`, {
                 method: "POST",
+                data: newFomrData,
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
                 onUploadProgress,
             });
-
-            setUploadProgress(0);
-            Notification("Movie added", "success");
-            resetForm();
-        } catch (error) {
-            const validationErrors = {};
-            error.inner?.forEach((error) => {
-                validationErrors[error.path] = error.message;
-            });
-            Notification(error?.response?.data?.message, "error");
-            setErrors(validationErrors);
-        } finally {
-            setSubmitting(false);
-            setUploadProgress(0);
+            return response.data;
+        },
+        {
+            onSuccess: () => {
+                Notification("Movie added", "success");
+                resetForm();
+                queryClient.invalidateQueries({ queryKey: ["movies"] });
+            },
+            onError: (error) => {
+                const validationErrors = {};
+                error.inner?.forEach((error) => {
+                    validationErrors[error.path] = error.message;
+                });
+                Notification(error?.response?.data?.message, "error");
+                setErrors(validationErrors);
+            },
+            onSettled: () => {
+                setUploadProgress(0);
+            },
         }
+    );
+
+    const addMovie = (e) => {
+        e.preventDefault();
+        addMovieMutation.mutate(formData);
     };
 
     const resetForm = () => {
@@ -147,7 +168,7 @@ export const AddMovies = () => {
     return (
         <section className="p-[30px] sm3:p-[15px]">
             <form
-                onSubmit={AddMovie}
+                onSubmit={addMovie}
                 action=""
                 className="flex justify-between gap-[25px] md4:flex-col"
             >
@@ -304,9 +325,9 @@ export const AddMovies = () => {
                     <button
                         style={{ background: "rgb(12, 63, 102)" }}
                         className="btn min-w-[130px] h-[42px]"
-                        onClick={AddMovie}
+                        onClick={addMovie}
                     >
-                        {isSubmitting ? <ButtonLoader /> : "Add Movie"}
+                        {addMovieMutation.isLoading ? <ButtonLoader /> : "Add Movie"}
                     </button>
                 </div>
             </form>

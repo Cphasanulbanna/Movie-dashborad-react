@@ -14,6 +14,7 @@ import add from "../../assets/icons/add.png";
 
 import Notification from "../../assets/general/utils/Notification";
 import { axiosInstance } from "../../../interceptor";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const Genres = () => {
     const [genres, setGenres] = useState([]);
@@ -28,56 +29,30 @@ const Genres = () => {
 
     const [showAddInput, setShowAddInput] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [isLoading, setLoading] = useState(true);
-    const [addButtonLoader, setAddButtonLoader] = useState(false);
-    const [editButtonloader, setEditButtonLoader] = useState(false);
-    const [deletButtonLoader, setDeleteButtonLoader] = useState(false);
-
     const addGenreRef = useRef(null);
 
-    let controller = new AbortController();
-    const fetchGenres = async () => {
-        try {
-            const response = await axiosInstance("/genres", {
-                method: "GET",
-                signal: controller.signal,
-            });
-
-            setGenres(response.data?.genres);
-            setLoading(false);
-        } catch (error) {}
+    const fetchGenres = async (signal) => {
+        const response = await axiosInstance("/genres", {
+            method: "GET",
+            signal,
+        });
+        return response.data;
     };
+
+    const abortController = new AbortController();
+    const { isLoading } = useQuery(["genres"], () => fetchGenres(abortController.signal), {
+        onSuccess: (data) => {
+            setGenres(data.genres);
+        },
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
+    });
 
     useEffect(() => {
-        fetchGenres();
-
         return () => {
-            controller.abort();
+            abortController.abort();
         };
     }, []);
-
-    const addGenre = async () => {
-        try {
-            setAddButtonLoader(true);
-            if (genreTitle) {
-                const response = await axiosInstance("/genres", {
-                    method: "POST",
-                    data: {
-                        title: genreTitle,
-                    },
-                });
-
-                setGenres(response.data?.genres);
-                setGenreTitle("");
-                setShowAddInput(false);
-                Notification("Genre added", "success");
-            }
-        } catch (error) {
-            Notification(error?.response?.data?.message, "error");
-        } finally {
-            setAddButtonLoader(false);
-        }
-    };
 
     const handleAddInput = () => {
         setShowAddInput((prev) => !prev);
@@ -105,47 +80,6 @@ const Genres = () => {
         setGerneId(genre?._id);
     };
 
-    const deleteGenre = async () => {
-        try {
-            setDeleteButtonLoader(true);
-            await axiosInstance("/genres", {
-                method: "DELETE",
-                data: {
-                    _id: genreIdToDelete,
-                },
-            });
-            setGenres((prev) => prev.filter((genre) => genre._id !== genreIdToDelete));
-            setShowDeleteModal(false);
-            Notification("Genre deleted", "success");
-        } catch (error) {
-            Notification(error?.response?.data?.message, "error");
-        } finally {
-            setDeleteButtonLoader(false);
-        }
-    };
-
-    const updateGenre = async (id) => {
-        try {
-            setEditButtonLoader(true);
-            if (!editedGenre) {
-                setGerneId(null);
-            } else {
-                const resposne = await axiosInstance("/genres", {
-                    method: "PUT",
-                    data: { _id: id, title: editedGenre },
-                });
-                setGenres(resposne.data?.genres);
-                setGerneId(null);
-                setEditedGenre("");
-                Notification("Genre updated", "success");
-            }
-        } catch (error) {
-            Notification(error?.response?.data?.message, "error");
-        } finally {
-            setEditButtonLoader;
-        }
-    };
-
     const handleEditedGenreChange = (e) => {
         const value = e.target.value.toLowerCase();
         setEditedGenre(value);
@@ -159,6 +93,89 @@ const Genres = () => {
         setShowDeleteModal(false);
     };
 
+    const addGenreMutation = useMutation(
+        async () => {
+            if (genreTitle) {
+                const response = await axiosInstance("/genres", {
+                    method: "POST",
+                    data: {
+                        title: genreTitle,
+                    },
+                });
+                return response.data;
+            }
+        },
+        {
+            onSuccess: (data) => {
+                setGenres(data?.genres);
+                setGenreTitle("");
+                setShowAddInput(false);
+                Notification("Genre added", "success");
+            },
+            onError: (error) => {
+                Notification(error?.response?.data?.message, "error");
+            },
+        }
+    );
+
+    const updateGenreMutation = useMutation(
+        async (id) => {
+            if (!editedGenre) {
+                setGerneId(null);
+            } else {
+                const resposne = await axiosInstance("/genres", {
+                    method: "PUT",
+                    data: { _id: id, title: editedGenre },
+                });
+                return resposne.data;
+            }
+        },
+        {
+            onSuccess: (data) => {
+                setGenres(data?.genres);
+                setGerneId(null);
+                setEditedGenre("");
+                Notification("Genre updated", "success");
+            },
+            onError: (error) => {
+                Notification(error?.response?.data?.message, "error");
+            },
+        }
+    );
+
+    const deleteGenreMutation = useMutation(
+        async () => {
+            await axiosInstance("/genres", {
+                method: "DELETE",
+                data: {
+                    _id: genreIdToDelete,
+                },
+            });
+        },
+        {
+            onSuccess: () => {
+                setGenres((prev) => prev.filter((genre) => genre._id !== genreIdToDelete));
+                setShowDeleteModal(false);
+                Notification("Genre deleted", "success");
+            },
+            onError: (error) => {
+                Notification(error?.response?.data?.message, "error");
+            },
+        }
+    );
+
+    const addGenre = () => {
+        addGenreMutation.mutate(genreTitle);
+    };
+
+    const updateGenre = (id) => {
+        updateGenreMutation.mutate({ _id: id, title: editedGenre });
+    };
+
+    const deleteGenre = () => {
+        deleteGenreMutation.mutate(genreIdToDelete);
+    };
+
     return (
         <section className="h-[fill] w-[fill] overflow-y-scroll py-[20px]">
             <ToastContainer limit={1} />
@@ -167,7 +184,7 @@ const Genres = () => {
                     deleteItem={deleteGenre}
                     state={showDeleteModal}
                     closeModal={closeDeleteModal}
-                    buttonLoader={deletButtonLoader}
+                    buttonLoader={deleteGenreMutation.isLoading}
                 />
             )}
             <section className="mx-[auto] w-[85%] sm3:w-[95%] pb-[40px]">
@@ -203,7 +220,7 @@ const Genres = () => {
                             className={` text-[#f2f2f2] cursor-pointer overflow-hidden h-[45px]  lg2:h-[40px] sm3:text-[14px] px-[15px] right-[2px] flex justify-center items-center 
                            `}
                         >
-                            {addButtonLoader ? <ButtonLoader /> : "Add"}
+                            {addGenreMutation.isLoading ? <ButtonLoader /> : "Add"}
                         </div>
                     </div>
                 )}
@@ -251,7 +268,11 @@ const Genres = () => {
                                                 onClick={() => updateGenre(genre?._id)}
                                                 className=" p-[10px] cursor-pointer h-[100%] flex items-center"
                                             >
-                                                {editButtonloader ? <ButtonLoader /> : "save"}
+                                                {updateGenreMutation.isLoading ? (
+                                                    <ButtonLoader />
+                                                ) : (
+                                                    "save"
+                                                )}
                                             </div>
                                         </div>
                                     </div>

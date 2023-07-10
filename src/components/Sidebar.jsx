@@ -14,6 +14,7 @@ import logo from "../assets/icons/logo.png";
 import logouticon from "../assets/icons/log-out.png";
 import users from "../assets/icons/users.png";
 import genre from "../assets/icons/genre.png";
+import watchlater from "../assets/icons/watchlater.png";
 
 import { isAdmin } from "./general/utils";
 
@@ -119,6 +120,27 @@ export const Sidebar = () => {
                                 </div>
                             </NavLink>{" "}
                         </>
+                    )}
+                    {!admin && (
+                        <NavLink
+                            style={navLinkActiveClass}
+                            to={"/watch-later"}
+                            className="flex items-center gap-[6px] px-[25px] md2:px-[12px] py-[12px] "
+                        >
+                            <div className="w-[25px] h-[25px]">
+                                <img
+                                    src={watchlater}
+                                    alt="edit"
+                                />
+                            </div>
+                            <span className="lg1:hidden">Warch Later</span>
+                            <div className="w-[15px] h-[15px] ml-auto lg1:hidden">
+                                <img
+                                    src={rightArrow}
+                                    alt="arrow"
+                                />
+                            </div>
+                        </NavLink>
                     )}
                 </div>
 

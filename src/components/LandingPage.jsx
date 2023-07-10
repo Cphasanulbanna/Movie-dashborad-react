@@ -12,6 +12,7 @@ import Users from "./pages/Users";
 import { MovieSinglePage } from "./pages/MovieSinglePage";
 import { Sidebar } from "./Sidebar";
 import { AddMovies } from "./pages/AddMovies";
+import WatchLater from "./pages/WatchLater";
 
 const LandingPage = () => {
     const [genreIds, setGenreIds] = useState([]);
@@ -59,6 +60,10 @@ const LandingPage = () => {
                     <Route
                         path="/users"
                         element={<Users />}
+                    />
+                    <Route
+                        path="/watch-later"
+                        element={<WatchLater />}
                     />
                 </Routes>
             </section>
