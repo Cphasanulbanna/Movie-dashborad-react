@@ -62,7 +62,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                 />
             )}
 
-            <div className="w-[31%] lg4:w-[48%] md4:w-[100%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
+            <div className="w-[31%] lg5:w-[48%] md4:w-[100%] rounded-[10px] overflow-hidden flex justify-between max-h-[300px] boxshadow">
                 <div className="w-[40%] h-[300px]">
                     <img
                         fetchpriority="high"
@@ -78,7 +78,7 @@ export const MovieCard = ({ movie, setMovieIdToDelete, setShowDeleteModal }) => 
                         </h1>
 
                         <div className="flex gap-[8px] items-center flex-wrap lg1:flex-nowrap lg1:overflow-hidden lg1:[&>*:nth-child(n+3)]:hidden md4:[&>*:nth-child(n+3)]:block md2:flex-wrap">
-                            {movie.genre?.slice(0, 3).map((item) => (
+                            {movie.genre?.slice(0, 2).map((item) => (
                                 <p
                                     key={item?._id}
                                     className=" py-[4px] px-[10px]  lg1:py-[2px] lg1:px-[12px] lg1:text-[14px] sm3:px-[8px] text-[14px]  rounded-[25px] border border-[#fff] w-max"

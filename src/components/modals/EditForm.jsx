@@ -255,7 +255,7 @@ export const EditForm = ({ showEditModal, setShowEditModal, movie }) => {
                                             name="description"
                                             placeholder={movie?.description || "Add movie details"}
                                             onChange={handleDataChange}
-                                            className="p-[10px] min-h-[120px] max-h-[120px] lg5:min-h-[70px] input"
+                                            className="p-[10px] min-h-[120px] max-h-[120px] input"
                                         ></textarea>
                                         <span className="error">{errors?.description}</span>
                                     </div>

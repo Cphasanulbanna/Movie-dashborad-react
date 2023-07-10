@@ -165,7 +165,11 @@ const Genres = () => {
     );
 
     const addGenre = () => {
-        addGenreMutation.mutate(genreTitle);
+        if (genreTitle) {
+            addGenreMutation.mutate(genreTitle);
+        } else {
+            Notification("Please enter a genre", "error");
+        }
     };
 
     const updateGenre = (id) => {
