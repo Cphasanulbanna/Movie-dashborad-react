@@ -7,9 +7,9 @@ const Notification = (message, type) => {
             position: "bottom-center",
             theme: "colored",
             pauseOnHover: false,
-            autoClose: 1500,
+            autoClose: 1000,
             hideProgressBar: true,
-            className: "error",
+            className: "toast-error",
         });
     }
 
@@ -18,7 +18,7 @@ const Notification = (message, type) => {
             position: "bottom-center",
             theme: "colored",
             pauseOnHover: false,
-            autoClose: 1500,
+            autoClose: 1000,
             hideProgressBar: true,
             className: "success",
         });

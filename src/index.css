@@ -285,6 +285,12 @@ ul {
     font-weight: bold;
 }
 
+.toast-error {
+    font-size: 12px;
+    color: rgb(188, 45, 45);
+    font-weight: bold;
+}
+
 @media all and (max-width: 1400px) {
     /* //STAR RATING */
     .star-ratings .star-container {

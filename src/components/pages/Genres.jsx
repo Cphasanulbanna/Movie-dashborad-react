@@ -182,7 +182,6 @@ const Genres = () => {
 
     return (
         <section className="h-[fill] w-[fill] overflow-y-scroll py-[20px]">
-            <ToastContainer limit={1} />
             {showDeleteModal && (
                 <ConfirmDelete
                     deleteItem={deleteGenre}
@@ -243,9 +242,9 @@ const Genres = () => {
                                         key={genre?._id}
                                         className="flex items-center h-[48px] justify-between w-[100%] px-[15px] pl-0 bg-dark-blue md1:h-[40px] input"
                                     >
-                                        <div className="w-[fill]">
+                                        <div className="w-[fill] sm2:w-[60%] sm2:line-clamp-1">
                                             <input
-                                                className="h-[48px] md1:h-[40px] w-[fill] pl-[15px] bg-[inherit]"
+                                                className="h-[48px] md1:h-[40px] w-[fill] pl-[15px] bg-[inherit] "
                                                 type="text"
                                                 placeholder={"movie genre"}
                                                 value={editedGenre}
@@ -326,6 +325,7 @@ const Genres = () => {
                     )}
                 </ul>
             </section>
+            <ToastContainer limit={1} />
         </section>
     );
 };
