@@ -106,6 +106,23 @@ ul {
     transition: all 0.4s ease-in-out;
 }
 
+.ripple-button {
+    border-radius: 4px;
+    border: none;
+    margin: 8px;
+    padding: 14px 24px;
+    background: #1976d2;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.react-ripples {
+    border-radius: 25px !important;
+    overflow: hidden;
+}
+
 .input {
     background: #082335;
     border-radius: 5px;
